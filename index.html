@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="th" class="h-full bg-slate-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RxCalc - Pharmaceutical Calculator</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="flex flex-col min-h-full font-sans text-slate-800 antialiased">
+
+    <!-- Header Section -->
+    <header class="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+            <!-- App Name -->
+            <div class="flex items-center gap-2 cursor-pointer" onclick="app.navigateTo('home')">
+                <i class="fa-solid font-bold text-2xl text-teal-600 fa-calculator"></i>
+                <span class="text-xl font-bold tracking-tight text-slate-900">RxCalc</span>
+            </div>
+            <!-- Home Button -->
+            <button id="btn-home" onclick="app.navigateTo('home')" class="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-slate-600 hover:text-teal-600 hover:bg-slate-100 rounded-lg transition-colors">
+                <i class="fa-solid fa-house"></i>
+                <span>Home</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Area (Dynamic Area) -->
+    <main id="app-content" class="flex-grow max-w-6xl w-full mx-auto px-4 py-8">
+        <!-- Content will be injected dynamically via app.js -->
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="bg-white border-t border-slate-200 py-4 mt-auto">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <p class="text-xs text-slate-400 font-light">
+                Designed by RacNoot52 Contact / Suggestion: 
+                <a href="mailto:shk11400.rx@gmail.com" class="underline hover:text-slate-600 transition-colors">shk11400.rx@gmail.com</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Main App Script -->
+    <script src="app.js"></script>
+</body>
+</html>
