@@ -1,0 +1,361 @@
+/**
+ * Insulin Calculator Module (Elderly-Friendly UI)
+ */
+
+let alcMode = 'all';
+
+const thaiMonths = [
+    "ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.",
+    "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."
+];
+
+export function render(container) {
+    const today = new Date().toISOString().split('T')[0];
+
+    container.innerHTML = `
+        <div class="max-w-4xl mx-auto space-y-6">
+            <!-- Title Header -->
+            <div class="bg-white p-6 rounded-2xl border-2 border-slate-200 shadow-sm flex items-center gap-4">
+                <div class="w-14 h-14 bg-teal-600 text-white rounded-xl flex items-center justify-center text-2xl shrink-0">
+                    <i class="fa-solid fa-syringe"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900">Insulin Calculator</h2>
+                    <p class="text-sm text-slate-500">คำนวณปริมาณยาฉีดอินซูลิน อุปกรณ์เสริม และวันนัดถัดไป</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Input Panel -->
+                <div class="lg:col-span-5 bg-white p-6 rounded-2xl border-2 border-slate-200 shadow-sm space-y-5">
+                    <h3 class="text-lg font-bold text-slate-800 border-b pb-2"><i class="fa-solid fa-pen-to-square mr-2 text-teal-600"></i>กรอกข้อมูล</h3>
+
+                    <!-- Morning Dose -->
+                    <div>
+                        <label class="block text-base font-bold text-slate-700 mb-1">มื้อเช้า (Units)</label>
+                        <input type="number" id="ins-morning" class="w-full text-xl px-4 py-3 border-2 border-slate-300 rounded-xl focus:border-teal-500 focus:outline-none bg-slate-50 font-bold" placeholder="0" min="0">
+                    </div>
+
+                    <!-- Evening Dose -->
+                    <div>
+                        <label class="block text-base font-bold text-slate-700 mb-1">มื้อเย็น / ก่อนนอน (Units)</label>
+                        <input type="number" id="ins-evening" class="w-full text-xl px-4 py-3 border-2 border-slate-300 rounded-xl focus:border-teal-500 focus:outline-none bg-slate-50 font-bold" placeholder="0" min="0">
+                    </div>
+
+                    <!-- Follow-up Days -->
+                    <div>
+                        <label class="block text-base font-bold text-slate-700 mb-1">จำนวนวันนัด (วัน)</label>
+                        <input type="number" id="ins-fu-days" class="w-full text-xl px-4 py-3 border-2 border-slate-300 rounded-xl focus:border-teal-500 focus:outline-none bg-slate-50 font-bold" placeholder="เช่น 30, 60, 90" min="0">
+                    </div>
+
+                    <!-- Start Date -->
+                    <div>
+                        <label class="block text-base font-bold text-slate-700 mb-1">วันเริ่มรับยา</label>
+                        <input type="date" id="ins-start-date" value="${today}" class="w-full text-lg px-4 py-3 border-2 border-slate-300 rounded-xl focus:border-teal-500 focus:outline-none bg-slate-50 font-bold">
+                    </div>
+
+                    <!-- Alcohol Mode Selector -->
+                    <div>
+                        <label class="block text-base font-bold text-slate-700 mb-2">เลือกประเภทสำลีแอลกอฮอล์</label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button type="button" id="btn-alc-all" class="py-2.5 px-2 rounded-xl border-2 font-bold text-sm bg-teal-600 text-white border-teal-600 shadow-sm">แสดงทั้งหมด</button>
+                            <button type="button" id="btn-alc-8" class="py-2.5 px-2 rounded-xl border-2 font-bold text-sm bg-white text-slate-700 border-slate-300 hover:bg-slate-50">8 ก้อน/ถุง</button>
+                            <button type="button" id="btn-alc-10" class="py-2.5 px-2 rounded-xl border-2 font-bold text-sm bg-white text-slate-700 border-slate-300 hover:bg-slate-50">10 ก้อน/ถุง</button>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="pt-2 flex gap-3">
+                        <button type="button" id="btn-reset" class="w-1/3 py-3 border-2 border-slate-300 text-slate-600 rounded-xl font-bold hover:bg-slate-100 text-base">ล้างค่า</button>
+                        <button type="button" id="btn-calc-action" class="w-2/3 py-3 bg-teal-600 text-white rounded-xl font-bold hover:bg-teal-700 shadow-md text-base">คำนวณ</button>
+                    </div>
+                </div>
+
+                <!-- Output Display Panel -->
+                <div class="lg:col-span-7 space-y-6">
+                    <!-- Date & Weekend Warning Box -->
+                    <div class="bg-white p-6 rounded-2xl border-2 border-slate-200 shadow-sm space-y-3">
+                        <h3 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-calendar-days mr-2 text-teal-600"></i>วันนัดถัดไป</h3>
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <div>
+                                <div class="text-2xl font-black text-teal-700" id="res-fu-date">-</div>
+                                <div class="text-base font-bold text-slate-600 mt-1" id="res-fu-day">-</div>
+                            </div>
+                        </div>
+
+                        <!-- Warning Alert Box -->
+                        <div id="weekend-warning" class="hidden p-4 bg-amber-50 border-2 border-amber-300 text-amber-800 rounded-xl font-bold text-base flex items-center gap-3">
+                            <i class="fa-solid fa-triangle-exclamation text-2xl text-amber-600 shrink-0"></i>
+                            <span id="warning-text">ตรงกับวันหยุด กรุณาเลื่อนวันนัด!</span>
+                        </div>
+                    </div>
+
+                    <!-- Penfill & Accessories -->
+                    <div class="bg-white p-6 rounded-2xl border-2 border-slate-200 shadow-sm space-y-4">
+                        <h3 class="text-lg font-bold text-teal-800 flex items-center justify-between">
+                            <span><i class="fa-solid fa-pen-ruler mr-2"></i>Penfill (300 Units/หลอด)</span>
+                        </h3>
+                        <div class="grid grid-cols-2 gap-4 text-center">
+                            <div class="bg-teal-50 p-4 rounded-xl border border-teal-100">
+                                <div class="text-xs font-bold text-teal-600 uppercase">คำนวณได้ (หลอด)</div>
+                                <div class="text-2xl font-black text-teal-900 mt-1" id="res-cartridge-calc">0.00</div>
+                            </div>
+                            <div class="bg-teal-600 text-white p-4 rounded-xl shadow-sm">
+                                <div class="text-xs font-bold text-teal-100 uppercase">จ่ายจริง (หลอด)</div>
+                                <div class="text-3xl font-black mt-1" id="res-cartridge-net">0</div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex justify-between items-center">
+                                <span class="font-bold text-slate-700 text-base">เข็ม Pen Needle:</span>
+                                <span class="text-2xl font-black text-slate-900" id="res-pen-needle">0</span>
+                            </div>
+                            <div id="box-penfill-alc8" class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex justify-between items-center">
+                                <span class="font-bold text-slate-700 text-base">สำลี 8 ก้อน:</span>
+                                <span class="text-2xl font-black text-slate-900" id="res-penfill-alc8">0</span>
+                            </div>
+                            <div id="box-penfill-alc10" class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex justify-between items-center sm:col-span-2">
+                                <span class="font-bold text-slate-700 text-base">สำลี 10 ก้อน:</span>
+                                <span class="text-2xl font-black text-slate-900" id="res-penfill-alc10">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Vial & Accessories -->
+                    <div class="bg-white p-6 rounded-2xl border-2 border-slate-200 shadow-sm space-y-4">
+                        <h3 class="text-lg font-bold text-blue-800 flex items-center justify-between">
+                            <span><i class="fa-solid fa-vial mr-2"></i>Vial (1000 Units/ขวด)</span>
+                        </h3>
+
+                        <div id="vial-lowdose-warning" class="hidden p-3 bg-blue-50 border border-blue-200 text-blue-800 rounded-xl text-sm font-bold">
+                            <i class="fa-solid fa-info-circle mr-1"></i> ยาต่อวัน $\le 25$ units: คิดอายุขวดยา maximum 40 วัน/ขวด
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 text-center">
+                            <div class="bg-blue-50 p-4 rounded-xl border border-blue-100">
+                                <div class="text-xs font-bold text-blue-600 uppercase">คำนวณได้ (ขวด)</div>
+                                <div class="text-2xl font-black text-blue-900 mt-1" id="res-vial-calc">0.00</div>
+                            </div>
+                            <div class="bg-blue-600 text-white p-4 rounded-xl shadow-sm">
+                                <div class="text-xs font-bold text-blue-100 uppercase">จ่ายจริง (ขวด)</div>
+                                <div class="text-3xl font-black mt-1" id="res-vial-net">0</div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex justify-between items-center">
+                                <span class="font-bold text-slate-700 text-base">Syringe:</span>
+                                <span class="text-2xl font-black text-slate-900" id="res-syringe">0</span>
+                            </div>
+                            <div id="box-vial-alc8" class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex justify-between items-center">
+                                <span class="font-bold text-slate-700 text-base">สำลี 8 ก้อน:</span>
+                                <span class="text-2xl font-black text-slate-900" id="res-vial-alc8">0</span>
+                            </div>
+                            <div id="box-vial-alc10" class="p-4 bg-slate-50 rounded-xl border border-slate-200 flex justify-between items-center sm:col-span-2">
+                                <span class="font-bold text-slate-700 text-base">สำลี 10 ก้อน:</span>
+                                <span class="text-2xl font-black text-slate-900" id="res-vial-alc10">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    // Elements Binding
+    const morningInput = container.querySelector('#ins-morning');
+    const eveningInput = container.querySelector('#ins-evening');
+    const fuDaysInput = container.querySelector('#ins-fu-days');
+    const startDateInput = container.querySelector('#ins-start-date');
+
+    const btnBtnCalc = container.querySelector('#btn-calc-action');
+    const btnReset = container.querySelector('#btn-reset');
+
+    const btnAlcAll = container.querySelector('#btn-alc-all');
+    const btnAlc8 = container.querySelector('#btn-alc-8');
+    const btnAlc10 = container.querySelector('#btn-alc-10');
+
+    // 1. Feature เคาะ Enter เพื่อลงไปช่องถัดไป
+    morningInput.addEventListener('keydown', (e) => handleEnterKey(e, eveningInput));
+    eveningInput.addEventListener('keydown', (e) => handleEnterKey(e, fuDaysInput));
+    fuDaysInput.addEventListener('keydown', (e) => handleEnterKey(e, startDateInput));
+    startDateInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            calculateInsulin(container);
+        }
+    });
+
+    // 2. Realtime Calculation Event Listeners
+    [morningInput, eveningInput, fuDaysInput, startDateInput].forEach(elem => {
+        elem.addEventListener('input', () => calculateInsulin(container));
+    });
+
+    btnBtnCalc.addEventListener('click', () => calculateInsulin(container));
+    btnReset.addEventListener('click', () => resetInsulinForm(container));
+
+    // 3. Alcohol Mode Switcher Events
+    btnAlcAll.addEventListener('click', () => setAlcMode('all', container));
+    btnAlc8.addEventListener('click', () => setAlcMode('8', container));
+    btnAlc10.addEventListener('click', () => setAlcMode('10', container));
+
+    // Auto Focus ช่องแรก
+    morningInput.focus();
+    calculateInsulin(container);
+}
+
+function handleEnterKey(event, nextElement) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        if (nextElement) {
+            nextElement.focus();
+            if (nextElement.type === 'number' || nextElement.type === 'text') {
+                nextElement.select();
+            }
+        }
+    }
+}
+
+function setAlcMode(mode, container) {
+    alcMode = mode;
+
+    const btnAll = container.querySelector('#btn-alc-all');
+    const btn8 = container.querySelector('#btn-alc-8');
+    const btn10 = container.querySelector('#btn-alc-10');
+
+    const defaultClass = "py-2.5 px-2 rounded-xl border-2 font-bold text-sm bg-white text-slate-700 border-slate-300 hover:bg-slate-50";
+    const activeClass = "py-2.5 px-2 rounded-xl border-2 font-bold text-sm bg-teal-600 text-white border-teal-600 shadow-sm";
+
+    btnAll.className = mode === 'all' ? activeClass : defaultClass;
+    btn8.className = mode === '8' ? activeClass : defaultClass;
+    btn10.className = mode === '10' ? activeClass : defaultClass;
+
+    updateAlcVisibility(container);
+}
+
+function updateAlcVisibility(container) {
+    const penfillAlc8 = container.querySelector('#box-penfill-alc8');
+    const penfillAlc10 = container.querySelector('#box-penfill-alc10');
+    const vialAlc8 = container.querySelector('#box-vial-alc8');
+    const vialAlc10 = container.querySelector('#box-vial-alc10');
+
+    if (alcMode === 'all') {
+        penfillAlc8.classList.remove('hidden');
+        penfillAlc10.classList.remove('hidden');
+        vialAlc8.classList.remove('hidden');
+        vialAlc10.classList.remove('hidden');
+    } else if (alcMode === '8') {
+        penfillAlc8.classList.remove('hidden');
+        penfillAlc10.classList.add('hidden');
+        vialAlc8.classList.remove('hidden');
+        vialAlc10.classList.add('hidden');
+    } else if (alcMode === '10') {
+        penfillAlc8.classList.add('hidden');
+        penfillAlc10.classList.remove('hidden');
+        vialAlc8.classList.add('hidden');
+        vialAlc10.classList.remove('hidden');
+    }
+}
+
+function resetInsulinForm(container) {
+    container.querySelector('#ins-morning').value = '';
+    container.querySelector('#ins-evening').value = '';
+    container.querySelector('#ins-fu-days').value = '';
+    const today = new Date().toISOString().split('T')[0];
+    container.querySelector('#ins-start-date').value = today;
+    setAlcMode('all', container);
+    calculateInsulin(container);
+    container.querySelector('#ins-morning').focus();
+}
+
+function calculateInsulin(container) {
+    const morningDose = parseFloat(container.querySelector('#ins-morning').value) || 0;
+    const eveningDose = parseFloat(container.querySelector('#ins-evening').value) || 0;
+    const fuDays = parseInt(container.querySelector('#ins-fu-days').value) || 0;
+    const startDateVal = container.querySelector('#ins-start-date').value;
+
+    const dailyDose = morningDose + eveningDose;
+    const totalUnitsA = dailyDose * fuDays;
+
+    let fuDateStr = '-';
+    let dayOfWeekStr = '-';
+    const warningBox = container.querySelector('#weekend-warning');
+    const warningText = container.querySelector('#warning-text');
+
+    if (startDateVal && fuDays > 0) {
+        const startDate = new Date(startDateVal);
+        const fuDate = new Date(startDate);
+        fuDate.setDate(startDate.getDate() + fuDays);
+
+        const dayIndex = fuDate.getDay();
+        const dayNamesShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const dayNamesThai = ['วันอาทิตย์', 'วันจันทร์', 'วันอังคาร', 'วันพุธ', 'วันพฤหัสบดี', 'วันศุกร์', 'วันเสาร์'];
+
+        dayOfWeekStr = `${dayNamesShort[dayIndex]} (${dayNamesThai[dayIndex]})`;
+
+        const day = fuDate.getDate();
+        const monthText = thaiMonths[fuDate.getMonth()];
+        const monthNum = String(fuDate.getMonth() + 1).padStart(2, '0');
+        const yearBE = fuDate.getFullYear() + 543;
+        const yearBEShort = String(yearBE).slice(-2);
+        const dayPadded = String(day).padStart(2, '0');
+
+        fuDateStr = `${day} ${monthText} ${yearBE} (${dayPadded}/${monthNum}/${yearBEShort})`;
+
+        if (dayIndex === 0 || dayIndex === 6) {
+            warningBox.classList.remove('hidden');
+            warningText.innerText = `ตรงกับวันหยุด (${dayNamesThai[dayIndex]}) กรุณาเลื่อนวันนัด!`;
+        } else {
+            warningBox.classList.add('hidden');
+        }
+    } else {
+        warningBox.classList.add('hidden');
+    }
+
+    const cartridgeCalc = fuDays > 0 ? totalUnitsA / 300 : 0;
+    const cartridgeNet = Math.ceil(cartridgeCalc);
+
+    const vialWarningBox = container.querySelector('#vial-lowdose-warning');
+    let vialCalc = 0;
+    let vialNet = 0;
+
+    if (dailyDose > 0 && dailyDose <= 25) {
+        vialWarningBox.classList.remove('hidden');
+        vialCalc = fuDays > 0 ? fuDays / 40 : 0;
+        vialNet = Math.ceil(vialCalc);
+    } else {
+        vialWarningBox.classList.add('hidden');
+        vialCalc = fuDays > 0 ? totalUnitsA / 1000 : 0;
+        vialNet = Math.ceil(vialCalc);
+    }
+
+    const penNeedleCount = fuDays > 0 ? Math.ceil(fuDays / 2) : 0;
+    const syringeCount = fuDays > 0 ? fuDays : 0;
+
+    let alc8Bags = fuDays > 0 ? Math.ceil(fuDays / 4) : 0;
+    let alc10Bags = fuDays > 0 ? Math.ceil(fuDays / 5) : 0;
+
+    if (fuDays > 0 && (morningDose === 0 || eveningDose === 0)) {
+        alc8Bags = Math.ceil(alc8Bags / 2);
+        alc10Bags = Math.ceil(alc10Bags / 2);
+    }
+
+    container.querySelector('#res-fu-date').innerText = fuDateStr;
+    container.querySelector('#res-fu-day').innerText = dayOfWeekStr;
+
+    container.querySelector('#res-cartridge-calc').innerText = cartridgeCalc.toFixed(2);
+    container.querySelector('#res-cartridge-net').innerText = cartridgeNet;
+    container.querySelector('#res-pen-needle').innerText = penNeedleCount;
+
+    container.querySelector('#res-vial-calc').innerText = vialCalc.toFixed(2);
+    container.querySelector('#res-vial-net').innerText = vialNet;
+    container.querySelector('#res-syringe').innerText = syringeCount;
+
+    container.querySelector('#res-penfill-alc8').innerText = alc8Bags;
+    container.querySelector('#res-penfill-alc10').innerText = alc10Bags;
+    container.querySelector('#res-vial-alc8').innerText = alc8Bags;
+    container.querySelector('#res-vial-alc10').innerText = alc10Bags;
+
+    updateAlcVisibility(container);
+}
