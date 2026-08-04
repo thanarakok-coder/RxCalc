@@ -2,17 +2,24 @@
  * RxCalc - Core Application Logic & Router
  */
 
-// รายชื่อโมดูลเครื่องมือคำนวณทั้งหมด (สามารถเพิ่มได้สูงสุด 10+ ตัวที่นี่)
+// รายชื่อโมดูลเครื่องมือคำนวณทั้งหมด
 const MODULES_CONFIG = [
+    {
+        id: 'insulin-calc',
+        title: 'Insulin Calculator',
+        description: 'คำนวณอินซูลิน (Penfill/Vial), อุปกรณ์เสริม (เข็ม, สำลีแอลกอฮอล์) และวันนัดถัดไป',
+        icon: 'fa-solid fa-[#008080] fa-syringe',
+        color: 'bg-teal-600',
+        scriptPath: './modules/insulin-calc.js'
+    },
     {
         id: 'sample-calc',
         title: 'Sample Calculator',
         description: 'ตัวอย่างเครื่องมือคำนวณพื้นฐาน สำหรับทดสอบระบบ',
         icon: 'fa-solid fa-flask',
-        color: 'bg-teal-500',
+        color: 'bg-slate-500',
         scriptPath: './modules/sample-calc.js'
     }
-    // อนาคตเพิ่มเครื่องมือที่ 2, 3, 4 ได้ที่นี่
 ];
 
 class RxCalcApp {
@@ -49,27 +56,27 @@ class RxCalcApp {
         
         let gridHtml = `
             <div class="mb-8 text-center sm:text-left">
-                <h1 class="text-2xl font-bold text-slate-900">เครื่องมือคำนวณทางเภสัชกรรม</h1>
-                <p class="text-sm text-slate-500 mt-1">เลือกเครื่องมือที่ต้องการใช้งานจากรายการด้านล่าง</p>
+                <h1 class="text-2xl sm:text-3xl font-bold text-slate-900">เครื่องมือคำนวณทางเภสัชกรรม</h1>
+                <p class="text-base text-slate-500 mt-2">เลือกเครื่องมือที่ต้องการใช้งานจากรายการด้านล่าง</p>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         `;
 
         MODULES_CONFIG.forEach(mod => {
             gridHtml += `
                 <div onclick="app.navigateTo('${mod.id}')" 
-                     class="group bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:shadow-md hover:border-teal-500 transition-all cursor-pointer flex flex-col justify-between">
+                     class="group bg-white rounded-2xl border-2 border-slate-200 p-6 shadow-sm hover:shadow-lg hover:border-teal-500 transition-all cursor-pointer flex flex-col justify-between">
                     <div>
-                        <div class="w-12 h-12 ${mod.color} text-white rounded-lg flex items-center justify-center text-xl mb-4 group-hover:scale-105 transition-transform">
+                        <div class="w-14 h-14 ${mod.color} text-white rounded-xl flex items-center justify-center text-2xl mb-4 group-hover:scale-105 transition-transform">
                             <i class="${mod.icon}"></i>
                         </div>
-                        <h3 class="font-semibold text-slate-800 group-hover:text-teal-600 transition-colors">${mod.title}</h3>
-                        <p class="text-xs text-slate-500 mt-2 line-clamp-2">${mod.description}</p>
+                        <h3 class="text-xl font-bold text-slate-900 group-hover:text-teal-600 transition-colors">${mod.title}</h3>
+                        <p class="text-sm text-slate-600 mt-2 leading-relaxed">${mod.description}</p>
                     </div>
-                    <div class="mt-4 pt-3 border-t border-slate-100 flex items-center text-xs font-medium text-teal-600">
-                        <span>เปิดใช้งาน</span>
-                        <i class="fa-solid fa-arrow-right ml-1 group-hover:translate-x-1 transition-transform"></i>
+                    <div class="mt-6 pt-4 border-t border-slate-100 flex items-center text-sm font-bold text-teal-600">
+                        <span>เปิดใช้งานเครื่องมือ</span>
+                        <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
                     </div>
                 </div>
             `;
@@ -88,14 +95,13 @@ class RxCalcApp {
         }
 
         this.contentContainer.innerHTML = `
-            <div class="flex items-center justify-center py-12 text-slate-400">
-                <i class="fa-solid fa-spinner fa-spin text-2xl mr-2"></i>
-                <span>กำลังโหลดโมดูล...</span>
+            <div class="flex items-center justify-center py-16 text-slate-400">
+                <i class="fa-solid fa-spinner fa-spin text-3xl mr-3"></i>
+                <span class="text-lg font-medium">กำลังโหลดโมดูล...</span>
             </div>
         `;
 
         try {
-            // ใช้ Dynamic Import เพื่อดึงไฟล์สคริปต์เมื่อจำเป็น
             const module = await import(config.scriptPath);
             if (module && typeof module.render === 'function') {
                 this.contentContainer.innerHTML = '';
@@ -106,7 +112,7 @@ class RxCalcApp {
         } catch (error) {
             console.error(error);
             this.contentContainer.innerHTML = `
-                <div class="p-4 bg-red-50 text-red-600 rounded-lg text-sm border border-red-200">
+                <div class="p-6 bg-red-50 text-red-700 rounded-xl text-base border-2 border-red-200">
                     ไม่สามารถโหลดโมดูลได้ กรุณาตรวจสอบไฟล์ ${config.scriptPath}
                 </div>
             `;
@@ -115,9 +121,9 @@ class RxCalcApp {
 
     render404() {
         this.contentContainer.innerHTML = `
-            <div class="text-center py-12">
-                <h2 class="text-xl font-bold text-slate-800">ไม่พบหน้าเครื่องมือนี้</h2>
-                <button onclick="app.navigateTo('home')" class="mt-4 px-4 py-2 bg-teal-600 text-white text-sm rounded-lg hover:bg-teal-700">กลับหน้าหลัก</button>
+            <div class="text-center py-16">
+                <h2 class="text-2xl font-bold text-slate-800">ไม่พบหน้าเครื่องมือนี้</h2>
+                <button onclick="app.navigateTo('home')" class="mt-4 px-6 py-3 bg-teal-600 text-white font-bold rounded-xl hover:bg-teal-700 text-base">กลับหน้าหลัก</button>
             </div>
         `;
     }
