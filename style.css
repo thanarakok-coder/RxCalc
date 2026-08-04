@@ -1,0 +1,4 @@
+/* Custom utility styles or overrides if needed */
+body {
+    -webkit-tap-highlight-color: transparent;
+}
