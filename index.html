@@ -1,32 +1,155 @@
-<!-- Header Navigation Bar -->
-<nav style="background-color: #080F3A;" class="sticky top-0 z-50 text-white shadow-lg border-b border-slate-800 transition-all">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16">
-            
-            <!-- Brand Logo & Name -->
-            <div class="flex items-center gap-3 cursor-pointer" onclick="showPage('home')">
-                <div class="w-10 h-10 bg-teal-500 text-white rounded-xl flex items-center justify-center text-xl font-bold shadow-md shadow-teal-500/20">
-                    <i class="fa-solid fa-calculator"></i>
-                </div>
-                <div class="flex flex-col">
-                    <span class="text-xl font-extrabold tracking-tight text-white flex items-center gap-1.5">
-                        RxCalc
-                    </span>
-                    <span class="text-[10px] text-teal-300 font-medium -mt-1 tracking-wider uppercase">Pharmacy Tools</span>
-                </div>
-            </div>
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RxCalc - เครื่องมือคำนวณทางเภสัชกรรม</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Sarabun', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800">
 
-            <!-- Home Button (Visible Border & Styled) -->
-            <div>
-                <button type="button" 
-                        id="btn-home" 
-                        onclick="showPage('home')" 
-                        class="hidden flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold text-white bg-white/10 hover:bg-teal-500/20 border-2 border-white/40 hover:border-teal-400 backdrop-blur-md shadow-sm transition-all duration-200 active:scale-95">
-                    <i class="fa-solid fa-house text-teal-300"></i>
-                    <span>Home</span>
-                </button>
-            </div>
+    <!-- Header / Navbar (สีน้ำเงินเข้ม #080F3A + ปุ่ม Home มีขอบชัดเจน) -->
+    <nav style="background-color: #080F3A;" class="sticky top-0 z-50 text-white shadow-lg border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                
+                <!-- Logo & Brand -->
+                <div class="flex items-center gap-3 cursor-pointer" onclick="showPage('home')">
+                    <div class="w-10 h-10 bg-teal-500 text-white rounded-xl flex items-center justify-center text-xl font-bold shadow-md shadow-teal-500/20">
+                        <i class="fa-solid fa-calculator"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-xl font-extrabold tracking-tight text-white flex items-center gap-1.5">
+                            RxCalc
+                        </span>
+                        <span class="text-[10px] text-teal-300 font-medium -mt-1 tracking-wider uppercase">Pharmacy Tools</span>
+                    </div>
+                </div>
 
+                <!-- Home Button (ขอบขาวชัดเจน + Hover สว่าง) -->
+                <div>
+                    <button type="button" 
+                            id="btn-home" 
+                            onclick="showPage('home')" 
+                            class="hidden flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold text-white bg-white/10 hover:bg-teal-500/20 border-2 border-white/40 hover:border-teal-400 backdrop-blur-md shadow-sm transition-all duration-200 active:scale-95">
+                        <i class="fa-solid fa-house text-teal-300"></i>
+                        <span>Home</span>
+                    </button>
+                </div>
+
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Page: Home -->
+        <div id="page-home" class="space-y-6">
+            <div class="space-y-2">
+                <h1 class="text-3xl font-extrabold text-slate-900">เครื่องมือคำนวณทางเภสัชกรรม</h1>
+                <p class="text-slate-500 font-medium">เลือกเครื่องมือที่ต้องการใช้งานจากรายการด้านล่าง</p>
+            </div>
+
+            <!-- Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Insulin Card -->
+                <div onclick="showPage('insulin')" class="bg-white p-6 rounded-2xl border-2 border-slate-200 shadow-sm hover:shadow-md hover:border-teal-500 cursor-pointer transition-all space-y-4 group">
+                    <div class="w-12 h-12 bg-teal-500 text-white rounded-xl flex items-center justify-center text-2xl font-bold group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-syringe"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-900 group-hover:text-teal-600 transition-colors">Insulin Calculator</h3>
+                        <p class="text-sm text-slate-500 mt-1">คำนวณอินซูลิน (Penfill/Vial), อุปกรณ์เสริม (เข็ม, สำลีแอลกอฮอล์) และวันนัดถัดไป</p>
+                    </div>
+                    <div class="pt-2 text-teal-600 font-bold text-sm flex items-center gap-2">
+                        <span>เปิดใช้งานเครื่องมือ</span>
+                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </div>
+
+                <!-- Sample Card -->
+                <div class="bg-white p-6 rounded-2xl border-2 border-slate-200 shadow-sm space-y-4 opacity-60">
+                    <div class="w-12 h-12 bg-slate-500 text-white rounded-xl flex items-center justify-center text-2xl font-bold">
+                        <i class="fa-solid fa-flask"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-900">Sample Calculator</h3>
+                        <p class="text-sm text-slate-500 mt-1">ตัวอย่างเครื่องมือคำนวณพื้นฐาน สำหรับทดสอบระบบ</p>
+                    </div>
+                    <div class="pt-2 text-slate-400 font-bold text-sm flex items-center gap-2">
+                        <span>เปิดใช้งานเครื่องมือ</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page: Insulin Calculator -->
+        <div id="page-insulin" class="hidden">
+            <div id="insulin-module-container"></div>
+        </div>
+
+        <!-- Page: TB Calculator (ถ้ามี) -->
+        <div id="page-tb" class="hidden">
+            <div class="p-8 text-center text-slate-500">โมดูล TB Calculator</div>
+        </div>
+
+        <!-- Page: DAPT Calculator (ถ้ามี) -->
+        <div id="page-dapt" class="hidden">
+            <div class="p-8 text-center text-slate-500">โมดูล DAPT Calculator</div>
+        </div>
+
+    </main>
+
+    <!-- Global Router Script -->
+    <script>
+        function showPage(pageId) {
+            const homePage = document.getElementById('page-home');
+            const insulinPage = document.getElementById('page-insulin');
+            const tbPage = document.getElementById('page-tb');
+            const daptPage = document.getElementById('page-dapt');
+            const btnHome = document.getElementById('btn-home');
+
+            if (homePage) homePage.classList.add('hidden');
+            if (insulinPage) insulinPage.classList.add('hidden');
+            if (tbPage) tbPage.classList.add('hidden');
+            if (daptPage) daptPage.classList.add('hidden');
+
+            if (pageId === 'home') {
+                if (homePage) homePage.classList.remove('hidden');
+                if (btnHome) btnHome.classList.add('hidden');
+            } else if (pageId === 'insulin') {
+                if (insulinPage) insulinPage.classList.remove('hidden');
+                if (btnHome) btnHome.classList.remove('hidden');
+            } else if (pageId === 'tb') {
+                if (tbPage) tbPage.classList.remove('hidden');
+                if (btnHome) btnHome.classList.remove('hidden');
+            } else if (pageId === 'dapt') {
+                if (daptPage) daptPage.classList.remove('hidden');
+                if (btnHome) btnHome.classList.remove('hidden');
+            }
+        }
+    </script>
+
+    <!-- Module Loader Script -->
+    <script type="module">
+        import { render as renderInsulin } from './js/insulin.js';
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const insulinContainer = document.getElementById('insulin-module-container');
+            if (insulinContainer) {
+                renderInsulin(insulinContainer);
+            }
+        });
+    </script>
+</body>
+</html>
