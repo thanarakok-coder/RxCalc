@@ -100,38 +100,55 @@
 
     </main>
 
-    <!-- Global Router & Loader Script -->
-    <script type="module">
-        // ฟังก์ชันเปลี่ยนหน้าและ Render โมดูล
-        async function showPage(pageId) {
-            const homePage = document.getElementById('page-home');
-            const insulinPage = document.getElementById('page-insulin');
+<!-- Global Router & Loader Script -->
+<script type="module">
+    // ฟังก์ชันเปลี่ยนหน้าและ Render โมดูล
+    async function showPage(pageId) {
+        const homePage = document.getElementById('page-home');
+        const insulinPage = document.getElementById('page-insulin');
+        const tbPage = document.getElementById('page-tb');
 
-            if (homePage) homePage.classList.add('hidden');
-            if (insulinPage) insulinPage.classList.add('hidden');
+        // ซ่อนทุกหน้าก่อน
+        if (homePage) homePage.classList.add('hidden');
+        if (insulinPage) insulinPage.classList.add('hidden');
+        if (tbPage) tbPage.classList.add('hidden');
 
-            if (pageId === 'home') {
-                if (homePage) homePage.classList.remove('hidden');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            } else if (pageId === 'insulin') {
-                if (insulinPage) insulinPage.classList.remove('hidden');
-                
-                // โหลดโมดูล Insulin จาก modules/insulin-calc.js
-                const container = document.getElementById('insulin-module-container');
-                if (container) {
-                    try {
-                        const module = await import('./modules/insulin-calc.js');
-                        module.render(container);
-                    } catch (err) {
-                        console.error('Error loading module:', err);
-                        container.innerHTML = `<div class="p-4 text-red-500 font-bold">ไม่สามารถโหลดโมดูลได้: ${err.message}</div>`;
-                    }
+        if (pageId === 'home') {
+            if (homePage) homePage.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } 
+        else if (pageId === 'insulin') {
+            if (insulinPage) insulinPage.classList.remove('hidden');
+
+            const container = document.getElementById('insulin-module-container');
+            if (container) {
+                try {
+                    const module = await import('./modules/insulin-calc.js');
+                    module.render(container);
+                } catch (err) {
+                    console.error('Error loading insulin module:', err);
+                    container.innerHTML = `<div class="p-4 text-red-500 font-bold">ไม่สามารถโหลดโมดูลได้: ${err.message}</div>`;
                 }
             }
         }
+        else if (pageId === 'tb') {
+            if (tbPage) tbPage.classList.remove('hidden');
 
-        // ผูกฟังก์ชันเข้ากับ window เพื่อให้ onclick ใน HTML เรียกใช้งานได้
-        window.showPage = showPage;
-    </script>
+            const container = document.getElementById('tb-module-container');
+            if (container) {
+                try {
+                    const module = await import('./modules/tb-calc.js');
+                    module.render(container);
+                } catch (err) {
+                    console.error('Error loading TB module:', err);
+                    container.innerHTML = `<div class="p-4 text-red-500 font-bold">ไม่สามารถโหลดโมดูลได้: ${err.message}</div>`;
+                }
+            }
+        }
+    }
+
+    // ผูกฟังก์ชันเข้ากับ window เพื่อให้ onclick ใน HTML เรียกใช้งานได้
+    window.showPage = showPage;
+</script>
 </body>
 </html>
