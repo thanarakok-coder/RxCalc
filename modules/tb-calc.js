@@ -20,7 +20,7 @@ export function render(container) {
             <!-- Header Card -->
             <div class="bg-slate-900 text-white p-4 sm:p-5 rounded-3xl shadow-xl border border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 bg-teal-500/20 text-teal-400 rounded-2xl flex items-center justify-center text-2xl border border-teal-500/30 shrink-0">
+                    <div class="w-12 h-12 bg-amber-500/20 text-amber-400 rounded-2xl flex items-center justify-center text-2xl border border-amber-500/30 shrink-0">
                         <i class="fa-solid fa-pills"></i>
                     </div>
                     <div>
@@ -45,7 +45,7 @@ export function render(container) {
                     
                     <div class="relative">
                         <input type="number" id="tb-bw" step="0.01" min="0" placeholder="0" autofocus
-                            class="w-full text-center text-4xl sm:text-5xl font-black py-3 px-2 bg-slate-50 text-slate-900 border-2 border-teal-500 rounded-2xl focus:outline-none focus:ring-4 focus:ring-teal-500/20 shadow-inner">
+                            class="w-full text-center text-4xl sm:text-5xl font-black py-3 px-2 bg-slate-50 text-slate-900 border-2 border-amber-500 rounded-2xl focus:outline-none focus:ring-4 focus:ring-amber-500/20 shadow-inner">
                     </div>
                     <p class="text-center text-xs font-extrabold text-slate-400">หน่วย: กิโลกรัม (kg)</p>
 
@@ -95,7 +95,6 @@ export function render(container) {
         </div>
     `;
 
-    // Elements Binding
     const bwInput = container.querySelector('#tb-bw');
     const chkEgfr = container.querySelector('#chk-egfr');
     const warningBox = container.querySelector('#egfr-warning-box');
@@ -116,11 +115,9 @@ export function render(container) {
     bwInput.addEventListener('input', updateCalc);
     chkEgfr.addEventListener('change', updateCalc);
 
-    // Initial Render
     updateCalc();
 }
 
-// Drug Definitions Configuration
 const tbDrugs = [
     { code: 'I', name: 'Isoniazid', avgMult: 5, minMult: 4, maxMult: 6, egfrAdjust: false, note: '' },
     { code: 'R', name: 'Rifampicin', avgMult: 10, minMult: 8, maxMult: 12, egfrAdjust: false, note: '' },
@@ -133,14 +130,12 @@ const tbDrugs = [
 
 function formatNumber(num) {
     if (!num || isNaN(num) || num === 0) return '0';
-    // ปัดเป็นทศนิยมไม่เกิน 2 ตำแหน่ง และตัด .00 ออกหากเป็นจำนวนเต็ม
     const formatted = Math.round(num * 100) / 100;
     return formatted.toLocaleString('en-US');
 }
 
 function renderTableRows(container, bw, isLowEgfr) {
     const tbody = container.querySelector('#tb-dose-tbody');
-    
     let html = '';
 
     tbDrugs.forEach(drug => {
@@ -148,11 +143,9 @@ function renderTableRows(container, bw, isLowEgfr) {
         let minMaxStr = '-';
 
         if (bw > 0) {
-            // คำนวณ Avg Dose
             let avgVal = drug.fixedAvg ? drug.fixedAvg : (bw * drug.avgMult);
             avgDoseStr = `${formatNumber(avgVal)} <span class="text-xs font-extrabold text-slate-500">mg/day</span>`;
 
-            // คำนวณ Min - Max
             let minVal = bw * drug.minMult;
             let maxVal = bw * drug.maxMult;
 
@@ -163,7 +156,6 @@ function renderTableRows(container, bw, isLowEgfr) {
             minMaxStr = `${formatNumber(minVal)} - ${formatNumber(maxVal)} <span class="text-xs font-extrabold text-slate-500">mg/day</span>`;
         }
 
-        // eGFR Adjustment Column
         let egfrDisplay = '-';
         let egfrStyle = 'text-slate-300';
 
@@ -174,7 +166,6 @@ function renderTableRows(container, bw, isLowEgfr) {
 
         html += `
             <tr class="hover:bg-slate-50 transition-colors">
-                <!-- Drug Code & Name -->
                 <td class="p-2.5 text-center border-r border-slate-100">
                     <div class="inline-flex items-center justify-center w-10 h-10 bg-slate-800 text-white font-black text-xl rounded-xl shadow-xs">
                         [${drug.code}]
@@ -182,18 +173,12 @@ function renderTableRows(container, bw, isLowEgfr) {
                     <div class="text-[11px] font-bold text-slate-500 mt-0.5">${drug.name}</div>
                     ${drug.note ? `<div class="text-[9px] font-extrabold text-rose-500 leading-none">${drug.note}</div>` : ''}
                 </td>
-
-                <!-- Avg Dose -->
-                <td class="p-2.5 text-center text-teal-700 font-black text-lg sm:text-xl border-r border-slate-100">
+                <td class="p-2.5 text-center text-amber-600 font-black text-lg sm:text-xl border-r border-slate-100">
                     ${avgDoseStr}
                 </td>
-
-                <!-- Range Dose -->
                 <td class="p-2.5 text-center text-slate-700 font-extrabold border-r border-slate-100">
                     ${minMaxStr}
                 </td>
-
-                <!-- eGFR Column -->
                 <td class="p-2.5 text-center ${egfrStyle}">
                     ${egfrDisplay}
                 </td>
