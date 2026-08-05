@@ -1,5 +1,6 @@
 /**
- * Insulin Calculator Module (Elderly-Friendly UI with Product Images)
+ * Insulin Calculator Module
+ * Layout Standard: Left ~30% (Dark Navy Input) | Right ~70% (Output)
  */
 
 let alcMode = 'all';
@@ -9,200 +10,211 @@ const thaiMonths = [
     "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."
 ];
 
-// Base URL สำหรับดึงรูปภาพจาก Repo rx-calculator
+// GitHub Raw Image CDN Base URL
 const IMG_BASE_URL = 'https://raw.githubusercontent.com/thanarakok-coder/rx-calculator/main/';
 
 export function render(container) {
     const today = new Date().toISOString().split('T')[0];
 
     container.innerHTML = `
-        <div class="max-w-5xl mx-auto space-y-6">
-            <!-- Title Header -->
-            <div class="bg-white p-6 rounded-2xl border-2 border-slate-200 shadow-sm flex items-center gap-4">
-                <div class="w-16 h-16 bg-teal-600 text-white rounded-2xl flex items-center justify-center text-3xl shrink-0 shadow-md">
-                    <i class="fa-solid fa-syringe"></i>
-                </div>
-                <div>
-                    <h2 class="text-2xl sm:text-3xl font-black text-slate-900">Insulin Calculator</h2>
-                    <p class="text-base text-slate-500 font-medium mt-1">คำนวณปริมาณยาฉีดอินซูลิน อุปกรณ์เสริม และวันนัดถัดไป</p>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <!-- Input Panel -->
-                <div class="lg:col-span-5 bg-white p-6 rounded-2xl border-2 border-slate-200 shadow-sm space-y-6">
-                    <h3 class="text-xl font-black text-slate-800 border-b-2 border-slate-100 pb-3 flex items-center gap-2">
-                        <i class="fa-solid fa-pen-to-square text-teal-600"></i>
-                        <span>กรอกข้อมูล</span>
-                    </h3>
-
-                    <!-- Morning Dose -->
-                    <div>
-                        <label class="block text-lg font-bold text-slate-800 mb-1">มื้อเช้า (Units)</label>
-                        <input type="number" id="ins-morning" class="w-full text-2xl font-black px-4 py-3 border-2 border-slate-300 rounded-xl focus:border-teal-500 focus:ring-2 focus:ring-teal-200 focus:outline-none bg-slate-50 text-slate-900" placeholder="0" min="0">
+        <div class="max-w-7xl mx-auto space-y-6">
+            
+            <!-- Main Grid: Left ~30% (lg:col-span-4), Right ~70% (lg:col-span-8) -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                
+                <!-- ================= LEFT SECTOR (~30%): INPUT PANEL ================= -->
+                <div style="background-color: #080F3A;" class="lg:col-span-4 text-white p-6 rounded-3xl shadow-xl border border-slate-800 space-y-6">
+                    
+                    <!-- Title -->
+                    <div class="flex items-center gap-3 border-b border-slate-700/80 pb-4">
+                        <div class="w-12 h-12 bg-teal-500/20 text-teal-400 rounded-2xl flex items-center justify-center text-2xl border border-teal-500/30 shrink-0">
+                            <i class="fa-solid fa-syringe"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-black text-white">Insulin Calc</h2>
+                            <p class="text-xs text-slate-400 font-medium">คำนวณปริมาณยาและอุปกรณ์</p>
+                        </div>
                     </div>
 
-                    <!-- Evening Dose -->
-                    <div>
-                        <label class="block text-lg font-bold text-slate-800 mb-1">มื้อเย็น / ก่อนนอน (Units)</label>
-                        <input type="number" id="ins-evening" class="w-full text-2xl font-black px-4 py-3 border-2 border-slate-300 rounded-xl focus:border-teal-500 focus:ring-2 focus:ring-teal-200 focus:outline-none bg-slate-50 text-slate-900" placeholder="0" min="0">
-                    </div>
+                    <!-- Input Form -->
+                    <div class="space-y-4">
+                        <!-- Morning Dose -->
+                        <div>
+                            <label class="block text-base font-bold text-slate-200 mb-1">มื้อเช้า (Units)</label>
+                            <input type="number" id="ins-morning" class="w-full text-2xl font-black px-4 py-3 bg-slate-900/90 text-white border-2 border-slate-700 rounded-2xl focus:border-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-400/30 transition-all placeholder-slate-600" placeholder="0" min="0">
+                        </div>
 
-                    <!-- Follow-up Days -->
-                    <div>
-                        <label class="block text-lg font-bold text-slate-800 mb-1">จำนวนวันนัด (วัน)</label>
-                        <input type="number" id="ins-fu-days" class="w-full text-2xl font-black px-4 py-3 border-2 border-slate-300 rounded-xl focus:border-teal-500 focus:ring-2 focus:ring-teal-200 focus:outline-none bg-slate-50 text-slate-900" placeholder="เช่น 30, 60, 90" min="0">
-                    </div>
+                        <!-- Evening Dose -->
+                        <div>
+                            <label class="block text-base font-bold text-slate-200 mb-1">มื้อเย็น / ก่อนนอน (Units)</label>
+                            <input type="number" id="ins-evening" class="w-full text-2xl font-black px-4 py-3 bg-slate-900/90 text-white border-2 border-slate-700 rounded-2xl focus:border-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-400/30 transition-all placeholder-slate-600" placeholder="0" min="0">
+                        </div>
 
-                    <!-- Start Date -->
-                    <div>
-                        <label class="block text-lg font-bold text-slate-800 mb-1">วันเริ่มรับยา</label>
-                        <input type="date" id="ins-start-date" value="${today}" class="w-full text-xl font-bold px-4 py-3 border-2 border-slate-300 rounded-xl focus:border-teal-500 focus:ring-2 focus:ring-teal-200 focus:outline-none bg-slate-50 text-slate-900">
-                    </div>
+                        <!-- Follow-up Days -->
+                        <div>
+                            <label class="block text-base font-bold text-slate-200 mb-1">จำนวนวันนัด (วัน)</label>
+                            <input type="number" id="ins-fu-days" class="w-full text-2xl font-black px-4 py-3 bg-slate-900/90 text-white border-2 border-slate-700 rounded-2xl focus:border-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-400/30 transition-all placeholder-slate-600" placeholder="เช่น 30, 60, 90" min="0">
+                        </div>
 
-                    <!-- Alcohol Mode Selector -->
-                    <div class="pt-2">
-                        <label class="block text-base font-bold text-slate-800 mb-2">เลือกขนาดถุงสำลีแอลกอฮอล์</label>
-                        <div class="grid grid-cols-3 gap-2">
-                            <button type="button" id="btn-alc-all" class="py-2.5 px-2 rounded-xl border-2 font-bold text-sm bg-teal-600 text-white border-teal-600 shadow-sm transition-all">ทั้งหมด</button>
-                            <button type="button" id="btn-alc-8" class="py-2.5 px-2 rounded-xl border-2 font-bold text-sm bg-white text-slate-700 border-slate-300 hover:bg-slate-50 transition-all">8 ก้อน</button>
-                            <button type="button" id="btn-alc-10" class="py-2.5 px-2 rounded-xl border-2 font-bold text-sm bg-white text-slate-700 border-slate-300 hover:bg-slate-50 transition-all">10 ก้อน</button>
+                        <!-- Start Date -->
+                        <div>
+                            <label class="block text-base font-bold text-slate-200 mb-1">วันเริ่มรับยา</label>
+                            <input type="date" id="ins-start-date" value="${today}" class="w-full text-lg font-bold px-4 py-3 bg-slate-900/90 text-white border-2 border-slate-700 rounded-2xl focus:border-teal-400 focus:outline-none transition-all">
+                        </div>
+
+                        <!-- Alcohol Mode Selector -->
+                        <div class="pt-2">
+                            <label class="block text-sm font-bold text-slate-300 mb-2">ขนาดถุงสำลีแอลกอฮอล์</label>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button type="button" id="btn-alc-all" class="py-2 px-1 rounded-xl border-2 font-bold text-xs bg-teal-500 text-white border-teal-500 shadow-sm transition-all">ทั้งหมด</button>
+                                <button type="button" id="btn-alc-8" class="py-2 px-1 rounded-xl border-2 font-bold text-xs bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700 transition-all">8 ก้อน</button>
+                                <button type="button" id="btn-alc-10" class="py-2 px-1 rounded-xl border-2 font-bold text-xs bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700 transition-all">10 ก้อน</button>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Action Buttons -->
-                    <div class="pt-4 flex gap-3 border-t border-slate-100">
-                        <button type="button" id="btn-reset" class="w-1/3 py-3 border-2 border-slate-300 text-slate-700 rounded-xl font-bold hover:bg-slate-100 text-lg transition-colors">ล้างค่า</button>
-                        <button type="button" id="btn-calc-action" class="w-2/3 py-3 bg-teal-600 text-white rounded-xl font-bold hover:bg-teal-700 shadow-md text-lg transition-colors">คำนวณ</button>
+                    <div class="pt-2 flex gap-3">
+                        <button type="button" id="btn-reset" class="w-full py-3.5 bg-rose-600/20 text-rose-300 border-2 border-rose-500/40 rounded-2xl font-black hover:bg-rose-600 hover:text-white text-lg transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95">
+                            <i class="fa-solid fa-rotate-left"></i>
+                            <span>รีเซ็ตค่าว่าง</span>
+                        </button>
                     </div>
+
                 </div>
 
-                <!-- Output Display Panel -->
-                <div class="lg:col-span-7 space-y-6">
+
+                <!-- ================= RIGHT SECTOR (~70%): OUTPUT PANEL ================= -->
+                <div class="lg:col-span-8 space-y-6">
+                    
                     <!-- Date & Weekend Warning Box -->
-                    <div class="bg-white p-6 rounded-2xl border-2 border-slate-200 shadow-sm space-y-3">
+                    <div class="bg-white p-6 rounded-3xl border-2 border-slate-200 shadow-sm space-y-3">
                         <h3 class="text-xl font-black text-slate-800 flex items-center gap-2">
                             <i class="fa-solid fa-calendar-days text-teal-600"></i>
                             <span>วันนัดถัดไป</span>
                         </h3>
-                        <div class="bg-slate-50 p-4 rounded-xl border-2 border-slate-200">
-                            <div class="text-2xl sm:text-3xl font-black text-teal-700" id="res-fu-date">-</div>
-                            <div class="text-lg font-bold text-slate-600 mt-1" id="res-fu-day">-</div>
+                        <div class="bg-slate-50 p-5 rounded-2xl border-2 border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <div>
+                                <div class="text-3xl sm:text-4xl font-black text-teal-700" id="res-fu-date">-</div>
+                                <div class="text-lg font-bold text-slate-600 mt-1" id="res-fu-day">-</div>
+                            </div>
                         </div>
 
                         <!-- Warning Alert Box -->
-                        <div id="weekend-warning" class="hidden p-4 bg-amber-50 border-2 border-amber-400 text-amber-900 rounded-xl font-bold text-lg flex items-center gap-3">
+                        <div id="weekend-warning" class="hidden p-4 bg-amber-50 border-2 border-amber-400 text-amber-900 rounded-2xl font-bold text-lg flex items-center gap-3">
                             <i class="fa-solid fa-triangle-exclamation text-3xl text-amber-600 shrink-0"></i>
                             <span id="warning-text">ตรงกับวันหยุด กรุณาเลื่อนวันนัด!</span>
                         </div>
                     </div>
 
-                    <!-- Penfill & Accessories -->
-                    <div class="bg-white p-6 rounded-2xl border-2 border-slate-200 shadow-sm space-y-4">
+                    <!-- Penfill & Accessories Card -->
+                    <div class="bg-white p-6 rounded-3xl border-2 border-slate-200 shadow-sm space-y-5">
                         <div class="flex items-center justify-between border-b pb-3 border-slate-100">
-                            <h3 class="text-xl font-black text-teal-800 flex items-center gap-2">
+                            <h3 class="text-2xl font-black text-teal-800 flex items-center gap-2">
                                 <i class="fa-solid fa-pen-ruler text-teal-600"></i>
                                 <span>Penfill (300 U/หลอด)</span>
                             </h3>
-                            <img src="${IMG_BASE_URL}cartridge.jpg" alt="Cartridge" class="h-12 w-12 object-cover rounded-lg border border-slate-200 shadow-sm">
+                            <img src="${IMG_BASE_URL}cartridge.jpg" alt="Cartridge" class="h-14 w-14 object-cover rounded-xl border-2 border-slate-200 shadow-sm">
                         </div>
 
                         <div class="grid grid-cols-2 gap-4 text-center">
-                            <div class="bg-slate-50 p-4 rounded-xl border-2 border-slate-200">
+                            <div class="bg-slate-50 p-4 rounded-2xl border-2 border-slate-200">
                                 <div class="text-xs font-bold text-slate-500 uppercase">คำนวณได้ (หลอด)</div>
-                                <div class="text-2xl font-black text-slate-800 mt-1" id="res-cartridge-calc">0.00</div>
+                                <div class="text-3xl font-black text-slate-800 mt-1" id="res-cartridge-calc">0.00</div>
                             </div>
-                            <div class="bg-teal-600 text-white p-4 rounded-xl shadow-md">
+                            <div class="bg-teal-600 text-white p-4 rounded-2xl shadow-md">
                                 <div class="text-xs font-bold text-teal-100 uppercase">จ่ายจริง (หลอด)</div>
                                 <div class="text-4xl font-black mt-1" id="res-cartridge-net">0</div>
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
                             <!-- Pen Needle -->
-                            <div class="p-3 bg-slate-50 rounded-xl border-2 border-slate-200 flex items-center justify-between">
+                            <div class="p-3.5 bg-slate-50 rounded-2xl border-2 border-slate-200 flex items-center justify-between">
                                 <div class="flex items-center gap-3">
-                                    <img src="${IMG_BASE_URL}needle-pen.jpg" alt="Pen Needle" class="w-12 h-12 object-cover rounded-lg border border-slate-200">
-                                    <span class="font-bold text-slate-800 text-base">เข็ม Pen Needle</span>
+                                    <img src="${IMG_BASE_URL}needle-pen.jpg" alt="Pen Needle" class="w-12 h-12 object-cover rounded-xl border border-slate-200">
+                                    <span class="font-bold text-slate-800 text-lg">เข็ม Pen Needle</span>
                                 </div>
                                 <span class="text-3xl font-black text-teal-700" id="res-pen-needle">0</span>
                             </div>
 
                             <!-- Alcohol 8 -->
-                            <div id="box-penfill-alc8" class="p-3 bg-slate-50 rounded-xl border-2 border-slate-200 flex items-center justify-between">
+                            <div id="box-penfill-alc8" class="p-3.5 bg-slate-50 rounded-2xl border-2 border-slate-200 flex items-center justify-between">
                                 <div class="flex items-center gap-3">
-                                    <img src="${IMG_BASE_URL}alc-8.jpg" alt="Alcohol 8" class="w-12 h-12 object-cover rounded-lg border border-slate-200">
-                                    <span class="font-bold text-slate-800 text-base">สำลี 8 ก้อน</span>
+                                    <img src="${IMG_BASE_URL}alc-8.jpg" alt="Alcohol 8" class="w-12 h-12 object-cover rounded-xl border border-slate-200">
+                                    <span class="font-bold text-slate-800 text-lg">สำลี 8 ก้อน</span>
                                 </div>
                                 <span class="text-3xl font-black text-teal-700" id="res-penfill-alc8">0</span>
                             </div>
 
                             <!-- Alcohol 10 -->
-                            <div id="box-penfill-alc10" class="p-3 bg-slate-50 rounded-xl border-2 border-slate-200 flex items-center justify-between sm:col-span-2">
+                            <div id="box-penfill-alc10" class="p-3.5 bg-slate-50 rounded-2xl border-2 border-slate-200 flex items-center justify-between sm:col-span-2">
                                 <div class="flex items-center gap-3">
-                                    <img src="${IMG_BASE_URL}alc-10.jpg" alt="Alcohol 10" class="w-12 h-12 object-cover rounded-lg border border-slate-200">
-                                    <span class="font-bold text-slate-800 text-base">สำลี 10 ก้อน</span>
+                                    <img src="${IMG_BASE_URL}alc-10.jpg" alt="Alcohol 10" class="w-12 h-12 object-cover rounded-xl border border-slate-200">
+                                    <span class="font-bold text-slate-800 text-lg">สำลี 10 ก้อน</span>
                                 </div>
                                 <span class="text-3xl font-black text-teal-700" id="res-penfill-alc10">0</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Vial & Accessories -->
-                    <div class="bg-white p-6 rounded-2xl border-2 border-slate-200 shadow-sm space-y-4">
+                    <!-- Vial & Accessories Card -->
+                    <div class="bg-white p-6 rounded-3xl border-2 border-slate-200 shadow-sm space-y-5">
                         <div class="flex items-center justify-between border-b pb-3 border-slate-100">
-                            <h3 class="text-xl font-black text-blue-800 flex items-center gap-2">
+                            <h3 class="text-2xl font-black text-blue-900 flex items-center gap-2">
                                 <i class="fa-solid fa-vial text-blue-600"></i>
                                 <span>Vial (1000 U/ขวด)</span>
                             </h3>
-                            <img src="${IMG_BASE_URL}vial.jpg" alt="Vial" class="h-12 w-12 object-cover rounded-lg border border-slate-200 shadow-sm">
+                            <img src="${IMG_BASE_URL}vial.jpg" alt="Vial" class="h-14 w-14 object-cover rounded-xl border-2 border-slate-200 shadow-sm">
                         </div>
 
-                        <div id="vial-lowdose-warning" class="hidden p-3 bg-blue-50 border-2 border-blue-200 text-blue-900 rounded-xl text-base font-bold">
+                        <div id="vial-lowdose-warning" class="hidden p-3.5 bg-blue-50 border-2 border-blue-200 text-blue-900 rounded-2xl text-base font-bold">
                             <i class="fa-solid fa-info-circle text-blue-600 mr-1"></i> ยาต่อวัน $\le 25$ units: คิดอายุขวดยา maximum 40 วัน/ขวด
                         </div>
 
                         <div class="grid grid-cols-2 gap-4 text-center">
-                            <div class="bg-slate-50 p-4 rounded-xl border-2 border-slate-200">
+                            <div class="bg-slate-50 p-4 rounded-2xl border-2 border-slate-200">
                                 <div class="text-xs font-bold text-slate-500 uppercase">คำนวณได้ (ขวด)</div>
-                                <div class="text-2xl font-black text-slate-800 mt-1" id="res-vial-calc">0.00</div>
+                                <div class="text-3xl font-black text-slate-800 mt-1" id="res-vial-calc">0.00</div>
                             </div>
-                            <div class="bg-blue-600 text-white p-4 rounded-xl shadow-md">
+                            <div class="bg-blue-600 text-white p-4 rounded-2xl shadow-md">
                                 <div class="text-xs font-bold text-blue-100 uppercase">จ่ายจริง (ขวด)</div>
                                 <div class="text-4xl font-black mt-1" id="res-vial-net">0</div>
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
                             <!-- Syringe -->
-                            <div class="p-3 bg-slate-50 rounded-xl border-2 border-slate-200 flex items-center justify-between">
+                            <div class="p-3.5 bg-slate-50 rounded-2xl border-2 border-slate-200 flex items-center justify-between">
                                 <div class="flex items-center gap-3">
-                                    <img src="${IMG_BASE_URL}syringe.jpg" alt="Syringe" class="w-12 h-12 object-cover rounded-lg border border-slate-200">
-                                    <span class="font-bold text-slate-800 text-base">Syringe</span>
+                                    <img src="${IMG_BASE_URL}syringe.jpg" alt="Syringe" class="w-12 h-12 object-cover rounded-xl border border-slate-200">
+                                    <span class="font-bold text-slate-800 text-lg">Syringe</span>
                                 </div>
                                 <span class="text-3xl font-black text-blue-700" id="res-syringe">0</span>
                             </div>
 
                             <!-- Alcohol 8 -->
-                            <div id="box-vial-alc8" class="p-3 bg-slate-50 rounded-xl border-2 border-slate-200 flex items-center justify-between">
+                            <div id="box-vial-alc8" class="p-3.5 bg-slate-50 rounded-2xl border-2 border-slate-200 flex items-center justify-between">
                                 <div class="flex items-center gap-3">
-                                    <img src="${IMG_BASE_URL}alc-8.jpg" alt="Alcohol 8" class="w-12 h-12 object-cover rounded-lg border border-slate-200">
-                                    <span class="font-bold text-slate-800 text-base">สำลี 8 ก้อน</span>
+                                    <img src="${IMG_BASE_URL}alc-8.jpg" alt="Alcohol 8" class="w-12 h-12 object-cover rounded-xl border border-slate-200">
+                                    <span class="font-bold text-slate-800 text-lg">สำลี 8 ก้อน</span>
                                 </div>
                                 <span class="text-3xl font-black text-blue-700" id="res-vial-alc8">0</span>
                             </div>
 
                             <!-- Alcohol 10 -->
-                            <div id="box-vial-alc10" class="p-3 bg-slate-50 rounded-xl border-2 border-slate-200 flex items-center justify-between sm:col-span-2">
+                            <div id="box-vial-alc10" class="p-3.5 bg-slate-50 rounded-2xl border-2 border-slate-200 flex items-center justify-between sm:col-span-2">
                                 <div class="flex items-center gap-3">
-                                    <img src="${IMG_BASE_URL}alc-10.jpg" alt="Alcohol 10" class="w-12 h-12 object-cover rounded-lg border border-slate-200">
-                                    <span class="font-bold text-slate-800 text-base">สำลี 10 ก้อน</span>
+                                    <img src="${IMG_BASE_URL}alc-10.jpg" alt="Alcohol 10" class="w-12 h-12 object-cover rounded-xl border border-slate-200">
+                                    <span class="font-bold text-slate-800 text-lg">สำลี 10 ก้อน</span>
                                 </div>
                                 <span class="text-3xl font-black text-blue-700" id="res-vial-alc10">0</span>
                             </div>
                         </div>
                     </div>
+
                 </div>
+
             </div>
         </div>
     `;
@@ -213,14 +225,13 @@ export function render(container) {
     const fuDaysInput = container.querySelector('#ins-fu-days');
     const startDateInput = container.querySelector('#ins-start-date');
 
-    const btnBtnCalc = container.querySelector('#btn-calc-action');
     const btnReset = container.querySelector('#btn-reset');
 
     const btnAlcAll = container.querySelector('#btn-alc-all');
     const btnAlc8 = container.querySelector('#btn-alc-8');
     const btnAlc10 = container.querySelector('#btn-alc-10');
 
-    // 1. Feature เคาะ Enter เพื่อลงไปช่องถัดไป[cite: 2]
+    // 1. Enter-Key Navigation System
     morningInput.addEventListener('keydown', (e) => handleEnterKey(e, eveningInput));
     eveningInput.addEventListener('keydown', (e) => handleEnterKey(e, fuDaysInput));
     fuDaysInput.addEventListener('keydown', (e) => handleEnterKey(e, startDateInput));
@@ -231,20 +242,20 @@ export function render(container) {
         }
     });
 
-    // 2. Realtime Calculation Event Listeners[cite: 2]
+    // 2. Realtime Calculation Event Listeners
     [morningInput, eveningInput, fuDaysInput, startDateInput].forEach(elem => {
         elem.addEventListener('input', () => calculateInsulin(container));
     });
 
-    btnBtnCalc.addEventListener('click', () => calculateInsulin(container));
+    // Reset Button Event
     btnReset.addEventListener('click', () => resetInsulinForm(container));
 
-    // 3. Alcohol Mode Switcher Events[cite: 2]
+    // 3. Alcohol Mode Switcher Events
     btnAlcAll.addEventListener('click', () => setAlcMode('all', container));
     btnAlc8.addEventListener('click', () => setAlcMode('8', container));
     btnAlc10.addEventListener('click', () => setAlcMode('10', container));
 
-    // Auto Focus ช่องแรก
+    // Auto Focus
     morningInput.focus();
     calculateInsulin(container);
 }
@@ -268,8 +279,8 @@ function setAlcMode(mode, container) {
     const btn8 = container.querySelector('#btn-alc-8');
     const btn10 = container.querySelector('#btn-alc-10');
 
-    const defaultClass = "py-2.5 px-2 rounded-xl border-2 font-bold text-sm bg-white text-slate-700 border-slate-300 hover:bg-slate-50 transition-all";
-    const activeClass = "py-2.5 px-2 rounded-xl border-2 font-bold text-sm bg-teal-600 text-white border-teal-600 shadow-sm transition-all";
+    const defaultClass = "py-2 px-1 rounded-xl border-2 font-bold text-xs bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700 transition-all";
+    const activeClass = "py-2 px-1 rounded-xl border-2 font-bold text-xs bg-teal-500 text-white border-teal-500 shadow-sm transition-all";
 
     btnAll.className = mode === 'all' ? activeClass : defaultClass;
     btn8.className = mode === '8' ? activeClass : defaultClass;
