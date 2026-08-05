@@ -16,7 +16,7 @@
 </head>
 <body class="bg-slate-100 min-h-screen text-slate-800">
 
-    <!-- Header / Navbar (สีน้ำเงินเข้ม #080F3A + ปุ่ม Home มีขอบชัดเจน) -->
+    <!-- Header / Navbar -->
     <nav style="background-color: #080F3A;" class="sticky top-0 z-50 text-white shadow-lg border-b border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
@@ -34,12 +34,12 @@
                     </div>
                 </div>
 
-                <!-- Home Button (ขอบขาวชัดเจน + Hover สว่าง) -->
+                <!-- Home Button (แสดงผลตลอดเวลา + ขอบขาวชัดเจน) -->
                 <div>
                     <button type="button" 
                             id="btn-home" 
                             onclick="showPage('home')" 
-                            class="hidden flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold text-white bg-white/10 hover:bg-teal-500/20 border-2 border-white/40 hover:border-teal-400 backdrop-blur-md shadow-sm transition-all duration-200 active:scale-95">
+                            class="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold text-white bg-white/10 hover:bg-teal-500/20 border-2 border-white/50 hover:border-teal-400 backdrop-blur-md shadow-sm transition-all duration-200 active:scale-95 cursor-pointer">
                         <i class="fa-solid fa-house text-teal-300"></i>
                         <span>Home</span>
                     </button>
@@ -98,12 +98,12 @@
             <div id="insulin-module-container"></div>
         </div>
 
-        <!-- Page: TB Calculator (ถ้ามี) -->
+        <!-- Page: TB Calculator -->
         <div id="page-tb" class="hidden">
             <div class="p-8 text-center text-slate-500">โมดูล TB Calculator</div>
         </div>
 
-        <!-- Page: DAPT Calculator (ถ้ามี) -->
+        <!-- Page: DAPT Calculator -->
         <div id="page-dapt" class="hidden">
             <div class="p-8 text-center text-slate-500">โมดูล DAPT Calculator</div>
         </div>
@@ -117,7 +117,6 @@
             const insulinPage = document.getElementById('page-insulin');
             const tbPage = document.getElementById('page-tb');
             const daptPage = document.getElementById('page-dapt');
-            const btnHome = document.getElementById('btn-home');
 
             if (homePage) homePage.classList.add('hidden');
             if (insulinPage) insulinPage.classList.add('hidden');
@@ -126,16 +125,13 @@
 
             if (pageId === 'home') {
                 if (homePage) homePage.classList.remove('hidden');
-                if (btnHome) btnHome.classList.add('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             } else if (pageId === 'insulin') {
                 if (insulinPage) insulinPage.classList.remove('hidden');
-                if (btnHome) btnHome.classList.remove('hidden');
             } else if (pageId === 'tb') {
                 if (tbPage) tbPage.classList.remove('hidden');
-                if (btnHome) btnHome.classList.remove('hidden');
             } else if (pageId === 'dapt') {
                 if (daptPage) daptPage.classList.remove('hidden');
-                if (btnHome) btnHome.classList.remove('hidden');
             }
         }
     </script>
