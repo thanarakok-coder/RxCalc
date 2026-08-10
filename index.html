@@ -4,46 +4,86 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RxCalc - Pharmacy Tools</title>
-    
+
     <!-- Google Fonts: Prompt -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome 6 CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
-    <link rel="stylesheet" href="style.css">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Style Custom Settings -->
+    <style>
+        * {
+            font-family: 'Prompt', sans-serif !important;
+        }
+        body {
+            background-color: #0d1322;
+            color: #f1f5f9;
+        }
+    </style>
 </head>
-<body>
-    <header class="navbar">
-        <div class="logo-container">
-            <div class="logo-icon"><i class="fa-solid fa-calculator"></i></div>
-            <div class="logo-text">
-                <h1>RxCalc</h1>
-                <span>PHARMACY TOOLS</span>
+<body class="min-h-screen flex flex-col font-sans antialiased">
+
+    <!-- Navbar -->
+    <header class="bg-[#0b101d] border-b border-slate-800 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="location.reload()">
+                <div class="w-10 h-10 bg-[#00bba7] rounded-xl flex items-center justify-center text-slate-900 font-bold text-xl shadow-lg">
+                    <i class="fa-solid fa-calculator"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-wider text-white leading-none">RxCalc</h1>
+                    <span class="text-[10px] text-[#00bba7] font-medium tracking-widest uppercase">PHARMACY TOOLS</span>
+                </div>
             </div>
+            
+            <button onclick="location.reload()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-4 py-2 rounded-xl text-xs font-semibold transition-all border border-slate-700 flex items-center gap-2">
+                <i class="fa-solid fa-house"></i>
+                <span>Home</span>
+            </button>
         </div>
-        <button class="btn-home" onclick="location.reload()"><i class="fa-solid fa-house"></i> Home</button>
     </header>
 
-    <main class="container">
-        <h2>เครื่องมือคำนวณทางเภสัชกรรม</h2>
-        <p class="subtitle">เลือกเครื่องมือที่ต้องการใช้งานจากรายการด้านล่าง</p>
-
-        <div class="card-grid">
-            <!-- เหลือแค่ Card เดียวคือ Insulin Calculator -->
-            <div class="card" onclick="loadModule('insulin')">
-                <div class="card-icon teal"><i class="fa-solid fa-syringe"></i></div>
-                <h3>Insulin Calculator</h3>
-                <p>คำนวณอินซูลิน (Penfill/Vial), อุปกรณ์เสริม (เข็ม, สำลีแอลกอฮอล์) และวันนัดถัดไป</p>
-                <a class="card-link teal">เปิดใช้งานเครื่องมือ <i class="fa-solid fa-arrow-right"></i></a>
-            </div>
+    <!-- Main Content -->
+    <main class="flex-1 max-w-6xl w-full mx-auto p-4 sm:p-6 space-y-6">
+        
+        <!-- Header Title -->
+        <div>
+            <h2 class="text-2xl sm:text-3xl font-bold text-white mb-1">เครื่องมือคำนวณทางเภสัชกรรม</h2>
+            <p class="text-xs sm:text-sm text-slate-400">เลือกเครื่องมือที่ต้องการใช้งานจากรายการด้านล่าง</p>
         </div>
 
-        <div id="module-container"></div>
+        <!-- Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            
+            <!-- Card: Insulin Calculator -->
+            <div id="btn-insulin" class="bg-[#121929] border border-slate-800 rounded-3xl p-6 hover:border-[#00bba7] transition-all cursor-pointer group flex flex-col justify-between shadow-xl">
+                <div>
+                    <div class="w-12 h-12 bg-[#00bba7] text-slate-950 rounded-2xl flex items-center justify-center text-xl mb-4 group-hover:scale-105 transition-transform font-bold">
+                        <i class="fa-solid fa-syringe"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Insulin Calculator</h3>
+                    <p class="text-xs text-slate-400 font-light leading-relaxed mb-6">คำนวณอินซูลิน (Penfill/Vial), อุปกรณ์เสริม (เข็ม, สำลีแอลกอฮอล์) และวันนัดถัดไป</p>
+                </div>
+                <div class="text-[#00bba7] text-xs font-medium flex items-center gap-2 group-hover:translate-x-1 transition-transform">
+                    <span>เปิดใช้งานเครื่องมือ</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Dynamic Module Render Space -->
+        <div id="module-container" class="mt-6"></div>
+
     </main>
 
-    <script src="app.js"></script>
+    <!-- App Router Script -->
+    <script type="module" src="app.js"></script>
 </body>
 </html>
