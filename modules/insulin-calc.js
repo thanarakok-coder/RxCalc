@@ -1,6 +1,7 @@
 /**
- * Insulin Calculator Module (Fit-in Screen Layout & Sarabun Font)
- * SVG Native Version
+ * Insulin Calculator Module
+ * Fit-in Screen Layout with Sarabun Font (Thai with heads)
+ * Updated Input alignment & Cotton Unit (แผง)
  */
 
 let alcMode = 'all';
@@ -40,7 +41,7 @@ export function render(container) {
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-2.5 items-start">
                 
                 <!-- ================= LEFT SECTOR: INPUT PANEL ================= -->
-                <div style="background-color: #080F3A;" class="lg:col-span-4 text-white p-3.5 sm:p-4 rounded-2xl shadow-xl border border-slate-800 space-y-2.5 relative">
+                <div style="background-color: #080F3A;" class="lg:col-span-4 text-white p-3.5 sm:p-4 rounded-2xl shadow-xl border border-slate-800 space-y-3 relative">
                     
                     <!-- Header + Reset Button -->
                     <div class="flex items-center justify-between border-b border-slate-700/80 pb-2">
@@ -63,33 +64,27 @@ export function render(container) {
                         </button>
                     </div>
 
-                    <!-- Input Form -->
-                    <div class="space-y-2">
+                    <!-- Input Form (จัด Align ชิดขวาติด Input + บีบขนาดกล่องแคบลง) -->
+                    <div class="space-y-2.5">
                         <!-- เช้า -->
-                        <div class="flex items-center justify-between gap-2">
-                            <label class="text-xl font-extrabold text-slate-100 whitespace-nowrap">เช้า</label>
-                            <div class="flex items-center gap-1.5 shrink-0">
-                                <input type="number" id="ins-morning" class="w-28 text-xl font-bold px-2.5 py-1 bg-slate-900/90 text-white border-2 border-slate-700 rounded-lg focus:border-teal-400 focus:outline-none placeholder-slate-600 text-right shadow-inner" placeholder="0" min="0">
-                                <span class="text-xs font-semibold text-slate-400 w-8 text-left shrink-0">units</span>
-                            </div>
+                        <div class="flex items-center justify-end gap-2">
+                            <label class="text-xl font-extrabold text-slate-100 whitespace-nowrap text-right">เช้า</label>
+                            <input type="number" id="ins-morning" class="w-24 text-xl font-bold px-2.5 py-1 bg-slate-900/90 text-white border-2 border-slate-700 rounded-lg focus:border-teal-400 focus:outline-none placeholder-slate-600 text-right shadow-inner shrink-0" placeholder="0" min="0">
+                            <span class="text-xs font-semibold text-slate-400 w-7 text-left shrink-0">units</span>
                         </div>
 
                         <!-- เย็น -->
-                        <div class="flex items-center justify-between gap-2">
-                            <label class="text-xl font-extrabold text-slate-100 whitespace-nowrap">เย็น</label>
-                            <div class="flex items-center gap-1.5 shrink-0">
-                                <input type="number" id="ins-evening" class="w-28 text-xl font-bold px-2.5 py-1 bg-slate-900/90 text-white border-2 border-slate-700 rounded-lg focus:border-teal-400 focus:outline-none placeholder-slate-600 text-right shadow-inner" placeholder="0" min="0">
-                                <span class="text-xs font-semibold text-slate-400 w-8 text-left shrink-0">units</span>
-                            </div>
+                        <div class="flex items-center justify-end gap-2">
+                            <label class="text-xl font-extrabold text-slate-100 whitespace-nowrap text-right">เย็น</label>
+                            <input type="number" id="ins-evening" class="w-24 text-xl font-bold px-2.5 py-1 bg-slate-900/90 text-white border-2 border-slate-700 rounded-lg focus:border-teal-400 focus:outline-none placeholder-slate-600 text-right shadow-inner shrink-0" placeholder="0" min="0">
+                            <span class="text-xs font-semibold text-slate-400 w-7 text-left shrink-0">units</span>
                         </div>
 
-                        <!-- จำนวนนัด (แก้คำตกบรรทัด + ล็อกไม่ให้ขึ้นบรรทัดใหม่) -->
-                        <div class="flex items-center justify-between gap-2">
-                            <label class="text-lg font-extrabold text-slate-100 whitespace-nowrap shrink-0">จำนวนนัด</label>
-                            <div class="flex items-center gap-1.5 shrink-0">
-                                <input type="number" id="ins-fu-days" class="w-28 text-xl font-bold px-2.5 py-1 bg-slate-900/90 text-white border-2 border-slate-700 rounded-lg focus:border-teal-400 focus:outline-none placeholder-slate-600 text-right shadow-inner" placeholder="0" min="0">
-                                <span class="text-xs font-semibold text-slate-400 w-8 text-left shrink-0">วัน</span>
-                            </div>
+                        <!-- จำนวนนัด -->
+                        <div class="flex items-center justify-end gap-2">
+                            <label class="text-lg font-extrabold text-slate-100 whitespace-nowrap text-right">จำนวนนัด</label>
+                            <input type="number" id="ins-fu-days" class="w-24 text-xl font-bold px-2.5 py-1 bg-slate-900/90 text-white border-2 border-slate-700 rounded-lg focus:border-teal-400 focus:outline-none placeholder-slate-600 text-right shadow-inner shrink-0" placeholder="0" min="0">
+                            <span class="text-xs font-semibold text-slate-400 w-7 text-left shrink-0">วัน</span>
                         </div>
 
                         <!-- Checkbox OD + วันเริ่มรับยา -->
@@ -113,7 +108,7 @@ export function render(container) {
 
                         <!-- Alcohol Mode Selector -->
                         <div class="pt-0.5">
-                            <label class="block text-xs font-bold text-slate-300 mb-1">ขนาดถุงสำลีแอลกอฮอล์</label>
+                            <label class="block text-xs font-bold text-slate-300 mb-1">ขนาดแผงสำลีแอลกอฮอล์</label>
                             <div class="grid grid-cols-3 gap-1">
                                 <button type="button" id="btn-alc-all" class="py-1 px-1 rounded-lg border font-bold text-xs bg-teal-500 text-white border-teal-500 shadow-sm transition-all">ทั้งหมด</button>
                                 <button type="button" id="btn-alc-8" class="py-1 px-1 rounded-lg border font-bold text-xs bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700 transition-all">8 ก้อน</button>
@@ -139,7 +134,7 @@ export function render(container) {
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
                         
                         <!-- COLUMN 1: PENFILL (ฟ้าอ่อน) -->
-                        <div class="bg-sky-50/80 border border-sky-200 p-2.5 rounded-2xl shadow-sm space-y-1.5">
+                        <div class="bg-sky-50/80 border border-sky-200 p-2.5 rounded-2xl shadow-sm space-y-2">
                             <!-- Title -->
                             <div class="border-b border-sky-200 pb-1">
                                 <h3 class="text-xs font-extrabold text-sky-800 flex items-center gap-1">
@@ -149,63 +144,63 @@ export function render(container) {
                                 </h3>
                             </div>
 
-                            <!-- Item List -->
-                            <div class="space-y-1.5">
+                            <!-- Item List (ขยายพื้นที่ให้ตัวหนังสือใหญ่และชัดขึ้น) -->
+                            <div class="space-y-2">
                                 <!-- Penfill Drug -->
-                                <div class="bg-white p-1.5 px-2.5 rounded-xl border border-sky-200 shadow-xs flex items-center justify-between min-h-[58px]">
-                                    <div class="flex items-center gap-2">
-                                        <img src="${IMG_BASE_URL}cartridge.jpg" alt="Cartridge" class="w-11 h-11 object-cover rounded-lg border border-slate-100 shrink-0">
-                                        <span class="font-extrabold text-sky-950 text-base sm:text-lg whitespace-nowrap">Penfill</span>
+                                <div class="bg-white p-2 px-3 rounded-xl border border-sky-200 shadow-xs flex items-center justify-between min-h-[64px]">
+                                    <div class="flex items-center gap-2.5">
+                                        <img src="${IMG_BASE_URL}cartridge.jpg" alt="Cartridge" class="w-13 h-13 object-cover rounded-lg border border-slate-100 shrink-0">
+                                        <span class="font-extrabold text-sky-950 text-lg sm:text-xl whitespace-nowrap">Penfill</span>
                                     </div>
                                     <div class="text-right shrink-0">
                                         <div class="flex items-baseline justify-end gap-1">
-                                            <span id="res-cartridge-net" class="text-2xl sm:text-3xl font-black text-sky-700 leading-none">0</span>
-                                            <span class="text-xs font-bold text-slate-500 whitespace-nowrap">หลอด</span>
+                                            <span id="res-cartridge-net" class="text-3xl sm:text-4xl font-black text-sky-700 leading-none">0</span>
+                                            <span class="text-xs sm:text-sm font-bold text-slate-500 whitespace-nowrap">หลอด</span>
                                         </div>
                                         <div class="text-[10px] font-semibold text-slate-400">คำนวณ: <span id="res-cartridge-calc">0.00</span></div>
                                     </div>
                                 </div>
 
-                                <!-- Needle Pen (ปรับฟอนต์ให้พอดี ไม่ตกบรรทัด) -->
-                                <div class="bg-white p-1.5 px-2.5 rounded-xl border border-sky-200 shadow-xs flex items-center justify-between min-h-[58px]">
-                                    <div class="flex items-center gap-2">
-                                        <img src="${IMG_BASE_URL}needle-pen.jpg" alt="Needle Pen" class="w-11 h-11 object-cover rounded-lg border border-slate-100 shrink-0">
-                                        <span class="font-extrabold text-sky-950 text-base sm:text-lg whitespace-nowrap">Needle Pen</span>
+                                <!-- Needle Pen -->
+                                <div class="bg-white p-2 px-3 rounded-xl border border-sky-200 shadow-xs flex items-center justify-between min-h-[64px]">
+                                    <div class="flex items-center gap-2.5">
+                                        <img src="${IMG_BASE_URL}needle-pen.jpg" alt="Needle Pen" class="w-13 h-13 object-cover rounded-lg border border-slate-100 shrink-0">
+                                        <span class="font-extrabold text-sky-950 text-lg sm:text-xl whitespace-nowrap">Needle Pen</span>
                                     </div>
                                     <div class="flex items-baseline gap-1 shrink-0">
-                                        <span id="res-pen-needle" class="text-2xl sm:text-3xl font-black text-sky-700 leading-none">0</span>
-                                        <span class="text-xs font-bold text-slate-500 whitespace-nowrap">ชิ้น</span>
+                                        <span id="res-pen-needle" class="text-3xl sm:text-4xl font-black text-sky-700 leading-none">0</span>
+                                        <span class="text-xs sm:text-sm font-bold text-slate-500 whitespace-nowrap">ชิ้น</span>
                                     </div>
                                 </div>
 
-                                <!-- Alcohol 8 -->
-                                <div id="box-penfill-alc8" class="bg-white p-1.5 px-2.5 rounded-xl border border-sky-200 shadow-xs flex items-center justify-between min-h-[58px]">
-                                    <div class="flex items-center gap-2">
-                                        <img src="${IMG_BASE_URL}alc-8.jpg" alt="Alcohol 8" class="w-11 h-11 object-cover rounded-lg border border-slate-100 shrink-0">
-                                        <span class="font-extrabold text-sky-950 text-base sm:text-lg whitespace-nowrap">สำลี 8 ก้อน</span>
+                                <!-- Alcohol 8 (หน่วย: แผง) -->
+                                <div id="box-penfill-alc8" class="bg-white p-2 px-3 rounded-xl border border-sky-200 shadow-xs flex items-center justify-between min-h-[64px]">
+                                    <div class="flex items-center gap-2.5">
+                                        <img src="${IMG_BASE_URL}alc-8.jpg" alt="Alcohol 8" class="w-13 h-13 object-cover rounded-lg border border-slate-100 shrink-0">
+                                        <span class="font-extrabold text-sky-950 text-lg sm:text-xl whitespace-nowrap">สำลี 8 ก้อน</span>
                                     </div>
                                     <div class="flex items-baseline gap-1 shrink-0">
-                                        <span id="res-penfill-alc8" class="text-2xl sm:text-3xl font-black text-sky-700 leading-none">0</span>
-                                        <span class="text-xs font-bold text-slate-500 whitespace-nowrap">ถุง</span>
+                                        <span id="res-penfill-alc8" class="text-3xl sm:text-4xl font-black text-sky-700 leading-none">0</span>
+                                        <span class="text-xs sm:text-sm font-bold text-slate-500 whitespace-nowrap">แผง</span>
                                     </div>
                                 </div>
 
-                                <!-- Alcohol 10 -->
-                                <div id="box-penfill-alc10" class="bg-white p-1.5 px-2.5 rounded-xl border border-sky-200 shadow-xs flex items-center justify-between min-h-[58px]">
-                                    <div class="flex items-center gap-2">
-                                        <img src="${IMG_BASE_URL}alc-10.jpg" alt="Alcohol 10" class="w-11 h-11 object-cover rounded-lg border border-slate-100 shrink-0">
-                                        <span class="font-extrabold text-sky-950 text-base sm:text-lg whitespace-nowrap">สำลี 10 ก้อน</span>
+                                <!-- Alcohol 10 (หน่วย: แผง) -->
+                                <div id="box-penfill-alc10" class="bg-white p-2 px-3 rounded-xl border border-sky-200 shadow-xs flex items-center justify-between min-h-[64px]">
+                                    <div class="flex items-center gap-2.5">
+                                        <img src="${IMG_BASE_URL}alc-10.jpg" alt="Alcohol 10" class="w-13 h-13 object-cover rounded-lg border border-slate-100 shrink-0">
+                                        <span class="font-extrabold text-sky-950 text-lg sm:text-xl whitespace-nowrap">สำลี 10 ก้อน</span>
                                     </div>
                                     <div class="flex items-baseline gap-1 shrink-0">
-                                        <span id="res-penfill-alc10" class="text-2xl sm:text-3xl font-black text-sky-700 leading-none">0</span>
-                                        <span class="text-xs font-bold text-slate-500 whitespace-nowrap">ถุง</span>
+                                        <span id="res-penfill-alc10" class="text-3xl sm:text-4xl font-black text-sky-700 leading-none">0</span>
+                                        <span class="text-xs sm:text-sm font-bold text-slate-500 whitespace-nowrap">แผง</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- COLUMN 2: VIAL (ส้มอ่อน) -->
-                        <div class="bg-orange-50/80 border border-orange-200 p-2.5 rounded-2xl shadow-sm space-y-1.5">
+                        <div class="bg-orange-50/80 border border-orange-200 p-2.5 rounded-2xl shadow-sm space-y-2">
                             <!-- Title -->
                             <div class="border-b border-orange-200 pb-1">
                                 <h3 class="text-xs font-extrabold text-orange-800 flex items-center gap-1">
@@ -216,55 +211,55 @@ export function render(container) {
                             </div>
 
                             <!-- Item List -->
-                            <div class="space-y-1.5">
+                            <div class="space-y-2">
                                 <!-- Vial Drug -->
-                                <div class="bg-white p-1.5 px-2.5 rounded-xl border border-orange-200 shadow-xs flex items-center justify-between min-h-[58px]">
-                                    <div class="flex items-center gap-2">
-                                        <img src="${IMG_BASE_URL}vial.jpg" alt="Vial" class="w-11 h-11 object-cover rounded-lg border border-slate-100 shrink-0">
-                                        <span class="font-extrabold text-orange-950 text-base sm:text-lg whitespace-nowrap">ยา Vial</span>
+                                <div class="bg-white p-2 px-3 rounded-xl border border-orange-200 shadow-xs flex items-center justify-between min-h-[64px]">
+                                    <div class="flex items-center gap-2.5">
+                                        <img src="${IMG_BASE_URL}vial.jpg" alt="Vial" class="w-13 h-13 object-cover rounded-lg border border-slate-100 shrink-0">
+                                        <span class="font-extrabold text-orange-950 text-lg sm:text-xl whitespace-nowrap">ยา Vial</span>
                                     </div>
                                     <div class="text-right shrink-0">
                                         <div class="flex items-baseline justify-end gap-1">
-                                            <span id="res-vial-net" class="text-2xl sm:text-3xl font-black text-orange-700 leading-none">0</span>
-                                            <span class="text-xs font-bold text-slate-500 whitespace-nowrap">ขวด</span>
+                                            <span id="res-vial-net" class="text-3xl sm:text-4xl font-black text-orange-700 leading-none">0</span>
+                                            <span class="text-xs sm:text-sm font-bold text-slate-500 whitespace-nowrap">ขวด</span>
                                         </div>
                                         <div class="text-[10px] font-semibold text-slate-400">คำนวณ: <span id="res-vial-calc">0.00</span></div>
                                     </div>
                                 </div>
 
                                 <!-- Syringe -->
-                                <div class="bg-white p-1.5 px-2.5 rounded-xl border border-orange-200 shadow-xs flex items-center justify-between min-h-[58px]">
-                                    <div class="flex items-center gap-2">
-                                        <img src="${IMG_BASE_URL}syringe.jpg" alt="Syringe" class="w-11 h-11 object-cover rounded-lg border border-slate-100 shrink-0">
-                                        <span class="font-extrabold text-orange-950 text-base sm:text-lg whitespace-nowrap">Syringe</span>
+                                <div class="bg-white p-2 px-3 rounded-xl border border-orange-200 shadow-xs flex items-center justify-between min-h-[64px]">
+                                    <div class="flex items-center gap-2.5">
+                                        <img src="${IMG_BASE_URL}syringe.jpg" alt="Syringe" class="w-13 h-13 object-cover rounded-lg border border-slate-100 shrink-0">
+                                        <span class="font-extrabold text-orange-950 text-lg sm:text-xl whitespace-nowrap">Syringe</span>
                                     </div>
                                     <div class="flex items-baseline gap-1 shrink-0">
-                                        <span id="res-syringe" class="text-2xl sm:text-3xl font-black text-orange-700 leading-none">0</span>
-                                        <span class="text-xs font-bold text-slate-500 whitespace-nowrap">ชิ้น</span>
+                                        <span id="res-syringe" class="text-3xl sm:text-4xl font-black text-orange-700 leading-none">0</span>
+                                        <span class="text-xs sm:text-sm font-bold text-slate-500 whitespace-nowrap">ชิ้น</span>
                                     </div>
                                 </div>
 
-                                <!-- Alcohol 8 -->
-                                <div id="box-vial-alc8" class="bg-white p-1.5 px-2.5 rounded-xl border border-orange-200 shadow-xs flex items-center justify-between min-h-[58px]">
-                                    <div class="flex items-center gap-2">
-                                        <img src="${IMG_BASE_URL}alc-8.jpg" alt="Alcohol 8" class="w-11 h-11 object-cover rounded-lg border border-slate-100 shrink-0">
-                                        <span class="font-extrabold text-orange-950 text-base sm:text-lg whitespace-nowrap">สำลี 8 ก้อน</span>
+                                <!-- Alcohol 8 (หน่วย: แผง) -->
+                                <div id="box-vial-alc8" class="bg-white p-2 px-3 rounded-xl border border-orange-200 shadow-xs flex items-center justify-between min-h-[64px]">
+                                    <div class="flex items-center gap-2.5">
+                                        <img src="${IMG_BASE_URL}alc-8.jpg" alt="Alcohol 8" class="w-13 h-13 object-cover rounded-lg border border-slate-100 shrink-0">
+                                        <span class="font-extrabold text-orange-950 text-lg sm:text-xl whitespace-nowrap">สำลี 8 ก้อน</span>
                                     </div>
                                     <div class="flex items-baseline gap-1 shrink-0">
-                                        <span id="res-vial-alc8" class="text-2xl sm:text-3xl font-black text-orange-700 leading-none">0</span>
-                                        <span class="text-xs font-bold text-slate-500 whitespace-nowrap">ถุง</span>
+                                        <span id="res-vial-alc8" class="text-3xl sm:text-4xl font-black text-orange-700 leading-none">0</span>
+                                        <span class="text-xs sm:text-sm font-bold text-slate-500 whitespace-nowrap">แผง</span>
                                     </div>
                                 </div>
 
-                                <!-- Alcohol 10 -->
-                                <div id="box-vial-alc10" class="bg-white p-1.5 px-2.5 rounded-xl border border-orange-200 shadow-xs flex items-center justify-between min-h-[58px]">
-                                    <div class="flex items-center gap-2">
-                                        <img src="${IMG_BASE_URL}alc-10.jpg" alt="Alcohol 10" class="w-11 h-11 object-cover rounded-lg border border-slate-100 shrink-0">
-                                        <span class="font-extrabold text-orange-950 text-base sm:text-lg whitespace-nowrap">สำลี 10 ก้อน</span>
+                                <!-- Alcohol 10 (หน่วย: แผง) -->
+                                <div id="box-vial-alc10" class="bg-white p-2 px-3 rounded-xl border border-orange-200 shadow-xs flex items-center justify-between min-h-[64px]">
+                                    <div class="flex items-center gap-2.5">
+                                        <img src="${IMG_BASE_URL}alc-10.jpg" alt="Alcohol 10" class="w-13 h-13 object-cover rounded-lg border border-slate-100 shrink-0">
+                                        <span class="font-extrabold text-orange-950 text-lg sm:text-xl whitespace-nowrap">สำลี 10 ก้อน</span>
                                     </div>
                                     <div class="flex items-baseline gap-1 shrink-0">
-                                        <span id="res-vial-alc10" class="text-2xl sm:text-3xl font-black text-orange-700 leading-none">0</span>
-                                        <span class="text-xs font-bold text-slate-500 whitespace-nowrap">ถุง</span>
+                                        <span id="res-vial-alc10" class="text-3xl sm:text-4xl font-black text-orange-700 leading-none">0</span>
+                                        <span class="text-xs sm:text-sm font-bold text-slate-500 whitespace-nowrap">แผง</span>
                                     </div>
                                 </div>
                             </div>
