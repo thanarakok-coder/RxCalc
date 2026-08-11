@@ -76,15 +76,15 @@ export function render(container) {
             <!-- ฝั่งขวา: ตารางผลลัพธ์ขนาดยา -->
             <div class="flex-1 w-full bg-white/80 backdrop-blur-sm border border-slate-300 rounded-3xl p-5 shadow-sm overflow-hidden">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse min-w-[640px]">
+                    <table class="w-full text-left border-collapse min-w-[600px]">
                         <thead>
-                            <!-- ปรับสัดส่วน % ความกว้างคอลัมน์ใหม่ กระจายพื้นที่ให้ Note ไม่ล้น -->
+                            <!-- แบ่งบรรทัดหัวตาราง + ย่อสัดส่วน -->
                             <tr class="border-b border-slate-200 text-slate-500 text-xs uppercase tracking-wider">
-                                <th class="py-2.5 px-3 w-[28%]">ชื่อยา</th>
-                                <th class="py-2.5 px-3 w-[18%] text-right">ขนาดยาโดยประมาณ</th>
-                                <th class="py-2.5 px-3 w-[16%] text-right">ขนาดยาขนาดต่ำ</th>
-                                <th class="py-2.5 px-3 w-[16%] text-right">ขนาดยาขนาดสูง</th>
-                                <th class="py-2.5 px-3 w-[22%] text-center">Note</th>
+                                <th class="py-2.5 px-3 w-[32%] align-bottom">ชื่อยา</th>
+                                <th class="py-2.5 px-3 w-[18%] text-right align-bottom">ขนาดยา<br>โดยประมาณ</th>
+                                <th class="py-2.5 px-3 w-[15%] text-right align-bottom">ขนาดยา<br>ต่ำ</th>
+                                <th class="py-2.5 px-3 w-[15%] text-right align-bottom">ขนาดยา<br>สูง</th>
+                                <th class="py-2.5 px-3 w-[20%] text-center align-bottom">NOTE</th>
                             </tr>
                         </thead>
                         <tbody id="tb-table-body" class="divide-y divide-slate-100 text-sm">
@@ -93,7 +93,9 @@ export function render(container) {
                     </table>
                 </div>
 
+                <!-- เชิงอรรถท้ายตาราง (เพิ่มหมายเหตุเรื่อง Ofloxacin) -->
                 <div class="mt-4 pt-3 border-t border-slate-200 text-[11px] text-slate-500 space-y-1">
+                    <p class="text-rose-600 font-medium">* Ofloxacin (O) ไม่ค่อยแนะนำให้ใช้ในแนวทางการรักษาปัจจุบัน</p>
                     <p>* หมายเหตุอ้างอิงขนาดเฉลี่ย: I 5 mg/kg | R 10 mg/kg | Z 25 mg/kg | E 15 mg/kg | S 15 mg/kg | L 750 mg/day | O 10 mg/kg</p>
                     <p>* หน่วยคำนวณทั้งหมดเป็น มิลลิกรัม/วัน (mg/day)</p>
                 </div>
@@ -155,7 +157,7 @@ export function render(container) {
                 if (d.isNoChange) {
                     egfrDisplay = `<span class="text-xs text-slate-400 font-normal whitespace-nowrap">ไม่ต้องปรับขนาดยา</span>`;
                 } else {
-                    egfrDisplay = `<span class="inline-block bg-amber-100 text-amber-800 text-xs px-2.5 py-0.5 rounded-full font-medium whitespace-nowrap">${d.egfrNote}</span>`;
+                    egfrDisplay = `<span class="inline-block bg-amber-100 text-amber-800 text-xs px-2.5 py-1 rounded-full font-medium whitespace-nowrap">${d.egfrNote}</span>`;
                 }
             } else {
                 egfrDisplay = '';
@@ -163,31 +165,35 @@ export function render(container) {
 
             return `
                 <tr class="hover:bg-slate-50/80 transition-colors">
-                    <!-- คอลัมน์ 1: ปรับโครงสร้างบรรทัดบน (ย่อขยายใหญ่ + ช่วงขนาดยา) / บรรทัดล่าง (ชื่อเต็ม) -->
-                    <td class="py-1.5 px-3">
-                        <div class="flex items-baseline gap-2">
-                            <span class="text-2xl font-bold text-teal-700 leading-none">${d.code}</span>
-                            <span class="text-xs text-slate-400 font-normal">(${d.range})</span>
-                            ${d.isDisc ? '<span class="text-[10px] bg-rose-100 text-rose-600 px-1.5 py-0.2 rounded font-normal">ไม่ค่อยแนะนำ</span>' : ''}
-                        </div>
-                        <div class="text-xs text-slate-600 font-medium leading-tight mt-0.5">
-                            ${d.name}
+                    <!-- คอลัมน์ 1: ตัวย่อใหญ่ขนาน 2 บรรทัดย่อย (บน = ช่วงขนาดยา / ล่าง = ชื่อเต็ม) -->
+                    <td class="py-2 px-3">
+                        <div class="flex items-center gap-3">
+                            <!-- ตัวย่อตัวโตใหญ่สูงเท่า 2 บรรทัด -->
+                            <div class="text-3xl font-extrabold text-teal-700 leading-none min-w-[24px] text-center">
+                                ${d.code}${d.isDisc ? '<span class="text-xs text-rose-500 font-normal -ml-0.5">*</span>' : ''}
+                            </div>
+                            
+                            <!-- บรรทัดย่อย บน/ล่าง -->
+                            <div class="flex flex-col justify-center leading-snug">
+                                <span class="text-xs text-slate-500 font-normal">${d.range}</span>
+                                <span class="text-sm text-slate-800 font-medium">${d.name}</span>
+                            </div>
                         </div>
                     </td>
 
-                    <td class="py-1.5 px-3 text-right font-semibold text-slate-800 text-base">
+                    <td class="py-2 px-3 text-right font-semibold text-slate-800 text-base align-middle">
                         ${stdText}
                     </td>
 
-                    <td class="py-1.5 px-3 text-right text-slate-500 font-normal">
+                    <td class="py-2 px-3 text-right text-slate-500 font-normal align-middle">
                         ${minText}
                     </td>
 
-                    <td class="py-1.5 px-3 text-right text-slate-500 font-normal">
+                    <td class="py-2 px-3 text-right text-slate-500 font-normal align-middle">
                         ${maxText}
                     </td>
 
-                    <td class="py-1.5 px-3 text-center">
+                    <td class="py-2 px-3 text-center align-middle">
                         ${egfrDisplay}
                     </td>
                 </tr>
