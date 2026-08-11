@@ -1,322 +1,174 @@
-/**
- * TB Drug Dose Calculator Module (TB-calc)
- * Architecture: ES Module for RxCalc
- * Features: Weight-based dosing, eGFR < 30 alert, Non-bold clean UI
- * Timestamp: 2026-08-11
- */
-
 export function render(container) {
     container.innerHTML = `
-        <style>
-            @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500&family=Inter:wght@300;400;500&display=swap');
+        <div class="flex flex-col lg:flex-row gap-6 items-start">
             
-            #tb-calc-module {
-                font-family: 'Sarabun', 'Inter', sans-serif;
-                font-weight: 400;
-            }
-            #tb-calc-module input[type="number"]::-webkit-inner-spin-button,
-            #tb-calc-module input[type="number"]::-webkit-outer-spin-button {
-                -webkit-appearance: none;
-                margin: 0;
-            }
-            #tb-calc-module input[type="number"] {
-                -moz-appearance: textfield;
-            }
-        </style>
-
-        <div id="tb-calc-module" class="max-w-5xl mx-auto p-3 space-y-4 text-slate-700">
-            
-            <!-- Header & Input Bar -->
-            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-wrap items-center justify-between gap-4">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-teal-50 text-teal-600 rounded-xl flex items-center justify-center border border-teal-100 text-lg">
-                        🫁
+            <!-- [B1] ฝั่งซ้าย: Input Sidebar ขนาดแคบ ทรงเดียวกับ Insulin Calc -->
+            <div class="w-full lg:w-72 bg-[#0f172a] text-white rounded-3xl p-5 shadow-xl flex-shrink-0 space-y-6 border border-slate-800">
+                <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-9 h-9 bg-teal-500/20 text-teal-400 rounded-xl flex items-center justify-center">
+                            <!-- [B2] Fixed Lungs Icon -->
+                            <svg class="w-5 h-5 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 3v10" />
+                                <path d="M12 7c-2-2.5-5-3-7-1.5S3 11 4.5 14.5 8.5 18 10.5 15V10" />
+                                <path d="M12 7c2-2.5 5-3 7-1.5S21 11 19.5 14.5 15.5 18 13.5 15V10" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-base leading-tight text-white">TB Calc</h3>
+                            <p class="text-[10px] text-slate-400">คำนวณขนาดยาวัณโรค</p>
+                        </div>
                     </div>
-                    <div>
-                        <h1 class="text-lg text-slate-800">TB-calc</h1>
-                        <p class="text-xs text-slate-400">คำนวณขนาดยาวัณโรคตามน้ำหนักตัว</p>
+                    <!-- ปุ่ม Reset Input -->
+                    <button id="tb-reset-btn" class="text-xs px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors border border-slate-700 flex items-center gap-1">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                        Reset
+                    </button>
+                </div>
+
+                <!-- Input น้ำหนักตัว (Simple but BIG, ไม่เอาตัวหนาตามสั่ง) -->
+                <div class="space-y-2">
+                    <label class="text-xs text-slate-300 block">น้ำหนักตัว (kg)</label>
+                    <div class="relative flex items-center">
+                        <input type="number" id="tb-weight" min="0" max="200" step="0.1" placeholder="0" 
+                            class="w-full bg-slate-900/90 border border-slate-700 rounded-2xl px-4 py-3 text-3xl font-normal text-teal-400 text-right focus:outline-none focus:border-teal-500 transition-colors tracking-wide">
+                        <span class="absolute right-4 text-xs text-slate-400 pointer-events-none">kg</span>
                     </div>
                 </div>
 
-                <div class="flex flex-wrap items-center gap-4">
-                    <!-- Weight Input (1 ช่องถ้วน) -->
-                    <div class="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200">
-                        <label for="tb-weight" class="text-sm text-slate-600">น้ำหนักตัว:</label>
-                        <input type="number" id="tb-weight" step="any" min="0" placeholder="0" class="w-24 text-right text-base bg-white border border-slate-300 rounded-lg px-2 py-1 text-teal-700 focus:outline-none focus:border-teal-500">
-                        <span class="text-sm text-slate-500">kg</span>
-                    </div>
-
-                    <!-- Renal Checkbox -->
-                    <label class="flex items-center gap-2 cursor-pointer select-none bg-amber-50/60 px-3 py-2 rounded-xl border border-amber-200/60 hover:bg-amber-50 transition-all">
-                        <input type="checkbox" id="chk-egfr" class="w-4 h-4 accent-amber-600 rounded cursor-pointer">
-                        <span class="text-xs text-amber-900">eGFR &lt; 30 ml/min</span>
+                <!-- Checkbox eGFR < 30 -->
+                <div class="pt-2 border-t border-slate-800">
+                    <label class="flex items-center gap-3 p-3 bg-slate-900/50 rounded-2xl border border-slate-800 cursor-pointer hover:border-slate-700 transition-all">
+                        <input type="checkbox" id="tb-egfr" class="w-4 h-4 rounded text-teal-500 focus:ring-teal-500 focus:ring-offset-slate-900 bg-slate-800 border-slate-700">
+                        <div class="flex flex-col">
+                            <span class="text-xs font-medium text-slate-200">eGFR &lt; 30 ml/min</span>
+                            <span class="text-[10px] text-amber-400/90">ปรับคำแนะนำการให้ยา</span>
+                        </div>
                     </label>
                 </div>
             </div>
 
-            <!-- Global Alert for eGFR < 30 -->
-            <div id="egfr-alert" class="hidden p-3 bg-amber-50 border border-amber-300 text-amber-800 rounded-xl text-xs flex items-center gap-2">
-                <span class="text-base">⚠️</span>
-                <span>คำเตือน: ผู้ป่วยมี eGFR &lt; 30 ml/min แนะนำให้ปรับความถี่การให้ยา [Z], [E], [S], [L], [O] เป็น <strong>3 วัน/สัปดาห์</strong> (ยกเว้น [I] และ [R] ให้ตามขนาดปกติวันละครั้ง)</span>
-            </div>
-
-            <!-- Cards Grid for Drugs -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3" id="drug-cards-container">
-                
-                <!-- 1. Isoniazid [I] -->
-                <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-xs space-y-2 flex flex-col justify-between">
-                    <div class="flex items-start justify-between border-b border-slate-100 pb-2">
-                        <div>
-                            <span class="text-3xl text-teal-600 leading-none block">[I]</span>
-                            <span class="text-xs text-slate-400 block pt-1">Isoniazid</span>
-                        </div>
-                        <span class="text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full">5 mg/kg</span>
-                    </div>
-                    <div class="space-y-1">
-                        <div class="flex justify-between items-baseline text-sm">
-                            <span class="text-slate-500">ขนาดแนะนำ:</span>
-                            <span class="text-teal-700 text-base" id="res-i-avg">-</span>
-                        </div>
-                        <div class="flex justify-between items-baseline text-xs text-slate-400">
-                            <span>ช่วงขนาดยา (4-6):</span>
-                            <span id="res-i-range">-</span>
-                        </div>
-                    </div>
+            <!-- [B5] ฝั่งขวา: ตารางผลลัพธ์ขนาดยา (5 คอลัมน์) -->
+            <div class="flex-1 w-full bg-white/80 backdrop-blur-sm border border-slate-300 rounded-3xl p-5 shadow-sm overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse min-w-[640px]">
+                        <thead>
+                            <tr class="border-b border-slate-200 text-slate-500 text-xs uppercase tracking-wider">
+                                <th class="py-3 px-3 w-1/5">ชื่อยา</th>
+                                <th class="py-3 px-3 w-1/5 text-right">ขนาดยาโดยประมาณ</th>
+                                <th class="py-3 px-3 w-1/5 text-right">ขนาดยาขนาดต่ำ</th>
+                                <th class="py-3 px-3 w-1/5 text-right">ขนาดยาขนาดสูง</th>
+                                <th class="py-3 px-3 w-1/5 text-center">คำแนะนำพิเศษ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tb-table-body" class="divide-y divide-slate-100 text-sm">
+                            <!-- JS จะเรนเดอร์แถวยาตรงนี้ -->
+                        </tbody>
+                    </table>
                 </div>
 
-                <!-- 2. Rifampicin [R] -->
-                <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-xs space-y-2 flex flex-col justify-between">
-                    <div class="flex items-start justify-between border-b border-slate-100 pb-2">
-                        <div>
-                            <span class="text-3xl text-teal-600 leading-none block">[R]</span>
-                            <span class="text-xs text-slate-400 block pt-1">Rifampicin</span>
-                        </div>
-                        <span class="text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full">10 mg/kg</span>
-                    </div>
-                    <div class="space-y-1">
-                        <div class="flex justify-between items-baseline text-sm">
-                            <span class="text-slate-500">ขนาดแนะนำ:</span>
-                            <span class="text-teal-700 text-base" id="res-r-avg">-</span>
-                        </div>
-                        <div class="flex justify-between items-baseline text-xs text-slate-400">
-                            <span>ช่วงขนาดยา (8-12):</span>
-                            <span id="res-r-range">-</span>
-                        </div>
-                    </div>
+                <div class="mt-4 pt-3 border-t border-slate-200 text-[11px] text-slate-500 space-y-1">
+                    <p>* หมายเหตุอ้างอิงขนาดเฉลี่ย: I 5 mg/kg | R 10 mg/kg | Z 25 mg/kg | E 15 mg/kg | S 15 mg/kg | L 750 mg/day | O 10 mg/kg</p>
+                    <p>* หน่วยคำนวณทั้งหมดเป็น มิลลิกรัม/วัน (mg/day)</p>
                 </div>
-
-                <!-- 3. Pyrazinamide [Z] -->
-                <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-xs space-y-2 flex flex-col justify-between relative overflow-hidden" id="card-z">
-                    <div class="flex items-start justify-between border-b border-slate-100 pb-2">
-                        <div>
-                            <span class="text-3xl text-sky-600 leading-none block">[Z]</span>
-                            <span class="text-xs text-slate-400 block pt-1">Pyrazinamide</span>
-                        </div>
-                        <div class="text-right">
-                            <span class="text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full block">25 mg/kg</span>
-                            <span id="tag-z-schedule" class="text-[10px] text-amber-600 hidden mt-1 block">3 วัน/สัปดาห์</span>
-                        </div>
-                    </div>
-                    <div class="space-y-1">
-                        <div class="flex justify-between items-baseline text-sm">
-                            <span class="text-slate-500">ขนาดแนะนำ:</span>
-                            <span class="text-sky-700 text-base" id="res-z-avg">-</span>
-                        </div>
-                        <div class="flex justify-between items-baseline text-xs text-slate-400">
-                            <span>ช่วงขนาดยา (20-30):</span>
-                            <span id="res-z-range">-</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 4. Ethambutol [E] -->
-                <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-xs space-y-2 flex flex-col justify-between" id="card-e">
-                    <div class="flex items-start justify-between border-b border-slate-100 pb-2">
-                        <div>
-                            <span class="text-3xl text-sky-600 leading-none block">[E]</span>
-                            <span class="text-xs text-slate-400 block pt-1">Ethambutol</span>
-                        </div>
-                        <div class="text-right">
-                            <span class="text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full block">15 mg/kg</span>
-                            <span id="tag-e-schedule" class="text-[10px] text-amber-600 hidden mt-1 block">3 วัน/สัปดาห์</span>
-                        </div>
-                    </div>
-                    <div class="space-y-1">
-                        <div class="flex justify-between items-baseline text-sm">
-                            <span class="text-slate-500">ขนาดแนะนำ:</span>
-                            <span class="text-sky-700 text-base" id="res-e-avg">-</span>
-                        </div>
-                        <div class="flex justify-between items-baseline text-xs text-slate-400">
-                            <span>ช่วงขนาดยา (15-20):</span>
-                            <span id="res-e-range">-</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 5. Streptomycin [S] -->
-                <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-xs space-y-2 flex flex-col justify-between" id="card-s">
-                    <div class="flex items-start justify-between border-b border-slate-100 pb-2">
-                        <div>
-                            <span class="text-3xl text-sky-600 leading-none block">[S]</span>
-                            <span class="text-xs text-slate-400 block pt-1">Streptomycin</span>
-                        </div>
-                        <div class="text-right">
-                            <span class="text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full block">15 mg/kg</span>
-                            <span id="tag-s-schedule" class="text-[10px] text-amber-600 hidden mt-1 block">3 วัน/สัปดาห์</span>
-                        </div>
-                    </div>
-                    <div class="space-y-1">
-                        <div class="flex justify-between items-baseline text-sm">
-                            <span class="text-slate-500">ขนาดแนะนำ:</span>
-                            <span class="text-sky-700 text-base" id="res-s-avg">-</span>
-                        </div>
-                        <div class="flex justify-between items-baseline text-xs text-slate-400">
-                            <span>ช่วงขนาดยา (12-20):</span>
-                            <span id="res-s-range">-</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 6. Levofloxacin [L] -->
-                <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-xs space-y-2 flex flex-col justify-between" id="card-l">
-                    <div class="flex items-start justify-between border-b border-slate-100 pb-2">
-                        <div>
-                            <span class="text-3xl text-indigo-600 leading-none block">[L]</span>
-                            <span class="text-xs text-slate-400 block pt-1">Levofloxacin</span>
-                        </div>
-                        <div class="text-right">
-                            <span class="text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full block">750 mg/day</span>
-                            <span id="tag-l-schedule" class="text-[10px] text-amber-600 hidden mt-1 block">3 วัน/สัปดาห์</span>
-                        </div>
-                    </div>
-                    <div class="space-y-1">
-                        <div class="flex justify-between items-baseline text-sm">
-                            <span class="text-slate-500">ขนาดยามาตรฐาน:</span>
-                            <span class="text-indigo-700 text-base" id="res-l-avg">750 mg/day</span>
-                        </div>
-                        <div class="flex justify-between items-baseline text-xs text-slate-400">
-                            <span>ช่วงขนาดยา (15-20):</span>
-                            <span id="res-l-range">-</span>
-                        </div>
-                        <div class="text-[10px] text-slate-400 text-right pt-0.5">
-                            *สูงสุดไม่เกิน 1,000 mg/day
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 7. Ofloxacin [O] (ไม่ค่อยแนะนำแล้ว) -->
-                <div class="bg-slate-50/70 p-3.5 rounded-2xl border border-slate-200 shadow-xs space-y-2 flex flex-col justify-between" id="card-o">
-                    <div class="flex items-start justify-between border-b border-slate-200 pb-2">
-                        <div>
-                            <span class="text-3xl text-slate-500 leading-none block">[O]</span>
-                            <span class="text-xs text-slate-400 block pt-1">Ofloxacin</span>
-                        </div>
-                        <div class="text-right">
-                            <span class="text-[10px] bg-rose-50 text-rose-600 px-2 py-0.5 rounded-full block">ไม่ค่อยแนะนำแล้ว</span>
-                            <span id="tag-o-schedule" class="text-[10px] text-amber-600 hidden mt-1 block">3 วัน/สัปดาห์</span>
-                        </div>
-                    </div>
-                    <div class="space-y-1">
-                        <div class="flex justify-between items-baseline text-sm">
-                            <span class="text-slate-500">ขนาดแนะนำ:</span>
-                            <span class="text-slate-700 text-base" id="res-o-avg">-</span>
-                        </div>
-                        <div class="flex justify-between items-baseline text-xs text-slate-400">
-                            <span>ช่วงขนาดยา (7.5-15):</span>
-                            <span id="res-o-range">-</span>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- Footer Reference Note -->
-            <div class="text-[11px] text-slate-400 bg-white p-3 rounded-xl border border-slate-100 space-y-1">
-                <div>* หมายเหตุอ้างอิงขนาดยาเฉลี่ย: [I] 5 mg/kg | [R] 10 mg/kg | [Z] 25 mg/kg | [E] 15 mg/kg | [S] 15 mg/kg | [L] 750 mg/day | [O] 10 mg/kg</div>
-                <div>* หน่วยคำนวณทั้งหมดเป็น มิลลิกรัม/วัน (mg/day)</div>
             </div>
 
         </div>
     `;
 
-    // Binding Events
-    const weightInput = container.querySelector('#tb-weight');
-    const chkEgfr = container.querySelector('#chk-egfr');
+    // รายการยา [B4] เอา [ ] ออกเรียบร้อยแล้ว
+    const drugs = [
+        { code: 'I', name: 'Isoniazid', std: 5, min: 4, max: 6, maxCap: 300, egfrNote: 'ไม่ต้องปรับขนาดยา' },
+        { code: 'R', name: 'Rifampicin', std: 10, min: 8, max: 12, maxCap: 600, egfrNote: 'ไม่ต้องปรับขนาดยา' },
+        { code: 'Z', name: 'Pyrazinamide', std: 25, min: 20, max: 30, maxCap: 2000, egfrNote: '25-35 mg/kg (3 ครั้ง/สัปดาห์)' },
+        { code: 'E', name: 'Ethambutol', std: 15, min: 15, max: 20, maxCap: 1500, egfrNote: '15-25 mg/kg (3 ครั้ง/สัปดาห์)' },
+        { code: 'S', name: 'Streptomycin', std: 15, min: 12, max: 20, maxCap: 1000, egfrNote: '12-15 mg/kg (2-3 ครั้ง/สัปดาห์)' },
+        { code: 'L', name: 'Levofloxacin', isFixed: true, fixedVal: 750, maxCap: 1000, egfrNote: '750 mg (3 ครั้ง/สัปดาห์)' },
+        { code: 'O', name: 'Ofloxacin', std: 10, min: 7.5, max: 15, maxCap: 800, isDisc: true, egfrNote: 'ไม่แนะนำให้ใช้ / ปรับโดส' }
+    ];
 
-    weightInput.addEventListener('input', () => calculateTbDose(container));
-    chkEgfr.addEventListener('change', () => calculateTbDose(container));
+    const weightInput = document.getElementById('tb-weight');
+    const egfrCheckbox = document.getElementById('tb-egfr');
+    const tableBody = document.getElementById('tb-table-body');
+    const resetBtn = document.getElementById('tb-reset-btn');
 
-    weightInput.focus();
-}
+    function calculate() {
+        const w = parseFloat(weightInput.value) || 0;
+        const isEgfrLow = egfrCheckbox.checked;
 
-// Utility formatting: แสดงเลขกลมๆ หากไม่มีทศนิยม
-function formatNumber(val) {
-    if (isNaN(val) || val <= 0) return '-';
-    const rounded = Math.round(val * 100) / 100;
-    return rounded % 1 === 0 ? rounded.toString() : rounded.toFixed(2);
-}
+        tableBody.innerHTML = drugs.map(d => {
+            let stdText = '-';
+            let minText = '-';
+            let maxText = '-';
 
-function calculateTbDose(container) {
-    const weight = parseFloat(container.querySelector('#tb-weight').value) || 0;
-    const isLowEgfr = container.querySelector('#chk-egfr').checked;
+            if (w > 0) {
+                if (d.isFixed) {
+                    stdText = `${d.fixedVal} mg`;
+                    minText = `-`;
+                    maxText = `สูงสุด ${d.maxCap} mg`;
+                } else {
+                    let stdCalc = Math.min(Math.round(w * d.std), d.maxCap);
+                    let minCalc = Math.round(w * d.min);
+                    let maxCalc = Math.min(Math.round(w * d.max), d.maxCap);
 
-    const egfrAlert = container.querySelector('#egfr-alert');
-    if (isLowEgfr) {
-        egfrAlert.classList.remove('hidden');
-    } else {
-        egfrAlert.classList.add('hidden');
+                    stdText = `${stdCalc} mg`;
+                    minText = `${minCalc} mg`;
+                    maxText = `${maxCalc} mg`;
+                }
+            }
+
+            // คำแนะนำกรณี eGFR < 30
+            let egfrDisplay = '-';
+            if (isEgfrLow) {
+                egfrDisplay = `<span class="inline-block bg-amber-100 text-amber-800 text-xs px-2.5 py-1 rounded-full font-medium">${d.egfrNote}</span>`;
+            } else {
+                egfrDisplay = `<span class="text-slate-400 text-xs">ปกติ</span>`;
+            }
+
+            return `
+                <tr class="hover:bg-slate-50/80 transition-colors">
+                    <!-- Col 1: ชื่อยา (ตัวย่อใหญ่เด่น [ไม่มีวงเล็บ] + ชื่อเต็มสีอ่อนด้านล่าง) -->
+                    <td class="py-3 px-3">
+                        <div class="flex items-baseline gap-1.5">
+                            <span class="text-2xl font-bold text-teal-700 leading-none">${d.code}</span>
+                            ${d.isDisc ? '<span class="text-[10px] bg-rose-100 text-rose-600 px-1.5 py-0.5 rounded font-normal">ไม่ค่อยแนะนำ</span>' : ''}
+                        </div>
+                        <div class="text-xs text-slate-400 font-normal leading-tight mt-0.5">${d.name}</div>
+                    </td>
+
+                    <!-- Col 2: ขนาดยาโดยประมาณ -->
+                    <td class="py-3 px-3 text-right font-semibold text-slate-800 text-base">
+                        ${stdText}
+                    </td>
+
+                    <!-- Col 3: ขนาดยาขนาดต่ำ -->
+                    <td class="py-3 px-3 text-right text-slate-500 font-normal">
+                        ${minText}
+                    </td>
+
+                    <!-- Col 4: ขนาดยาขนาดสูง -->
+                    <td class="py-3 px-3 text-right text-slate-500 font-normal">
+                        ${maxText}
+                    </td>
+
+                    <!-- Col 5: คำแนะนำพิเศษ (eGFR) -->
+                    <td class="py-3 px-3 text-center">
+                        ${egfrDisplay}
+                    </td>
+                </tr>
+            `;
+        }).join('');
     }
 
-    // Toggle Schedule Tag for Renal-adjusted drugs [Z, E, S, L, O]
-    ['z', 'e', 's', 'l', 'o'].forEach(drug => {
-        const tag = container.querySelector(`#tag-${drug}-schedule`);
-        if (tag) {
-            if (isLowEgfr) {
-                tag.classList.remove('hidden');
-            } else {
-                tag.classList.add('hidden');
-            }
-        }
+    weightInput.addEventListener('input', calculate);
+    egfrCheckbox.addEventListener('change', calculate);
+
+    resetBtn.addEventListener('click', () => {
+        weightInput.value = '';
+        egfrCheckbox.checked = false;
+        calculate();
     });
 
-    if (weight <= 0) {
-        // Clear Values
-        ['i', 'r', 'z', 'e', 's', 'l', 'o'].forEach(d => {
-            container.querySelector(`#res-${d}-avg`).innerText = d === 'l' ? '750 mg/day' : '-';
-            container.querySelector(`#res-${d}-range`).innerText = '-';
-        });
-        return;
-    }
-
-    // 1. [I] Isoniazid: Avg x5, Range x4 - x6
-    renderDrugResult(container, 'i', weight * 5, weight * 4, weight * 6);
-
-    // 2. [R] Rifampicin: Avg x10, Range x8 - x12
-    renderDrugResult(container, 'r', weight * 10, weight * 8, weight * 12);
-
-    // 3. [Z] Pyrazinamide: Avg x25, Range x20 - x30
-    renderDrugResult(container, 'z', weight * 25, weight * 20, weight * 30);
-
-    // 4. [E] Ethambutol: Avg x15, Range x15 - x20
-    renderDrugResult(container, 'e', weight * 15, weight * 15, weight * 20);
-
-    // 5. [S] Streptomycin: Avg x15, Range x12 - x20
-    renderDrugResult(container, 's', weight * 15, weight * 12, weight * 20);
-
-    // 6. [L] Levofloxacin: Fixed 750, Range x15 - x20 (Max 1000)
-    let lMin = weight * 15;
-    let lMax = Math.min(weight * 20, 1000);
-    container.querySelector('#res-l-avg').innerText = '750 mg/day';
-    container.querySelector('#res-l-range').innerText = `${formatNumber(lMin)} - ${formatNumber(lMax)} mg/day`;
-
-    // 7. [O] Ofloxacin: Avg x10, Range x7.5 - x15
-    renderDrugResult(container, 'o', weight * 10, weight * 7.5, weight * 15);
-}
-
-function renderDrugResult(container, drugCode, avg, min, max) {
-    const avgElem = container.querySelector(`#res-${drugCode}-avg`);
-    const rangeElem = container.querySelector(`#res-${drugCode}-range`);
-
-    if (avgElem) avgElem.innerText = `${formatNumber(avg)} mg/day`;
-    if (rangeElem) rangeElem.innerText = `${formatNumber(min)} - ${formatNumber(max)} mg/day`;
+    // แสดงผลตั้งต้น
+    calculate();
 }
