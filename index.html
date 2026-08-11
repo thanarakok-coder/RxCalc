@@ -96,12 +96,29 @@
                     </div>
                 </div>
 
+                <!-- Card 3: DAPT Score Calculator -->
+                <div id="card-dapt" class="bg-white/80 backdrop-blur-sm border border-slate-300 rounded-3xl p-6 hover:border-teal-500 hover:shadow-lg transition-all cursor-pointer group flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 bg-teal-600 text-white rounded-2xl flex items-center justify-center mb-4 group-hover:scale-105 transition-transform font-bold">
+                            <!-- SVG Heart / Stent Icon -->
+                            <svg class="w-6 h-6 stroke-current text-white" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">DAPT Score</h3>
+                        <p class="text-xs text-slate-600 font-normal leading-relaxed mb-6">ประเมินคะแนน DAPT Score เพื่อพิจารณาการให้ Dual Antiplatelet Therapy หลังใส่ Stent</p>
+                    </div>
+                    <div class="text-teal-700 text-xs font-semibold flex items-center gap-2 group-hover:translate-x-1 transition-transform">
+                        <span>เปิดใช้งานเครื่องมือ</span>
+                        <svg class="w-4 h-4 stroke-current" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </div>
+                </div>
+
             </div>
         </div>
 
         <!-- Dynamic Module Containers (Preloaded for Instant Switching) -->
         <div id="container-insulin" class="hidden"></div>
         <div id="container-tb" class="hidden"></div>
+        <div id="container-dapt" class="hidden"></div>
 
     </main>
 
@@ -116,21 +133,25 @@
         const dashboard = document.getElementById('page-dashboard');
         const containerInsulin = document.getElementById('container-insulin');
         const containerTb = document.getElementById('container-tb');
+        const containerDapt = document.getElementById('container-dapt');
         
         const cardInsulin = document.getElementById('card-insulin');
         const cardTb = document.getElementById('card-tb');
+        const cardDapt = document.getElementById('card-dapt');
         const btnHome = document.getElementById('nav-home-btn');
         const navLogo = document.getElementById('nav-logo');
 
-        // Preload ทั้ง 2 โมดูลล่วงหน้าทันทีที่เปิดหน้าเว็บ (แก้ปัญหาการหน่วง 0.5 วินาที)
+        // Preload ทั้ง 3 โมดูลล่วงหน้าทันทีที่เปิดหน้าเว็บ
         let insulinLoaded = false;
         let tbLoaded = false;
+        let daptLoaded = false;
 
         async function initModules() {
             try {
-                const [mInsulin, mTb] = await Promise.all([
+                const [mInsulin, mTb, mDapt] = await Promise.all([
                     import('./modules/insulin-calc.js').catch(e => console.error(e)),
-                    import('./modules/tb-calc.js').catch(e => console.error(e))
+                    import('./modules/tb-calc.js').catch(e => console.error(e)),
+                    import('./modules/dapt-calc.js').catch(e => console.error(e))
                 ]);
 
                 if (mInsulin) {
@@ -143,6 +164,11 @@
                     else if (typeof mTb.default === 'function') mTb.default(containerTb);
                     tbLoaded = true;
                 }
+                if (mDapt) {
+                    if (typeof mDapt.render === 'function') mDapt.render(containerDapt);
+                    else if (typeof mDapt.default === 'function') mDapt.default(containerDapt);
+                    daptLoaded = true;
+                }
             } catch (err) {
                 console.error("Preload error:", err);
             }
@@ -154,12 +180,14 @@
             dashboard.classList.remove('hidden');
             containerInsulin.classList.add('hidden');
             containerTb.classList.add('hidden');
+            containerDapt.classList.add('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function showInsulin() {
             dashboard.classList.add('hidden');
             containerTb.classList.add('hidden');
+            containerDapt.classList.add('hidden');
             containerInsulin.classList.remove('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -167,12 +195,22 @@
         function showTb() {
             dashboard.classList.add('hidden');
             containerInsulin.classList.add('hidden');
+            containerDapt.classList.add('hidden');
             containerTb.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function showDapt() {
+            dashboard.classList.add('hidden');
+            containerInsulin.classList.add('hidden');
+            containerTb.classList.add('hidden');
+            containerDapt.classList.remove('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         cardInsulin.addEventListener('click', showInsulin);
         cardTb.addEventListener('click', showTb);
+        cardDapt.addEventListener('click', showDapt);
         btnHome.addEventListener('click', goHome);
         navLogo.addEventListener('click', goHome);
     </script>
