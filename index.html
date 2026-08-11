@@ -76,22 +76,27 @@
                         <svg class="w-4 h-4 stroke-current" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                     </div>
                 </div>
-                <!-- TB Calculator Card -->
-<div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex flex-col justify-between hover:shadow-md transition-all">
-    <div>
-        <div class="w-12 h-12 bg-teal-500/10 text-teal-600 rounded-2xl flex items-center justify-center text-2xl mb-4">
-            🫁
-        </div>
-        <h3 class="text-xl font-bold text-slate-800 mb-2">TB Calculator</h3>
-        <p class="text-sm text-slate-500 mb-6">
-            คำนวณขนาดยาวัณโรคตามน้ำหนักตัว (I, R, Z, E, S, L, O) พร้อมระบบเตือน eGFR &lt; 30
-        </p>
-    </div>
-    <button type="button" id="btn-open-tb" class="inline-flex items-center gap-2 text-teal-600 font-bold hover:text-teal-700 transition-colors cursor-pointer">
-        <span>เปิดใช้งานเครื่องมือ</span>
-        <svg class="w-4 h-4 stroke-current" fill="none" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </button>
-</div>
+
+                <!-- Card 2: TB Calculator -->
+                <div id="card-tb" class="bg-white/80 backdrop-blur-sm border border-slate-300 rounded-3xl p-6 hover:border-teal-500 hover:shadow-lg transition-all cursor-pointer group flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 bg-teal-600 text-white rounded-2xl flex items-center justify-center mb-4 group-hover:scale-105 transition-transform font-bold">
+                            <!-- SVG Lungs Icon -->
+                            <svg class="w-6 h-6 stroke-current text-white" fill="none" stroke-width="1.75" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 4v10"/>
+                                <path d="M12 8c-2.5-3-6-3.5-8-1.5S2 13.5 4 17.5 9 20 11 16.5V11"/>
+                                <path d="M12 8c2.5-3 6-3.5 8-1.5s2 7 0 11-5 2.5-7-1V11"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">TB Calculator</h3>
+                        <p class="text-xs text-slate-600 font-normal leading-relaxed mb-6">คำนวณขนาดยาวัณโรคตามน้ำหนักตัว (I, R, Z, E, S, L, O) พร้อมระบบเตือน eGFR &lt; 30</p>
+                    </div>
+                    <div class="text-teal-700 text-xs font-semibold flex items-center gap-2 group-hover:translate-x-1 transition-transform">
+                        <span>เปิดใช้งานเครื่องมือ</span>
+                        <!-- SVG Arrow Right -->
+                        <svg class="w-4 h-4 stroke-current" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -112,6 +117,7 @@
         const dashboard = document.getElementById('page-dashboard');
         const moduleContainer = document.getElementById('module-container');
         const cardInsulin = document.getElementById('card-insulin');
+        const cardTb = document.getElementById('card-tb');
         const btnHome = document.getElementById('nav-home-btn');
         const navLogo = document.getElementById('nav-logo');
 
@@ -141,7 +147,27 @@
             }
         }
 
+        async function loadTbModule() {
+            dashboard.classList.add('hidden');
+            moduleContainer.classList.remove('hidden');
+            moduleContainer.innerHTML = '<div class="p-8 text-center text-slate-600"><p>กำลังโหลดโมดูล...</p></div>';
+
+            try {
+                const module = await import('./modules/tb-calc.js');
+                moduleContainer.innerHTML = '';
+                if (typeof module.render === 'function') {
+                    module.render(moduleContainer);
+                } else if (typeof module.default === 'function') {
+                    module.default(moduleContainer);
+                }
+            } catch (err) {
+                console.error('Failed to load TB module:', err);
+                moduleContainer.innerHTML = `<div class="p-6 text-red-600 font-bold">ไม่สามารถโหลดโมดูลได้: ${err.message}</div>`;
+            }
+        }
+
         cardInsulin.addEventListener('click', loadInsulinModule);
+        cardTb.addEventListener('click', loadTbModule);
         btnHome.addEventListener('click', goHome);
         navLogo.addEventListener('click', goHome);
     </script>
