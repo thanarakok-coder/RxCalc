@@ -151,7 +151,7 @@
                 const [mInsulin, mTb, mDapt] = await Promise.all([
                     import('./modules/insulin-calc.js').catch(e => console.error(e)),
                     import('./modules/tb-calc.js').catch(e => console.error(e)),
-                    import('./modules/dapt-calc.js').catch(e => console.error(e))
+                    import('./modules/dapt.js').catch(e => console.error(e))
                 ]);
 
                 if (mInsulin) {
