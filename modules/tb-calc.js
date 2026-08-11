@@ -14,7 +14,7 @@ export function render(container) {
 
         <div class="flex flex-col lg:flex-row gap-6 items-start">
             
-            <!-- [ข้อ 1] ฝั่งซ้าย: Input Sidebar ทรงแคบ Modern + ปุ่ม Stepper + - -->
+            <!-- ฝั่งซ้าย: Input Sidebar ทรงแคบ Modern + ปุ่ม Stepper - / + -->
             <div class="w-full lg:w-72 bg-[#0f172a] text-white rounded-3xl p-5 shadow-xl flex-shrink-0 space-y-6 border border-slate-800">
                 <div class="flex items-center justify-between pb-3 border-b border-slate-800">
                     <div class="flex items-center gap-2.5">
@@ -38,7 +38,7 @@ export function render(container) {
                     </button>
                 </div>
 
-                <!-- [ข้อ 1] UI ช่องกรอกน้ำหนักตัวแบบ Modern กลมกลืน พร้อมปุ่ม Stepper - / + -->
+                <!-- UI ช่องกรอกน้ำหนักตัวแบบ Modern กลมกลืน พร้อมปุ่ม Stepper - / + -->
                 <div class="space-y-2">
                     <label class="text-xs text-slate-300 block">น้ำหนักตัว (kg)</label>
                     <div class="relative flex items-center bg-slate-900/90 border border-slate-700 rounded-2xl p-1.5 focus-within:border-teal-500 transition-colors">
@@ -83,11 +83,9 @@ export function render(container) {
                                 <th class="py-2.5 px-3 w-1/5 text-right">ขนาดยาโดยประมาณ</th>
                                 <th class="py-2.5 px-3 w-1/5 text-right">ขนาดยาขนาดต่ำ</th>
                                 <th class="py-2.5 px-3 w-1/5 text-right">ขนาดยาขนาดสูง</th>
-                                <!-- [ข้อ 4] ปรับหัวข้อเป็น Note -->
                                 <th class="py-2.5 px-3 w-1/5 text-center">Note</th>
                             </tr>
                         </thead>
-                        <!-- [ข้อ 3] ลดความสูงบรรทัดด้วย divide-y และ padding ชิด -->
                         <tbody id="tb-table-body" class="divide-y divide-slate-100 text-sm">
                             <!-- JS เรนเดอร์ข้อมูล -->
                         </tbody>
@@ -121,7 +119,6 @@ export function render(container) {
     const btnInc = document.getElementById('btn-inc-weight');
     const btnDec = document.getElementById('btn-dec-weight');
 
-    // ฟังก์ชันจัดฟอร์แมตใส่ คอมมา หลักพัน (ข้อ 8)
     function formatNum(num) {
         if (num === null || num === undefined || isNaN(num)) return '-';
         return num.toLocaleString('en-US');
@@ -152,26 +149,19 @@ export function render(container) {
                 }
             }
 
-            // [ข้อ 4, 5, 6, 7] การแสดงผลในคอลัมน์ Note
             let egfrDisplay = '';
             if (isEgfrLow) {
                 if (d.isNoChange) {
-                    // [ข้อ 6] ไม่ต้องปรับขนาดยา ทำเป็นสีเทาอ่อน ไม่เด่น
                     egfrDisplay = `<span class="text-xs text-slate-400 font-normal">ไม่ต้องปรับขนาดยา</span>`;
                 } else {
-                    // [ข้อ 7] Note คงสีเตือนเดิมไว้ ย้ายช่วงขนาดยาออก เหลือเฉพาะความถี่
                     egfrDisplay = `<span class="inline-block bg-amber-100 text-amber-800 text-xs px-2.5 py-0.5 rounded-full font-medium">${d.egfrNote}</span>`;
                 }
             } else {
-                // [ข้อ 5] ถ้า eGFR ปกติ ให้เป็นค่าว่าง
                 egfrDisplay = '';
             }
 
             return `
-                /* [ข้อ 3] ปรับ height และ padding py-1.5 ให้บรรทัดชิดกันขึ้น พร้อมรักษา hover effect */
                 <tr class="hover:bg-slate-50/80 transition-colors">
-                    
-                    <!-- [ข้อ 2] Col 1: ชื่อยา + ช่วงขนาดยาต่อท้าย -->
                     <td class="py-1.5 px-3">
                         <div class="flex items-baseline gap-1.5">
                             <span class="text-xl font-bold text-teal-700 leading-tight">${d.code}</span>
@@ -183,22 +173,18 @@ export function render(container) {
                         </div>
                     </td>
 
-                    <!-- Col 2: ขนาดยาโดยประมาณ (มีคอมมาหลักพัน) -->
                     <td class="py-1.5 px-3 text-right font-semibold text-slate-800 text-base">
                         ${stdText}
                     </td>
 
-                    <!-- Col 3: ขนาดยาขนาดต่ำ (มีคอมมาหลักพัน) -->
                     <td class="py-1.5 px-3 text-right text-slate-500 font-normal">
                         ${minText}
                     </td>
 
-                    <!-- Col 4: ขนาดยาขนาดสูง (มีคอมมาหลักพัน) -->
                     <td class="py-1.5 px-3 text-right text-slate-500 font-normal">
                         ${maxText}
                     </td>
 
-                    <!-- Col 5: Note -->
                     <td class="py-1.5 px-3 text-center">
                         ${egfrDisplay}
                     </td>
@@ -207,7 +193,6 @@ export function render(container) {
         }).join('');
     }
 
-    // [ข้อ 1] Event Listeners สำหรับปุ่ม + / - น้ำหนัก
     btnInc.addEventListener('click', () => {
         let currentW = parseFloat(weightInput.value) || 0;
         weightInput.value = Math.round(currentW + 1);
@@ -231,6 +216,5 @@ export function render(container) {
         calculate();
     });
 
-    // แสดงผลเริ่มต้น
     calculate();
 }
