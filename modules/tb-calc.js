@@ -78,12 +78,13 @@ export function render(container) {
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse min-w-[640px]">
                         <thead>
+                            <!-- ปรับสัดส่วน % ความกว้างคอลัมน์ใหม่ กระจายพื้นที่ให้ Note ไม่ล้น -->
                             <tr class="border-b border-slate-200 text-slate-500 text-xs uppercase tracking-wider">
-                                <th class="py-2.5 px-3 w-2/5">ชื่อยา</th>
-                                <th class="py-2.5 px-3 w-1/5 text-right">ขนาดยาโดยประมาณ</th>
-                                <th class="py-2.5 px-3 w-1/5 text-right">ขนาดยาขนาดต่ำ</th>
-                                <th class="py-2.5 px-3 w-1/5 text-right">ขนาดยาขนาดสูง</th>
-                                <th class="py-2.5 px-3 w-1/5 text-center">Note</th>
+                                <th class="py-2.5 px-3 w-[28%]">ชื่อยา</th>
+                                <th class="py-2.5 px-3 w-[18%] text-right">ขนาดยาโดยประมาณ</th>
+                                <th class="py-2.5 px-3 w-[16%] text-right">ขนาดยาขนาดต่ำ</th>
+                                <th class="py-2.5 px-3 w-[16%] text-right">ขนาดยาขนาดสูง</th>
+                                <th class="py-2.5 px-3 w-[22%] text-center">Note</th>
                             </tr>
                         </thead>
                         <tbody id="tb-table-body" class="divide-y divide-slate-100 text-sm">
@@ -152,9 +153,9 @@ export function render(container) {
             let egfrDisplay = '';
             if (isEgfrLow) {
                 if (d.isNoChange) {
-                    egfrDisplay = `<span class="text-xs text-slate-400 font-normal">ไม่ต้องปรับขนาดยา</span>`;
+                    egfrDisplay = `<span class="text-xs text-slate-400 font-normal whitespace-nowrap">ไม่ต้องปรับขนาดยา</span>`;
                 } else {
-                    egfrDisplay = `<span class="inline-block bg-amber-100 text-amber-800 text-xs px-2.5 py-0.5 rounded-full font-medium">${d.egfrNote}</span>`;
+                    egfrDisplay = `<span class="inline-block bg-amber-100 text-amber-800 text-xs px-2.5 py-0.5 rounded-full font-medium whitespace-nowrap">${d.egfrNote}</span>`;
                 }
             } else {
                 egfrDisplay = '';
@@ -162,14 +163,15 @@ export function render(container) {
 
             return `
                 <tr class="hover:bg-slate-50/80 transition-colors">
+                    <!-- คอลัมน์ 1: ปรับโครงสร้างบรรทัดบน (ย่อขยายใหญ่ + ช่วงขนาดยา) / บรรทัดล่าง (ชื่อเต็ม) -->
                     <td class="py-1.5 px-3">
-                        <div class="flex items-baseline gap-1.5">
-                            <span class="text-xl font-bold text-teal-700 leading-tight">${d.code}</span>
-                            ${d.isDisc ? '<span class="text-[10px] bg-rose-100 text-rose-600 px-1 py-0.2 rounded font-normal">ไม่ค่อยแนะนำ</span>' : ''}
+                        <div class="flex items-baseline gap-2">
+                            <span class="text-2xl font-bold text-teal-700 leading-none">${d.code}</span>
+                            <span class="text-xs text-slate-400 font-normal">(${d.range})</span>
+                            ${d.isDisc ? '<span class="text-[10px] bg-rose-100 text-rose-600 px-1.5 py-0.2 rounded font-normal">ไม่ค่อยแนะนำ</span>' : ''}
                         </div>
-                        <div class="text-xs text-slate-500 font-normal leading-tight">
-                            <span>${d.name}</span>
-                            <span class="text-[11px] text-slate-400 ml-1">(${d.range})</span>
+                        <div class="text-xs text-slate-600 font-medium leading-tight mt-0.5">
+                            ${d.name}
                         </div>
                     </td>
 
