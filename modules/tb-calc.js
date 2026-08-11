@@ -14,7 +14,7 @@ export function render(container) {
 
         <div class="flex flex-col lg:flex-row gap-6 items-start">
             
-            <!-- ฝั่งซ้าย: Input Sidebar ทรงแคบ Modern + ปุ่ม Stepper - / + -->
+            <!-- ฝั่งซ้าย: Input Sidebar ทรงแคบ Modern + External Links -->
             <div class="w-full lg:w-72 bg-[#0f172a] text-white rounded-3xl p-5 shadow-xl flex-shrink-0 space-y-6 border border-slate-800">
                 <div class="flex items-center justify-between pb-3 border-b border-slate-800">
                     <div class="flex items-center gap-2.5">
@@ -71,6 +71,29 @@ export function render(container) {
                         </div>
                     </label>
                 </div>
+
+                <!-- ส่วน External Tools (เครื่องมืออื่นๆ) -->
+                <div class="pt-3 border-t border-slate-800 space-y-2">
+                    <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider block">Clinical Tools</span>
+                    
+                    <a href="https://rx-yrih-ntp-2021-tpt-2023-pmdt-2024-583480923268.us-west1.run.app/" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       class="group flex items-center justify-between p-3 bg-slate-900/80 hover:bg-teal-950/40 rounded-2xl border border-slate-800 hover:border-teal-500/50 transition-all duration-200">
+                        <div class="flex flex-col pr-2">
+                            <span class="text-xs font-bold text-teal-400 group-hover:text-teal-300 leading-snug">PHARMYARING</span>
+                            <span class="text-[10px] text-slate-400 group-hover:text-slate-300">TB Clinical Assistant</span>
+                        </div>
+                        <div class="w-7 h-7 rounded-lg bg-slate-800 group-hover:bg-teal-500/20 text-slate-400 group-hover:text-teal-300 flex items-center justify-center flex-shrink-0 transition-colors">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </div>
+                    </a>
+                </div>
+
             </div>
 
             <!-- ฝั่งขวา: ตารางผลลัพธ์ขนาดยา -->
@@ -78,7 +101,6 @@ export function render(container) {
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse min-w-[600px]">
                         <thead>
-                            <!-- แบ่งบรรทัดหัวตาราง + ย่อสัดส่วน -->
                             <tr class="border-b border-slate-200 text-slate-500 text-xs uppercase tracking-wider">
                                 <th class="py-2.5 px-3 w-[32%] align-bottom">ชื่อยา</th>
                                 <th class="py-2.5 px-3 w-[18%] text-right align-bottom">ขนาดยา<br>โดยประมาณ</th>
@@ -93,7 +115,7 @@ export function render(container) {
                     </table>
                 </div>
 
-                <!-- เชิงอรรถท้ายตาราง (เพิ่มหมายเหตุเรื่อง Ofloxacin) -->
+                <!-- เชิงอรรถท้ายตาราง -->
                 <div class="mt-4 pt-3 border-t border-slate-200 text-[11px] text-slate-500 space-y-1">
                     <p class="text-rose-600 font-medium">* Ofloxacin (O) ไม่ค่อยแนะนำให้ใช้ในแนวทางการรักษาปัจจุบัน</p>
                     <p>* หมายเหตุอ้างอิงขนาดเฉลี่ย: I 5 mg/kg | R 10 mg/kg | Z 25 mg/kg | E 15 mg/kg | S 15 mg/kg | L 750 mg/day | O 10 mg/kg</p>
@@ -140,7 +162,7 @@ export function render(container) {
                 if (d.isFixed) {
                     stdText = `${formatNum(d.fixedVal)} mg`;
                     minText = `-`;
-                    maxText = `สูงสุด ${formatNum(d.maxCap)} mg`;
+                    maxText = `${formatNum(d.maxCap)} mg`; // ตัดคำว่า "สูงสุด" ออกเรียบร้อย
                 } else {
                     let stdCalc = Math.min(Math.round(w * d.std), d.maxCap);
                     let minCalc = Math.round(w * d.min);
@@ -168,12 +190,10 @@ export function render(container) {
                     <!-- คอลัมน์ 1: ตัวย่อใหญ่ขนาน 2 บรรทัดย่อย (บน = ช่วงขนาดยา / ล่าง = ชื่อเต็ม) -->
                     <td class="py-2 px-3">
                         <div class="flex items-center gap-3">
-                            <!-- ตัวย่อตัวโตใหญ่สูงเท่า 2 บรรทัด -->
                             <div class="text-3xl font-extrabold text-teal-700 leading-none min-w-[24px] text-center">
                                 ${d.code}${d.isDisc ? '<span class="text-xs text-rose-500 font-normal -ml-0.5">*</span>' : ''}
                             </div>
                             
-                            <!-- บรรทัดย่อย บน/ล่าง -->
                             <div class="flex flex-col justify-center leading-snug">
                                 <span class="text-xs text-slate-500 font-normal">${d.range}</span>
                                 <span class="text-sm text-slate-800 font-medium">${d.name}</span>
