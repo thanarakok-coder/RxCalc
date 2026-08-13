@@ -1,8 +1,8 @@
 /**
  * Insulin Calculator Module
- * Fit-in Screen Layout with Sarabun Font (Thai with heads)
- * Updated: Rebuilt Layout to match Module 3 proportions (Left: Input+Appointment, Right: Output)
- * Style: Clean Solid Dark Input Panel (No Gradient/Neon) & Enlarged UI Elements
+ * Fit & Fill Screen Layout with Sarabun Font (Thai with heads)
+ * Updated: Expanded heights, font sizes, images, and padding to completely fill whitespace
+ * Style: Clean Solid Dark Input Panel & Enriched Output Cards
  * Timestamp: 2026-08-13
  */
 
@@ -40,76 +40,76 @@ export function render(container) {
         <div id="insulin-calc-module" class="max-w-7xl mx-auto p-2 sm:p-4">
             
             <!-- Main Layout: Grid 12 Columns -->
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
                 
                 <!-- ================= LEFT COLUMN: INPUT + NEXT APPOINTMENT (4/12 = ~33%) ================= -->
-                <div class="lg:col-span-4 flex flex-col gap-3 justify-between">
+                <div class="lg:col-span-4 flex flex-col gap-4 justify-between">
                     
-                    <!-- Top Box: Input Panel (Clean Solid Slate Dark) -->
-                    <div class="bg-slate-900 text-white p-4 sm:p-5 rounded-2xl shadow-md border border-slate-800 flex-1 flex flex-col justify-between space-y-4">
+                    <!-- Top Box: Input Panel (Clean Solid Slate Dark - Expanded Sizes) -->
+                    <div class="bg-slate-900 text-white p-5 sm:p-6 rounded-2xl shadow-md border border-slate-800 flex-1 flex flex-col justify-between space-y-5">
                         <div>
                             <!-- Header + Reset Button -->
-                            <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
-                                <div class="flex items-center gap-2.5 min-w-0">
-                                    <div class="w-9 h-9 bg-teal-500/10 text-teal-400 rounded-xl flex items-center justify-center border border-teal-500/20 shrink-0">
+                            <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-5">
+                                <div class="flex items-center gap-3 min-w-0">
+                                    <div class="w-11 h-11 bg-teal-500/10 text-teal-400 rounded-xl flex items-center justify-center border border-teal-500/20 shrink-0">
                                         <!-- SVG Syringe Icon -->
-                                        <svg class="w-5 h-5 stroke-current" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="m18 2 4 4"/><path d="m17 7 3-3"/><path d="M19 9 8.7 19.3c-1 1-2.5 1-3.4 0l-.6-.6c-1-1-1-2.5 0-3.4L15 5"/><path d="m9 11 4 4"/><path d="m5 19-3 3"/><path d="m14 4 6 6"/></svg>
+                                        <svg class="w-6 h-6 stroke-current" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="m18 2 4 4"/><path d="m17 7 3-3"/><path d="M19 9 8.7 19.3c-1 1-2.5 1-3.4 0l-.6-.6c-1-1-1-2.5 0-3.4L15 5"/><path d="m9 11 4 4"/><path d="m5 19-3 3"/><path d="m14 4 6 6"/></svg>
                                     </div>
                                     <div class="truncate">
-                                        <h2 class="text-base font-extrabold text-white leading-tight truncate">Insulin Calc</h2>
-                                        <p class="text-xs text-slate-400 truncate">คำนวณปริมาณยา</p>
+                                        <h2 class="text-xl font-extrabold text-white leading-tight truncate">Insulin Calc</h2>
+                                        <p class="text-sm text-slate-400 truncate">คำนวณปริมาณยา</p>
                                     </div>
                                 </div>
 
                                 <!-- Reset Button -->
-                                <button type="button" id="btn-reset" class="px-3 py-1 bg-slate-800 hover:bg-rose-600/90 text-rose-300 hover:text-white border border-slate-700 hover:border-rose-500 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer shrink-0">
-                                    <svg class="w-3.5 h-3.5 stroke-current" fill="none" stroke-width="2.5" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                                <button type="button" id="btn-reset" class="px-3.5 py-1.5 bg-slate-800 hover:bg-rose-600/90 text-rose-300 hover:text-white border border-slate-700 hover:border-rose-500 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer shrink-0">
+                                    <svg class="w-4 h-4 stroke-current" fill="none" stroke-width="2.5" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
                                     <span>รีเซ็ต</span>
                                 </button>
                             </div>
 
-                            <!-- Input Form -->
-                            <div class="space-y-3.5">
+                            <!-- Input Form (Expanded Inputs & Font Sizes) -->
+                            <div class="space-y-4">
                                 <!-- เช้า -->
                                 <div class="flex items-center justify-between gap-2">
-                                    <label class="text-lg font-bold text-slate-200 whitespace-nowrap">เช้า</label>
+                                    <label class="text-xl font-bold text-slate-100 whitespace-nowrap">เช้า</label>
                                     <div class="flex items-center gap-2">
-                                        <input type="number" id="ins-morning" class="w-28 text-xl font-black px-3 py-1.5 bg-slate-950 text-teal-300 border border-slate-700 rounded-xl focus:border-teal-400 focus:outline-none placeholder-slate-600 text-right shadow-inner" placeholder="0" min="0">
-                                        <span class="text-xs font-semibold text-slate-400 w-8 text-left shrink-0">units</span>
+                                        <input type="number" id="ins-morning" class="w-32 text-2xl font-black px-3.5 py-2 bg-slate-950 text-teal-300 border border-slate-700 rounded-xl focus:border-teal-400 focus:outline-none placeholder-slate-600 text-right shadow-inner" placeholder="0" min="0">
+                                        <span class="text-sm font-semibold text-slate-400 w-10 text-left shrink-0">units</span>
                                     </div>
                                 </div>
 
                                 <!-- เย็น -->
                                 <div class="flex items-center justify-between gap-2">
-                                    <label class="text-lg font-bold text-slate-200 whitespace-nowrap">เย็น</label>
+                                    <label class="text-xl font-bold text-slate-100 whitespace-nowrap">เย็น</label>
                                     <div class="flex items-center gap-2">
-                                        <input type="number" id="ins-evening" class="w-28 text-xl font-black px-3 py-1.5 bg-slate-950 text-teal-300 border border-slate-700 rounded-xl focus:border-teal-400 focus:outline-none placeholder-slate-600 text-right shadow-inner" placeholder="0" min="0">
-                                        <span class="text-xs font-semibold text-slate-400 w-8 text-left shrink-0">units</span>
+                                        <input type="number" id="ins-evening" class="w-32 text-2xl font-black px-3.5 py-2 bg-slate-950 text-teal-300 border border-slate-700 rounded-xl focus:border-teal-400 focus:outline-none placeholder-slate-600 text-right shadow-inner" placeholder="0" min="0">
+                                        <span class="text-sm font-semibold text-slate-400 w-10 text-left shrink-0">units</span>
                                     </div>
                                 </div>
 
                                 <!-- จำนวนนัด -->
                                 <div class="flex items-center justify-between gap-2">
-                                    <label class="text-base font-bold text-slate-200 whitespace-nowrap">จำนวนนัด</label>
+                                    <label class="text-lg font-bold text-slate-100 whitespace-nowrap">จำนวนนัด</label>
                                     <div class="flex items-center gap-2">
-                                        <input type="number" id="ins-fu-days" class="w-28 text-xl font-black px-3 py-1.5 bg-slate-950 text-teal-300 border border-slate-700 rounded-xl focus:border-teal-400 focus:outline-none placeholder-slate-600 text-right shadow-inner" placeholder="0" min="0">
-                                        <span class="text-xs font-semibold text-slate-400 w-8 text-left shrink-0">วัน</span>
+                                        <input type="number" id="ins-fu-days" class="w-32 text-2xl font-black px-3.5 py-2 bg-slate-950 text-teal-300 border border-slate-700 rounded-xl focus:border-teal-400 focus:outline-none placeholder-slate-600 text-right shadow-inner" placeholder="0" min="0">
+                                        <span class="text-sm font-semibold text-slate-400 w-10 text-left shrink-0">วัน</span>
                                     </div>
                                 </div>
 
                                 <!-- OD Checkbox + วันเริ่มรับยา -->
-                                <div class="pt-2 border-t border-slate-800 flex items-center justify-between gap-2">
+                                <div class="pt-3 border-t border-slate-800 flex items-center justify-between gap-2">
                                     <!-- OD Checkbox -->
-                                    <label class="flex items-center gap-1.5 cursor-pointer select-none bg-slate-950 px-2.5 py-1.5 rounded-lg border border-slate-800 hover:border-teal-500/50 transition-all">
-                                        <input type="checkbox" id="chk-od" class="w-3.5 h-3.5 accent-teal-500 rounded cursor-pointer">
-                                        <span class="text-xs font-bold text-teal-400 whitespace-nowrap">OD (วันละครั้ง)</span>
+                                    <label class="flex items-center gap-2 cursor-pointer select-none bg-slate-950 px-3 py-2 rounded-xl border border-slate-800 hover:border-teal-500/50 transition-all">
+                                        <input type="checkbox" id="chk-od" class="w-4 h-4 accent-teal-500 rounded cursor-pointer">
+                                        <span class="text-xs sm:text-sm font-bold text-teal-400 whitespace-nowrap">OD (วันละครั้ง)</span>
                                     </label>
 
                                     <!-- Custom Date Trigger -->
                                     <div class="relative inline-block">
-                                        <button type="button" id="btn-date-trigger" class="flex items-center gap-1.5 px-2.5 py-1.5 bg-slate-950 text-white text-xs font-bold border border-slate-800 rounded-lg hover:border-teal-400 transition-all cursor-pointer">
+                                        <button type="button" id="btn-date-trigger" class="flex items-center gap-2 px-3 py-2 bg-slate-950 text-white text-xs sm:text-sm font-bold border border-slate-800 rounded-xl hover:border-teal-400 transition-all cursor-pointer">
                                             <span id="txt-display-date" class="font-bold text-teal-300">DD/MM/YYYY</span>
-                                            <svg class="w-3.5 h-3.5 stroke-current text-teal-400 shrink-0" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
+                                            <svg class="w-4 h-4 stroke-current text-teal-400 shrink-0" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
                                         </button>
                                         <input type="date" id="ins-start-date" value="${todayISO}" class="opacity-0 absolute inset-0 w-full h-full cursor-pointer pointer-events-auto">
                                     </div>
@@ -118,30 +118,30 @@ export function render(container) {
                         </div>
 
                         <!-- Alcohol Mode Selector -->
-                        <div class="pt-2 border-t border-slate-800">
-                            <label class="block text-xs font-bold text-slate-400 mb-1.5">ขนาดแผงสำลีแอลกอฮอล์</label>
-                            <div class="grid grid-cols-3 gap-1">
-                                <button type="button" id="btn-alc-all" class="py-1 px-1 rounded-lg border font-bold text-xs bg-teal-600 text-white border-teal-500 transition-all text-center">ทั้งหมด</button>
-                                <button type="button" id="btn-alc-8" class="py-1 px-1 rounded-lg border font-bold text-xs bg-slate-950 text-slate-300 border-slate-800 hover:bg-slate-800 transition-all text-center">8 ก้อน</button>
-                                <button type="button" id="btn-alc-10" class="py-1 px-1 rounded-lg border font-bold text-xs bg-slate-950 text-slate-300 border-slate-800 hover:bg-slate-800 transition-all text-center">10 ก้อน</button>
+                        <div class="pt-3 border-t border-slate-800">
+                            <label class="block text-xs font-bold text-slate-400 mb-2">ขนาดแผงสำลีแอลกอฮอล์</label>
+                            <div class="grid grid-cols-3 gap-1.5">
+                                <button type="button" id="btn-alc-all" class="py-2 px-1 rounded-xl border font-bold text-xs bg-teal-600 text-white border-teal-500 transition-all text-center">ทั้งหมด</button>
+                                <button type="button" id="btn-alc-8" class="py-2 px-1 rounded-xl border font-bold text-xs bg-slate-950 text-slate-300 border-slate-800 hover:bg-slate-800 transition-all text-center">8 ก้อน</button>
+                                <button type="button" id="btn-alc-10" class="py-2 px-1 rounded-xl border font-bold text-xs bg-slate-950 text-slate-300 border-slate-800 hover:bg-slate-800 transition-all text-center">10 ก้อน</button>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Bottom Box: Next Appointment (ย้ายมาจากด้านล่างสุด) -->
-                    <div class="bg-white p-3.5 px-4 rounded-2xl border border-slate-200 shadow-sm space-y-1.5 text-center">
-                        <div class="flex items-center justify-center gap-2 text-slate-800 font-extrabold text-sm">
-                            <svg class="w-4 h-4 stroke-current text-teal-600 shrink-0" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="m9 16 2 2 4-4"/></svg>
+                    <!-- Bottom Box: Next Appointment (Expanded height and larger fonts) -->
+                    <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm space-y-2 text-center">
+                        <div class="flex items-center justify-center gap-2 text-slate-800 font-extrabold text-base">
+                            <svg class="w-5 h-5 stroke-current text-teal-600 shrink-0" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="m9 16 2 2 4-4"/></svg>
                             <span>วันนัดถัดไป</span>
                         </div>
 
-                        <div class="text-lg font-black text-teal-800 tracking-tight leading-snug" id="res-fu-line">
+                        <div class="text-xl sm:text-2xl font-black text-teal-800 tracking-tight leading-snug" id="res-fu-line">
                             -
                         </div>
 
                         <!-- Weekend Warning Alert Box -->
-                        <div id="weekend-warning" class="hidden p-1.5 bg-rose-50 border border-rose-200 text-rose-700 rounded-lg font-bold text-xs flex items-center justify-center gap-1">
-                            <svg class="w-3.5 h-3.5 stroke-current text-rose-600 shrink-0" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
+                        <div id="weekend-warning" class="hidden p-2 bg-rose-50 border border-rose-200 text-rose-700 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5">
+                            <svg class="w-4 h-4 stroke-current text-rose-600 shrink-0" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
                             <span id="warning-text">ตรงกับวันหยุด กรุณาเลื่อนวันนัด!</span>
                         </div>
                     </div>
@@ -150,142 +150,142 @@ export function render(container) {
 
 
                 <!-- ================= RIGHT COLUMN: OUTPUT PANEL (8/12 = ~67%) ================= -->
-                <div class="lg:col-span-8 flex flex-col justify-between space-y-3">
+                <div class="lg:col-span-8 flex flex-col justify-between space-y-4">
                     
                     <!-- Top Warning Alert -->
-                    <div id="vial-lowdose-warning" class="hidden p-2 bg-amber-50 border border-amber-300 text-amber-900 rounded-xl text-xs sm:text-sm font-extrabold flex items-center justify-center gap-2 shadow-xs shrink-0">
-                        <svg class="w-4 h-4 stroke-current text-amber-600 shrink-0" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
+                    <div id="vial-lowdose-warning" class="hidden p-2.5 bg-amber-50 border border-amber-300 text-amber-900 rounded-xl text-sm font-extrabold flex items-center justify-center gap-2 shadow-xs shrink-0">
+                        <svg class="w-5 h-5 stroke-current text-amber-600 shrink-0" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
                         <span>ยา 1 vial อาจเสื่อมสภาพก่อนใช้ยาหมด (40 วัน)</span>
                     </div>
 
                     <!-- 2 Columns Output Grid: Penfill vs Vial -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 h-full items-stretch">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 h-full items-stretch">
                         
-                        <!-- COLUMN 1: PENFILL (Sky Blue Card) -->
-                        <div class="bg-sky-50/60 border border-sky-200/90 p-3.5 sm:p-4 rounded-2xl shadow-xs flex flex-col justify-between space-y-3 h-full">
+                        <!-- COLUMN 1: PENFILL (Sky Blue Card - Expanded Heights to Fill Space) -->
+                        <div class="bg-sky-50/60 border border-sky-200/90 p-4 sm:p-5 rounded-2xl shadow-xs flex flex-col justify-between space-y-4 h-full">
                             <!-- Title -->
-                            <div class="border-b border-sky-200 pb-2 shrink-0">
-                                <h3 class="text-base font-extrabold text-sky-900 flex items-center gap-2">
-                                    <svg class="w-4 h-4 stroke-current text-sky-600" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+                            <div class="border-b border-sky-200 pb-3 shrink-0">
+                                <h3 class="text-lg font-extrabold text-sky-900 flex items-center gap-2">
+                                    <svg class="w-5 h-5 stroke-current text-sky-600" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
                                     <span>Penfill (300 U)</span>
                                 </h3>
                             </div>
 
-                            <!-- Item List -->
-                            <div class="flex-1 flex flex-col justify-between gap-2.5">
+                            <!-- Item List (Flex grow & auto heights) -->
+                            <div class="flex-1 flex flex-col justify-around gap-3">
                                 <!-- Penfill Drug -->
-                                <div class="bg-white p-3 px-4 rounded-xl border border-sky-100 shadow-xs flex items-center justify-between min-h-[80px]">
-                                    <div class="flex items-center gap-3">
-                                        <img src="${IMG_BASE_URL}cartridge.jpg" alt="Cartridge" class="w-16 h-16 object-cover rounded-xl border border-slate-100 shrink-0">
-                                        <span class="font-extrabold text-sky-950 text-xl whitespace-nowrap">Penfill</span>
+                                <div class="bg-white p-4 px-5 rounded-2xl border border-sky-100 shadow-xs flex items-center justify-between min-h-[105px] flex-1">
+                                    <div class="flex items-center gap-4">
+                                        <img src="${IMG_BASE_URL}cartridge.jpg" alt="Cartridge" class="w-20 h-20 object-cover rounded-xl border border-slate-100 shrink-0">
+                                        <span class="font-extrabold text-sky-950 text-2xl whitespace-nowrap">Penfill</span>
                                     </div>
                                     <div class="text-right shrink-0">
-                                        <div class="flex items-baseline justify-end gap-1">
-                                            <span id="res-cartridge-net" class="text-4xl font-black text-sky-700 leading-none">0</span>
-                                            <span class="text-xs sm:text-sm font-bold text-slate-500 whitespace-nowrap">หลอด</span>
+                                        <div class="flex items-baseline justify-end gap-1.5">
+                                            <span id="res-cartridge-net" class="text-5xl font-black text-sky-700 leading-none">0</span>
+                                            <span class="text-base font-bold text-slate-500 whitespace-nowrap">หลอด</span>
                                         </div>
-                                        <div class="text-[11px] font-semibold text-slate-400 mt-0.5">คำนวณ: <span id="res-cartridge-calc">0.00</span></div>
+                                        <div class="text-xs font-semibold text-slate-400 mt-1">คำนวณ: <span id="res-cartridge-calc">0.00</span></div>
                                     </div>
                                 </div>
 
                                 <!-- Needle Pen -->
-                                <div class="bg-white p-3 px-4 rounded-xl border border-sky-100 shadow-xs flex items-center justify-between min-h-[80px]">
-                                    <div class="flex items-center gap-3">
-                                        <img src="${IMG_BASE_URL}needle-pen.jpg" alt="Needle Pen" class="w-16 h-16 object-cover rounded-xl border border-slate-100 shrink-0">
-                                        <span class="font-extrabold text-sky-950 text-xl whitespace-nowrap">Needle Pen</span>
+                                <div class="bg-white p-4 px-5 rounded-2xl border border-sky-100 shadow-xs flex items-center justify-between min-h-[105px] flex-1">
+                                    <div class="flex items-center gap-4">
+                                        <img src="${IMG_BASE_URL}needle-pen.jpg" alt="Needle Pen" class="w-20 h-20 object-cover rounded-xl border border-slate-100 shrink-0">
+                                        <span class="font-extrabold text-sky-950 text-2xl whitespace-nowrap">Needle Pen</span>
                                     </div>
-                                    <div class="flex items-baseline gap-1 shrink-0">
-                                        <span id="res-pen-needle" class="text-4xl font-black text-sky-700 leading-none">0</span>
-                                        <span class="text-xs sm:text-sm font-bold text-slate-500 whitespace-nowrap">ชิ้น</span>
+                                    <div class="flex items-baseline gap-1.5 shrink-0">
+                                        <span id="res-pen-needle" class="text-5xl font-black text-sky-700 leading-none">0</span>
+                                        <span class="text-base font-bold text-slate-500 whitespace-nowrap">ชิ้น</span>
                                     </div>
                                 </div>
 
                                 <!-- Alcohol 8 (หน่วย: แผง) -->
-                                <div id="box-penfill-alc8" class="bg-white p-3 px-4 rounded-xl border border-sky-100 shadow-xs flex items-center justify-between min-h-[80px]">
-                                    <div class="flex items-center gap-3">
-                                        <img src="${IMG_BASE_URL}alc-8.jpg" alt="Alcohol 8" class="w-16 h-16 object-cover rounded-xl border border-slate-100 shrink-0">
-                                        <span class="font-extrabold text-sky-950 text-xl whitespace-nowrap">สำลี 8 ก้อน</span>
+                                <div id="box-penfill-alc8" class="bg-white p-4 px-5 rounded-2xl border border-sky-100 shadow-xs flex items-center justify-between min-h-[105px] flex-1">
+                                    <div class="flex items-center gap-4">
+                                        <img src="${IMG_BASE_URL}alc-8.jpg" alt="Alcohol 8" class="w-20 h-20 object-cover rounded-xl border border-slate-100 shrink-0">
+                                        <span class="font-extrabold text-sky-950 text-2xl whitespace-nowrap">สำลี 8 ก้อน</span>
                                     </div>
-                                    <div class="flex items-baseline gap-1 shrink-0">
-                                        <span id="res-penfill-alc8" class="text-4xl font-black text-sky-700 leading-none">0</span>
-                                        <span class="text-xs sm:text-sm font-bold text-slate-500 whitespace-nowrap">แผง</span>
+                                    <div class="flex items-baseline gap-1.5 shrink-0">
+                                        <span id="res-penfill-alc8" class="text-5xl font-black text-sky-700 leading-none">0</span>
+                                        <span class="text-base font-bold text-slate-500 whitespace-nowrap">แผง</span>
                                     </div>
                                 </div>
 
                                 <!-- Alcohol 10 (หน่วย: แผง) -->
-                                <div id="box-penfill-alc10" class="bg-white p-3 px-4 rounded-xl border border-sky-100 shadow-xs flex items-center justify-between min-h-[80px]">
-                                    <div class="flex items-center gap-3">
-                                        <img src="${IMG_BASE_URL}alc-10.jpg" alt="Alcohol 10" class="w-16 h-16 object-cover rounded-xl border border-slate-100 shrink-0">
-                                        <span class="font-extrabold text-sky-950 text-xl whitespace-nowrap">สำลี 10 ก้อน</span>
+                                <div id="box-penfill-alc10" class="bg-white p-4 px-5 rounded-2xl border border-sky-100 shadow-xs flex items-center justify-between min-h-[105px] flex-1">
+                                    <div class="flex items-center gap-4">
+                                        <img src="${IMG_BASE_URL}alc-10.jpg" alt="Alcohol 10" class="w-20 h-20 object-cover rounded-xl border border-slate-100 shrink-0">
+                                        <span class="font-extrabold text-sky-950 text-2xl whitespace-nowrap">สำลี 10 ก้อน</span>
                                     </div>
-                                    <div class="flex items-baseline gap-1 shrink-0">
-                                        <span id="res-penfill-alc10" class="text-4xl font-black text-sky-700 leading-none">0</span>
-                                        <span class="text-xs sm:text-sm font-bold text-slate-500 whitespace-nowrap">แผง</span>
+                                    <div class="flex items-baseline gap-1.5 shrink-0">
+                                        <span id="res-penfill-alc10" class="text-5xl font-black text-sky-700 leading-none">0</span>
+                                        <span class="text-base font-bold text-slate-500 whitespace-nowrap">แผง</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- COLUMN 2: VIAL (Amber Card) -->
-                        <div class="bg-amber-50/60 border border-amber-200/90 p-3.5 sm:p-4 rounded-2xl shadow-xs flex flex-col justify-between space-y-3 h-full">
+                        <!-- COLUMN 2: VIAL (Amber Card - Expanded Heights to Fill Space) -->
+                        <div class="bg-amber-50/60 border border-amber-200/90 p-4 sm:p-5 rounded-2xl shadow-xs flex flex-col justify-between space-y-4 h-full">
                             <!-- Title -->
-                            <div class="border-b border-amber-200 pb-2 shrink-0">
-                                <h3 class="text-base font-extrabold text-amber-900 flex items-center gap-2">
-                                    <svg class="w-4 h-4 stroke-current text-amber-600" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v2a2 2 0 0 0 2 2h0a2 2 0 0 0 2-2V2"/><path d="M8.5 2h7"/><path d="M14 6.5v4a6.5 6.5 0 0 1 2 4.5 3 3 0 0 1-3 3H11a3 3 0 0 1-3-3 6.5 6.5 0 0 1 2-4.5v-4"/></svg>
+                            <div class="border-b border-amber-200 pb-3 shrink-0">
+                                <h3 class="text-lg font-extrabold text-amber-900 flex items-center gap-2">
+                                    <svg class="w-5 h-5 stroke-current text-amber-600" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v2a2 2 0 0 0 2 2h0a2 2 0 0 0 2-2V2"/><path d="M8.5 2h7"/><path d="M14 6.5v4a6.5 6.5 0 0 1 2 4.5 3 3 0 0 1-3 3H11a3 3 0 0 1-3-3 6.5 6.5 0 0 1 2-4.5v-4"/></svg>
                                     <span>Vial (1000 U)</span>
                                 </h3>
                             </div>
 
-                            <!-- Item List -->
-                            <div class="flex-1 flex flex-col justify-between gap-2.5">
+                            <!-- Item List (Flex grow & auto heights) -->
+                            <div class="flex-1 flex flex-col justify-around gap-3">
                                 <!-- Vial Drug -->
-                                <div class="bg-white p-3 px-4 rounded-xl border border-amber-100 shadow-xs flex items-center justify-between min-h-[80px]">
-                                    <div class="flex items-center gap-3">
-                                        <img src="${IMG_BASE_URL}vial.jpg" alt="Vial" class="w-16 h-16 object-cover rounded-xl border border-slate-100 shrink-0">
-                                        <span class="font-extrabold text-amber-950 text-xl whitespace-nowrap">ยา Vial</span>
+                                <div class="bg-white p-4 px-5 rounded-2xl border border-amber-100 shadow-xs flex items-center justify-between min-h-[105px] flex-1">
+                                    <div class="flex items-center gap-4">
+                                        <img src="${IMG_BASE_URL}vial.jpg" alt="Vial" class="w-20 h-20 object-cover rounded-xl border border-slate-100 shrink-0">
+                                        <span class="font-extrabold text-amber-950 text-2xl whitespace-nowrap">ยา Vial</span>
                                     </div>
                                     <div class="text-right shrink-0">
-                                        <div class="flex items-baseline justify-end gap-1">
-                                            <span id="res-vial-net" class="text-4xl font-black text-amber-700 leading-none">0</span>
-                                            <span class="text-xs sm:text-sm font-bold text-slate-500 whitespace-nowrap">ขวด</span>
+                                        <div class="flex items-baseline justify-end gap-1.5">
+                                            <span id="res-vial-net" class="text-5xl font-black text-amber-700 leading-none">0</span>
+                                            <span class="text-base font-bold text-slate-500 whitespace-nowrap">ขวด</span>
                                         </div>
-                                        <div class="text-[11px] font-semibold text-slate-400 mt-0.5">คำนวณ: <span id="res-vial-calc">0.00</span></div>
+                                        <div class="text-xs font-semibold text-slate-400 mt-1">คำนวณ: <span id="res-vial-calc">0.00</span></div>
                                     </div>
                                 </div>
 
                                 <!-- Syringe -->
-                                <div class="bg-white p-3 px-4 rounded-xl border border-amber-100 shadow-xs flex items-center justify-between min-h-[80px]">
-                                    <div class="flex items-center gap-3">
-                                        <img src="${IMG_BASE_URL}syringe.jpg" alt="Syringe" class="w-16 h-16 object-cover rounded-xl border border-slate-100 shrink-0">
-                                        <span class="font-extrabold text-amber-950 text-xl whitespace-nowrap">Syringe</span>
+                                <div class="bg-white p-4 px-5 rounded-2xl border border-amber-100 shadow-xs flex items-center justify-between min-h-[105px] flex-1">
+                                    <div class="flex items-center gap-4">
+                                        <img src="${IMG_BASE_URL}syringe.jpg" alt="Syringe" class="w-20 h-20 object-cover rounded-xl border border-slate-100 shrink-0">
+                                        <span class="font-extrabold text-amber-950 text-2xl whitespace-nowrap">Syringe</span>
                                     </div>
-                                    <div class="flex items-baseline gap-1 shrink-0">
-                                        <span id="res-syringe" class="text-4xl font-black text-amber-700 leading-none">0</span>
-                                        <span class="text-xs sm:text-sm font-bold text-slate-500 whitespace-nowrap">ชิ้น</span>
+                                    <div class="flex items-baseline gap-1.5 shrink-0">
+                                        <span id="res-syringe" class="text-5xl font-black text-amber-700 leading-none">0</span>
+                                        <span class="text-base font-bold text-slate-500 whitespace-nowrap">ชิ้น</span>
                                     </div>
                                 </div>
 
                                 <!-- Alcohol 8 (หน่วย: แผง) -->
-                                <div id="box-vial-alc8" class="bg-white p-3 px-4 rounded-xl border border-amber-100 shadow-xs flex items-center justify-between min-h-[80px]">
-                                    <div class="flex items-center gap-3">
-                                        <img src="${IMG_BASE_URL}alc-8.jpg" alt="Alcohol 8" class="w-16 h-16 object-cover rounded-xl border border-slate-100 shrink-0">
-                                        <span class="font-extrabold text-amber-950 text-xl whitespace-nowrap">สำลี 8 ก้อน</span>
+                                <div id="box-vial-alc8" class="bg-white p-4 px-5 rounded-2xl border border-amber-100 shadow-xs flex items-center justify-between min-h-[105px] flex-1">
+                                    <div class="flex items-center gap-4">
+                                        <img src="${IMG_BASE_URL}alc-8.jpg" alt="Alcohol 8" class="w-20 h-20 object-cover rounded-xl border border-slate-100 shrink-0">
+                                        <span class="font-extrabold text-amber-950 text-2xl whitespace-nowrap">สำลี 8 ก้อน</span>
                                     </div>
-                                    <div class="flex items-baseline gap-1 shrink-0">
-                                        <span id="res-vial-alc8" class="text-4xl font-black text-amber-700 leading-none">0</span>
-                                        <span class="text-xs sm:text-sm font-bold text-slate-500 whitespace-nowrap">แผง</span>
+                                    <div class="flex items-baseline gap-1.5 shrink-0">
+                                        <span id="res-vial-alc8" class="text-5xl font-black text-amber-700 leading-none">0</span>
+                                        <span class="text-base font-bold text-slate-500 whitespace-nowrap">แผง</span>
                                     </div>
                                 </div>
 
                                 <!-- Alcohol 10 (หน่วย: แผง) -->
-                                <div id="box-vial-alc10" class="bg-white p-3 px-4 rounded-xl border border-amber-100 shadow-xs flex items-center justify-between min-h-[80px]">
-                                    <div class="flex items-center gap-3">
-                                        <img src="${IMG_BASE_URL}alc-10.jpg" alt="Alcohol 10" class="w-16 h-16 object-cover rounded-xl border border-slate-100 shrink-0">
-                                        <span class="font-extrabold text-amber-950 text-xl whitespace-nowrap">สำลี 10 ก้อน</span>
+                                <div id="box-vial-alc10" class="bg-white p-4 px-5 rounded-2xl border border-amber-100 shadow-xs flex items-center justify-between min-h-[105px] flex-1">
+                                    <div class="flex items-center gap-4">
+                                        <img src="${IMG_BASE_URL}alc-10.jpg" alt="Alcohol 10" class="w-20 h-20 object-cover rounded-xl border border-slate-100 shrink-0">
+                                        <span class="font-extrabold text-amber-950 text-2xl whitespace-nowrap">สำลี 10 ก้อน</span>
                                     </div>
-                                    <div class="flex items-baseline gap-1 shrink-0">
-                                        <span id="res-vial-alc10" class="text-4xl font-black text-amber-700 leading-none">0</span>
-                                        <span class="text-xs sm:text-sm font-bold text-slate-500 whitespace-nowrap">แผง</span>
+                                    <div class="flex items-baseline gap-1.5 shrink-0">
+                                        <span id="res-vial-alc10" class="text-5xl font-black text-amber-700 leading-none">0</span>
+                                        <span class="text-base font-bold text-slate-500 whitespace-nowrap">แผง</span>
                                     </div>
                                 </div>
                             </div>
@@ -370,8 +370,8 @@ function setAlcMode(mode, container) {
     const btn8 = container.querySelector('#btn-alc-8');
     const btn10 = container.querySelector('#btn-alc-10');
 
-    const defaultClass = "py-1 px-1 rounded-lg border font-bold text-xs bg-slate-950 text-slate-300 border-slate-800 hover:bg-slate-800 transition-all text-center";
-    const activeClass = "py-1 px-1 rounded-lg border font-bold text-xs bg-teal-600 text-white border-teal-500 transition-all text-center";
+    const defaultClass = "py-2 px-1 rounded-xl border font-bold text-xs bg-slate-950 text-slate-300 border-slate-800 hover:bg-slate-800 transition-all text-center";
+    const activeClass = "py-2 px-1 rounded-xl border font-bold text-xs bg-teal-600 text-white border-teal-500 transition-all text-center";
 
     btnAll.className = mode === 'all' ? activeClass : defaultClass;
     btn8.className = mode === '8' ? activeClass : defaultClass;
