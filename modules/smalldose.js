@@ -1,6 +1,6 @@
 /**
  * Smalldose Calculator Module
- * Updated: Added +/- buttons to PNA input & added comma formatting for all dose numbers.
+ * Updated: Gentamicin <= 29 wk logic, Cloxacillin & Clindamycin PNA threshold fixes, Clindamycin Min/Max 5-7 mg/kg columns.
  */
 
 export function render(container) {
@@ -57,7 +57,7 @@ export function render(container) {
                         ข้อมูลทารก (BABY)
                     </span>
                     
-                    <!-- PNA Input (พร้อมปุ่ม +/-) -->
+                    <!-- PNA Input -->
                     <div>
                         <label class="block text-xs font-semibold text-slate-200 mb-1">PNA (อายุหลังคลอด)</label>
                         <div class="flex items-center gap-1.5 bg-white border border-slate-300 rounded-xl h-10 px-1.5">
@@ -116,12 +116,12 @@ export function render(container) {
                         </label>
 
                         <label class="flex items-center gap-1.5 p-2 rounded-xl bg-slate-950 border border-amber-500/50 hover:border-amber-400 cursor-pointer transition-all min-w-0">
-                            <input type="checkbox" id="sd-chk-cloxacillin" class="w-3.5 h-3.5 rounded accent-amber-500 cursor-pointer shrink-0">
+                            <input type="checkbox" id="sd-chk-cloxacillin" checked class="w-3.5 h-3.5 rounded accent-amber-500 cursor-pointer shrink-0">
                             <span class="text-[11px] font-bold text-amber-300 truncate">Cloxacillin</span>
                         </label>
 
                         <label class="flex items-center gap-1.5 p-2 rounded-xl bg-slate-950 border border-rose-500/50 hover:border-rose-400 cursor-pointer transition-all min-w-0">
-                            <input type="checkbox" id="sd-chk-clindamycin" class="w-3.5 h-3.5 rounded accent-rose-500 cursor-pointer shrink-0">
+                            <input type="checkbox" id="sd-chk-clindamycin" checked class="w-3.5 h-3.5 rounded accent-rose-500 cursor-pointer shrink-0">
                             <span class="text-[10px] font-bold text-rose-300 truncate">Clindamycin</span>
                         </label>
                     </div>
@@ -157,13 +157,10 @@ export function render(container) {
                                 <th class="py-2.5 px-3">Interval</th>
                             </tr>
                         </thead>
-                        <tbody id="sd-tbl-ampicillin" class="divide-y divide-slate-100 text-slate-700 font-medium">
-                            <!-- JS Generated Rows -->
-                        </tbody>
+                        <tbody id="sd-tbl-ampicillin" class="divide-y divide-slate-100 text-slate-700 font-medium"></tbody>
                     </table>
                 </div>
 
-                <!-- Note Section for Ampicillin -->
                 <div class="bg-slate-50/80 border border-slate-200 rounded-2xl p-3 text-xs text-slate-700 space-y-1.5">
                     <div class="flex flex-wrap items-baseline gap-1.5">
                         <span class="font-bold text-slate-900 shrink-0">IV slow push / IM :</span>
@@ -176,9 +173,6 @@ export function render(container) {
                     <div class="flex flex-wrap items-baseline gap-1.5">
                         <span class="font-bold text-slate-900 shrink-0">Compatible Solution :</span>
                         <span class="font-semibold text-slate-800">D5W, LRS , NSS, SWI.</span>
-                    </div>
-                    <div class="text-[11px] text-slate-400 italic pt-1 border-t border-slate-200/60">
-                        Recommended concentrations are 30, 40, 50, and 100 mg/mL for intermittent IV
                     </div>
                 </div>
             </div>
@@ -206,15 +200,13 @@ export function render(container) {
                                 <th class="py-2.5 px-3">Interval</th>
                             </tr>
                         </thead>
-                        <tbody id="sd-tbl-gentamicin" class="divide-y divide-slate-100 text-slate-700 font-medium">
-                            <!-- JS Generated Rows -->
-                        </tbody>
+                        <tbody id="sd-tbl-gentamicin" class="divide-y divide-slate-100 text-slate-700 font-medium"></tbody>
                     </table>
                 </div>
             </div>
 
             <!-- Card Cloxacillin -->
-            <div id="sd-card-cloxacillin" class="bg-slate-100/90 backdrop-blur-md rounded-3xl p-5 border border-slate-300 shadow-sm transition-all space-y-4 hidden">
+            <div id="sd-card-cloxacillin" class="bg-slate-100/90 backdrop-blur-md rounded-3xl p-5 border border-slate-300 shadow-sm transition-all space-y-4">
                 <div class="flex items-center gap-2">
                     <span class="w-3.5 h-3.5 rounded-full bg-amber-500 inline-block"></span>
                     <h3 class="text-xl font-bold text-slate-800">Cloxacillin</h3>
@@ -230,18 +222,16 @@ export function render(container) {
                                 <th class="py-2.5 px-3">Interval</th>
                             </tr>
                         </thead>
-                        <tbody id="sd-tbl-cloxacillin" class="divide-y divide-slate-100 text-slate-700 font-medium">
-                            <!-- JS Generated Rows -->
-                        </tbody>
+                        <tbody id="sd-tbl-cloxacillin" class="divide-y divide-slate-100 text-slate-700 font-medium"></tbody>
                     </table>
                 </div>
             </div>
 
             <!-- Card Clindamycin -->
-            <div id="sd-card-clindamycin" class="bg-slate-100/90 backdrop-blur-md rounded-3xl p-5 border border-slate-300 shadow-sm transition-all space-y-4 hidden">
+            <div id="sd-card-clindamycin" class="bg-slate-100/90 backdrop-blur-md rounded-3xl p-5 border border-slate-300 shadow-sm transition-all space-y-4">
                 <div class="flex items-center gap-2">
                     <span class="w-3.5 h-3.5 rounded-full bg-rose-600 inline-block"></span>
-                    <h3 class="text-xl font-bold text-slate-800">Clindamycin</h3>
+                    <h3 class="text-xl font-bold text-slate-800">Clindamycin <span class="text-sm font-normal text-slate-600">(Dose: 5 - 7 mg/kg)</span></h3>
                 </div>
                 <div class="overflow-x-auto rounded-2xl border border-slate-200 bg-white">
                     <table class="w-full text-left border-collapse text-xs">
@@ -249,15 +239,20 @@ export function render(container) {
                             <tr class="bg-slate-50 text-slate-600 border-b border-slate-200 font-bold">
                                 <th class="py-2.5 px-3">PMA</th>
                                 <th class="py-2.5 px-3">PNA</th>
-                                <th class="py-2.5 px-3 text-right">Dose (mg)</th>
+                                <th class="py-2.5 px-3 text-right">5mg/kg (mg)</th>
+                                <th class="py-2.5 px-3 text-right">7mg/kg (mg)</th>
                                 <th class="py-2.5 px-3">Unit</th>
                                 <th class="py-2.5 px-3">Interval</th>
                             </tr>
                         </thead>
-                        <tbody id="sd-tbl-clindamycin" class="divide-y divide-slate-100 text-slate-700 font-medium">
-                            <!-- JS Generated Rows -->
-                        </tbody>
+                        <tbody id="sd-tbl-clindamycin" class="divide-y divide-slate-100 text-slate-700 font-medium"></tbody>
                     </table>
+                </div>
+                <div class="bg-slate-50/80 border border-slate-200 rounded-2xl p-3 text-xs text-slate-700 space-y-1">
+                    <div class="flex flex-wrap items-baseline gap-1.5">
+                        <span class="font-bold text-slate-900 shrink-0">Compatible Solution :</span>
+                        <span class="font-semibold text-slate-800">D5W, D10W, NSS</span>
+                    </div>
                 </div>
             </div>
 
@@ -292,7 +287,6 @@ function initSmalldoseEvents(container) {
     const cardClox = container.querySelector('#sd-card-cloxacillin');
     const cardClinda = container.querySelector('#sd-card-clindamycin');
 
-    // Helper สำหรับฟอร์แมต Comma
     function formatNum(val, decimals = 2) {
         const num = parseFloat(val);
         if (isNaN(num)) return "0.00";
@@ -302,7 +296,6 @@ function initSmalldoseEvents(container) {
         });
     }
 
-    // Enter Navigation
     inputs.forEach((input, index) => {
         input.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
@@ -318,7 +311,6 @@ function initSmalldoseEvents(container) {
         });
     });
 
-    // PNA +/- Handlers
     pnaMinusBtn.addEventListener('click', () => {
         let val = parseInt(pnaDayInput.value) || 0;
         if (val > 1) {
@@ -335,7 +327,6 @@ function initSmalldoseEvents(container) {
         calculateAll();
     });
 
-    // BW +/- Handlers
     bwMinusBtn.addEventListener('click', () => {
         let val = parseFloat(bwInput.value) || 0;
         if (val > 0.1) {
@@ -352,19 +343,17 @@ function initSmalldoseEvents(container) {
         calculateAll();
     });
 
-    // Reset Handler
     resetBtn.addEventListener('click', () => {
         inputs.forEach(input => input.value = "");
-
         chkAmp.checked = true;
         chkGenta.checked = true;
-        chkClox.checked = false;
-        chkClinda.checked = false;
+        chkClox.checked = true;
+        chkClinda.checked = true;
         
         cardAmp.classList.remove('hidden');
         cardGenta.classList.remove('hidden');
-        cardClox.classList.add('hidden');
-        cardClinda.classList.add('hidden');
+        cardClox.classList.remove('hidden');
+        cardClinda.classList.remove('hidden');
 
         calculateAll();
     });
@@ -416,11 +405,11 @@ function initSmalldoseEvents(container) {
 
         const rows = [
             { pmaCond: pma <= 29, pnaCond: pna <= 28, pmaText: "≤ 29 wk", pnaText: "0 - 28 days", div: 2, freq: "q 12 hr(s)" },
-            { pmaCond: pma <= 29, pnaCond: pna > 28, pmaText: "≤ 29 wk", pnaText: "≥ 29 days", div: 3, freq: "q 8 hr(s)" },
+            { pmaCond: pma <= 29, pnaCond: pna >= 29, pmaText: "≤ 29 wk", pnaText: "≥ 29 days", div: 3, freq: "q 8 hr(s)" },
             { pmaCond: pma >= 30 && pma <= 36, pnaCond: pna <= 14, pmaText: "30 - 36 wk", pnaText: "0 - 14 days", div: 2, freq: "q 12 hr(s)" },
-            { pmaCond: pma >= 30 && pma <= 36, pnaCond: pna > 14, pmaText: "30 - 36 wk", pnaText: "≥ 15 days", div: 3, freq: "q 8 hr(s)" },
+            { pmaCond: pma >= 30 && pma <= 36, pnaCond: pna >= 15, pmaText: "30 - 36 wk", pnaText: "≥ 15 days", div: 3, freq: "q 8 hr(s)" },
             { pmaCond: pma >= 37 && pma <= 44, pnaCond: pna <= 7, pmaText: "37 - 44 wk", pnaText: "0 - 7 days", div: 2, freq: "q 12 hr(s)" },
-            { pmaCond: pma >= 37 && pma <= 44, pnaCond: pna > 7, pmaText: "37 - 44 wk", pnaText: "≥ 8 days", div: 3, freq: "q 8 hr(s)" },
+            { pmaCond: pma >= 37 && pma <= 44, pnaCond: pna >= 8, pmaText: "37 - 44 wk", pnaText: "≥ 8 days", div: 3, freq: "q 8 hr(s)" },
             { pmaCond: pma >= 45, pnaCond: true, pmaText: "≥ 45 wk", pnaText: "All days", div: 4, freq: "q 6 hr(s)" },
         ];
 
@@ -448,11 +437,11 @@ function initSmalldoseEvents(container) {
         container.querySelector('#sd-genta-vol').innerText = `Min Sol Vol (10mg/ml): ${formatNum(minVolNum)} ml`;
 
         const rows = [
-            { pmaCond: pma < 29, pnaCond: pna <= 7, pmaText: "< 29 wk", pnaText: "0 - 7 days", dose: 5.0, freq: "q 48 hr(s)" },
-            { pmaCond: pma < 29, pnaCond: pna >= 8 && pna <= 28, pmaText: "< 29 wk", pnaText: "8 - 28 days", dose: 4.0, freq: "q 36 hr(s)" },
-            { pmaCond: pma < 29, pnaCond: pna > 28, pmaText: "< 29 wk", pnaText: "≥ 29 days", dose: 4.0, freq: "q 24 hr(s)" },
+            { pmaCond: pma <= 29, pnaCond: pna <= 7, pmaText: "≤ 29 wk", pnaText: "0 - 7 days", dose: 5.0, freq: "q 48 hr(s)" },
+            { pmaCond: pma <= 29, pnaCond: pna >= 8 && pna <= 28, pmaText: "≤ 29 wk", pnaText: "8 - 28 days", dose: 4.0, freq: "q 36 hr(s)" },
+            { pmaCond: pma <= 29, pnaCond: pna >= 29, pmaText: "≤ 29 wk", pnaText: "≥ 29 days", dose: 4.0, freq: "q 24 hr(s)" },
             { pmaCond: pma >= 30 && pma <= 34, pnaCond: pna <= 7, pmaText: "30 - 34 wk", pnaText: "0 - 7 days", dose: 4.5, freq: "q 36 hr(s)" },
-            { pmaCond: pma >= 30 && pma <= 34, pnaCond: pna > 7, pmaText: "30 - 34 wk", pnaText: "≥ 8 days", dose: 4.0, freq: "q 24 hr(s)" },
+            { pmaCond: pma >= 30 && pma <= 34, pnaCond: pna >= 8, pmaText: "30 - 34 wk", pnaText: "≥ 8 days", dose: 4.0, freq: "q 24 hr(s)" },
             { pmaCond: pma >= 35, pnaCond: true, pmaText: "≥ 35 wk", pnaText: "All days", dose: 4.0, freq: "q 24 hr(s)" },
         ];
 
@@ -476,11 +465,11 @@ function initSmalldoseEvents(container) {
     function renderCloxacillin(pma, pna, bw) {
         const rows = [
             { pmaCond: pma <= 29, pnaCond: pna <= 28, pmaText: "≤ 29 wk", pnaText: "0 - 28 days", dose: 25, freq: "q 12 hr(s)" },
-            { pmaCond: pma <= 29, pnaCond: pna > 28, pmaText: "≤ 29 wk", pnaText: "> 28 days", dose: 25, freq: "q 8 hr(s)" },
+            { pmaCond: pma <= 29, pnaCond: pna >= 29, pmaText: "≤ 29 wk", pnaText: "≥ 29 days", dose: 25, freq: "q 8 hr(s)" },
             { pmaCond: pma >= 30 && pma <= 36, pnaCond: pna <= 14, pmaText: "30 - 36 wk", pnaText: "0 - 14 days", dose: 25, freq: "q 12 hr(s)" },
-            { pmaCond: pma >= 30 && pma <= 36, pnaCond: pna > 14, pmaText: "30 - 36 wk", pnaText: "> 14 days", dose: 25, freq: "q 8 hr(s)" },
+            { pmaCond: pma >= 30 && pma <= 36, pnaCond: pna >= 15, pmaText: "30 - 36 wk", pnaText: "≥ 15 days", dose: 25, freq: "q 8 hr(s)" },
             { pmaCond: pma >= 37 && pma <= 44, pnaCond: pna <= 7, pmaText: "37 - 44 wk", pnaText: "0 - 7 days", dose: 25, freq: "q 12 hr(s)" },
-            { pmaCond: pma >= 37 && pma <= 44, pnaCond: pna > 7, pmaText: "37 - 44 wk", pnaText: "> 7 days", dose: 25, freq: "q 8 hr(s)" },
+            { pmaCond: pma >= 37 && pma <= 44, pnaCond: pna >= 8, pmaText: "37 - 44 wk", pnaText: "≥ 8 days", dose: 25, freq: "q 8 hr(s)" },
             { pmaCond: pma >= 45, pnaCond: true, pmaText: "≥ 45 wk", pnaText: "All days", dose: 25, freq: "q 6 hr(s)" },
         ];
 
@@ -503,25 +492,27 @@ function initSmalldoseEvents(container) {
 
     function renderClindamycin(pma, pna, bw) {
         const rows = [
-            { pmaCond: pma <= 29, pnaCond: pna <= 28, pmaText: "≤ 29 wk", pnaText: "0 - 28 days", dose: 5, freq: "q 12 hr(s)" },
-            { pmaCond: pma <= 29, pnaCond: pna > 28, pmaText: "≤ 29 wk", pnaText: "> 28 days", dose: 5, freq: "q 8 hr(s)" },
-            { pmaCond: pma >= 30 && pma <= 36, pnaCond: pna <= 14, pmaText: "30 - 36 wk", pnaText: "0 - 14 days", dose: 5, freq: "q 12 hr(s)" },
-            { pmaCond: pma >= 30 && pma <= 36, pnaCond: pna > 14, pmaText: "30 - 36 wk", pnaText: "> 14 days", dose: 5, freq: "q 8 hr(s)" },
-            { pmaCond: pma >= 37 && pma <= 44, pnaCond: pna <= 7, pmaText: "37 - 44 wk", pnaText: "0 - 7 days", dose: 5, freq: "q 12 hr(s)" },
-            { pmaCond: pma >= 37 && pma <= 44, pnaCond: pna > 7, pmaText: "37 - 44 wk", pnaText: "> 7 days", dose: 5, freq: "q 8 hr(s)" },
-            { pmaCond: pma >= 45, pnaCond: true, pmaText: "≥ 45 wk", pnaText: "All days", dose: 5, freq: "q 6 hr(s)" },
+            { pmaCond: pma <= 29, pnaCond: pna <= 28, pmaText: "≤ 29 wk", pnaText: "0 - 28 days", doseMin: 5, doseMax: 7, freq: "q 12 hr(s)" },
+            { pmaCond: pma <= 29, pnaCond: pna >= 29, pmaText: "≤ 29 wk", pnaText: "≥ 29 days", doseMin: 5, doseMax: 7, freq: "q 8 hr(s)" },
+            { pmaCond: pma >= 30 && pma <= 36, pnaCond: pna <= 14, pmaText: "30 - 36 wk", pnaText: "0 - 14 days", doseMin: 5, doseMax: 7, freq: "q 12 hr(s)" },
+            { pmaCond: pma >= 30 && pma <= 36, pnaCond: pna >= 15, pmaText: "30 - 36 wk", pnaText: "≥ 15 days", doseMin: 5, doseMax: 7, freq: "q 8 hr(s)" },
+            { pmaCond: pma >= 37 && pma <= 44, pnaCond: pna <= 7, pmaText: "37 - 44 wk", pnaText: "0 - 7 days", doseMin: 5, doseMax: 7, freq: "q 12 hr(s)" },
+            { pmaCond: pma >= 37 && pma <= 44, pnaCond: pna >= 8, pmaText: "37 - 44 wk", pnaText: "≥ 8 days", doseMin: 5, doseMax: 7, freq: "q 8 hr(s)" },
+            { pmaCond: pma >= 45, pnaCond: true, pmaText: "≥ 45 wk", pnaText: "All days", doseMin: 5, doseMax: 7, freq: "q 6 hr(s)" },
         ];
 
         let html = "";
         rows.forEach(r => {
             const isMatch = r.pmaCond && r.pnaCond;
-            const doseMg = bw * r.dose;
+            const doseMinVal = bw * r.doseMin;
+            const doseMaxVal = bw * r.doseMax;
             const activeClass = isMatch ? "bg-rose-100/90 font-bold text-rose-900 border-l-4 border-rose-600" : "";
             
             html += `<tr class="${activeClass}">
                 <td class="py-2 px-3">${r.pmaText}</td>
                 <td class="py-2 px-3">${r.pnaText}</td>
-                <td class="py-2 px-3 text-right">${formatNum(doseMg)}</td>
+                <td class="py-2 px-3 text-right">${formatNum(doseMinVal)}</td>
+                <td class="py-2 px-3 text-right">${formatNum(doseMaxVal)}</td>
                 <td class="py-2 px-3">mg</td>
                 <td class="py-2 px-3">${r.freq}</td>
             </tr>`;
