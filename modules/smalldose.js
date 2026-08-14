@@ -1,27 +1,30 @@
 /**
  * Smalldose Calculator Module
- * Refactored for customized layout based on section [A] requirements.
+ * Refactored Zone A layout with pure Inline SVGs and improved UI visibility.
  */
 
 export function render(container) {
     container.innerHTML = `
     <div class="flex flex-col lg:flex-row gap-5 items-start w-full">
         
-        <!-- [A] Sidebar Input (บีบขนาดลงเหลือ ~22% เพื่อเพิ่มพื้นที่ Output) -->
+        <!-- Zone A: Sidebar Input (กว้าง ~22%) -->
         <aside class="w-full lg:w-[22%] bg-slate-900 text-slate-100 p-4 rounded-3xl shadow-xl flex flex-col gap-4 shrink-0">
             
-            <!-- Header Header Section -->
+            <!-- Header Section -->
             <div class="flex items-center justify-between pb-2 border-b border-slate-800">
                 <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 bg-teal-500/20 text-teal-400 rounded-xl flex items-center justify-center font-bold text-sm border border-teal-500/30">
-                        <i class="fa-solid fa-pills"></i>
+                    <div class="w-8 h-8 bg-teal-500/20 text-teal-300 rounded-xl flex items-center justify-center border border-teal-500/30 shrink-0">
+                        <!-- Pill SVG -->
+                        <svg class="w-4 h-4 stroke-current" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg>
                     </div>
                     <div>
                         <h2 class="text-base font-bold text-white leading-tight">Smalldose Calc</h2>
                     </div>
                 </div>
-                <button id="sd-btn-reset" class="bg-slate-800 hover:bg-slate-700 text-teal-400 hover:text-teal-300 text-xs px-2.5 py-1.5 rounded-xl border border-slate-700 transition-all flex items-center gap-1.5 font-medium">
-                    <i class="fa-solid fa-rotate-right text-[10px]"></i>
+                <!-- 3. ปุ่ม Reset -->
+                <button id="sd-btn-reset" class="bg-slate-800 hover:bg-slate-700 text-teal-300 hover:text-teal-200 text-xs px-2.5 py-1.5 rounded-xl border border-slate-700 transition-all flex items-center gap-1.5 font-medium shrink-0">
+                    <!-- Refresh SVG -->
+                    <svg class="w-3 h-3 stroke-current" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>
                     <span>Reset</span>
                 </button>
             </div>
@@ -29,105 +32,119 @@ export function render(container) {
             <!-- Inputs Section -->
             <div class="space-y-3.5">
                 
-                <!-- [A.4] กรอบที่ 1: ข้อมูลครรภ์ (ฝั่งแม่) -->
-                <div class="bg-slate-800/60 border border-slate-700/80 rounded-2xl p-3 space-y-2">
-                    <span class="text-[11px] font-semibold tracking-wider text-teal-400 uppercase flex items-center gap-1.5">
-                        <i class="fa-solid fa-person-pregnant text-xs"></i> ข้อมูลครรภ์ (GA)
+                <!-- กรอบที่ 1: ข้อมูลครรภ์ (ฝั่งแม่) -->
+                <div class="bg-slate-800/80 border border-slate-700 rounded-2xl p-3 space-y-2">
+                    <span class="text-[11px] font-bold tracking-wider text-teal-300 uppercase flex items-center gap-1.5">
+                        <!-- Pregnant Icon SVG -->
+                        <svg class="w-3.5 h-3.5 stroke-current" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 1 0 0 6 3 3 0 1 0 0-6Z"/><path d="M19 14c0-3.3-2.7-6-6-6h-2c-3.3 0-6 2.7-6 6v7h3v-4h6v4h3v-7Z"/></svg>
+                        ข้อมูลครรภ์ (GA)
                     </span>
                     <div>
-                        <label class="block text-xs font-medium text-slate-300 mb-1">GA (อายุครรภ์เมื่อคลอด)</label>
+                        <label class="block text-xs font-semibold text-slate-200 mb-1">GA (อายุครรภ์เมื่อคลอด)</label>
                         <div class="grid grid-cols-2 gap-2">
+                            <!-- 3. Input สีขาว ขนาดเท่ากัน -->
                             <div class="relative flex items-center">
-                                <input type="number" id="sd-ga-wk" value="32" min="20" max="44" class="w-full bg-slate-950 border border-slate-700 rounded-xl py-1.5 pl-3 pr-8 text-right font-bold text-white text-sm focus:outline-none focus:border-teal-500">
-                                <span class="absolute right-2.5 text-xs text-slate-400 font-medium pointer-events-none">wk</span>
+                                <input type="number" id="sd-ga-wk" value="32" min="20" max="44" class="w-full bg-white border border-slate-300 rounded-xl h-10 px-3 pr-8 text-right font-bold text-slate-900 text-base focus:outline-none focus:ring-2 focus:ring-teal-400">
+                                <span class="absolute right-2.5 text-xs text-slate-500 font-bold pointer-events-none">wk</span>
                             </div>
                             <div class="relative flex items-center">
-                                <input type="number" id="sd-ga-day" value="1" min="0" max="6" class="w-full bg-slate-950 border border-slate-700 rounded-xl py-1.5 pl-3 pr-10 text-right font-bold text-white text-sm focus:outline-none focus:border-teal-500">
-                                <span class="absolute right-2 text-xs text-slate-400 font-medium pointer-events-none">days</span>
+                                <input type="number" id="sd-ga-day" value="1" min="0" max="6" class="w-full bg-white border border-slate-300 rounded-xl h-10 px-3 pr-9 text-right font-bold text-slate-900 text-base focus:outline-none focus:ring-2 focus:ring-teal-400">
+                                <span class="absolute right-2 text-xs text-slate-500 font-bold pointer-events-none">days</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- [A.4] กรอบที่ 2: ข้อมูลทารก (ฝั่งลูก) -->
-                <div class="bg-slate-800/60 border border-slate-700/80 rounded-2xl p-3 space-y-3">
-                    <span class="text-[11px] font-semibold tracking-wider text-teal-400 uppercase flex items-center gap-1.5">
-                        <i class="fa-solid fa-baby text-xs"></i> ข้อมูลทารก (Baby)
+                <!-- กรอบที่ 2: ข้อมูลทารก (ฝั่งลูก) -->
+                <div class="bg-slate-800/80 border border-slate-700 rounded-2xl p-3 space-y-3">
+                    <span class="text-[11px] font-bold tracking-wider text-teal-300 uppercase flex items-center gap-1.5">
+                        <!-- Baby SVG -->
+                        <svg class="w-3.5 h-3.5 stroke-current" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.5 1.5 1 2 1s1.5-.5 2-1"/><path d="M19 6.3a9 9 0 0 1 1.8 3.9 2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 5 6.3"/></svg>
+                        ข้อมูลทารก (BABY)
                     </span>
                     
-                    <!-- PNA -->
+                    <!-- PNA Input -->
                     <div>
-                        <label class="block text-xs font-medium text-slate-300 mb-1">PNA (อายุหลังคลอด)</label>
+                        <label class="block text-xs font-semibold text-slate-200 mb-1">PNA (อายุหลังคลอด)</label>
                         <div class="relative flex items-center">
-                            <input type="number" id="sd-pna-day" value="5" min="0" max="120" class="w-full bg-slate-950 border border-slate-700 rounded-xl py-1.5 pl-3 pr-12 text-right font-bold text-white text-sm focus:outline-none focus:border-teal-500">
-                            <span class="absolute right-3 text-xs text-slate-400 font-medium pointer-events-none">days</span>
+                            <input type="number" id="sd-pna-day" value="5" min="0" max="120" class="w-full bg-white border border-slate-300 rounded-xl h-10 px-3 pr-12 text-right font-bold text-slate-900 text-base focus:outline-none focus:ring-2 focus:ring-teal-400">
+                            <span class="absolute right-3 text-xs text-slate-500 font-bold pointer-events-none">days</span>
                         </div>
                     </div>
 
-                    <!-- [A.5 & A.6] BW (น้ำหนักตัวทารก) + ปุ่มอ้วนกลม -->
+                    <!-- BW Input -->
                     <div>
-                        <label class="block text-xs font-medium text-slate-300 mb-1">BW (น้ำหนักตัวทารก)</label>
-                        <div class="flex items-center gap-1.5 bg-slate-950 border border-slate-700 rounded-xl p-1.5">
-                            <button id="sd-bw-minus" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-teal-400 flex items-center justify-center font-bold text-base transition-colors shrink-0 active:scale-95">
-                                <i class="fa-solid fa-minus"></i>
+                        <label class="block text-xs font-semibold text-slate-200 mb-1">BW (น้ำหนักตัวทารก)</label>
+                        <div class="flex items-center gap-1.5 bg-white border border-slate-300 rounded-xl h-10 px-1.5">
+                            <button id="sd-bw-minus" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center font-bold text-sm transition-colors shrink-0 active:scale-95 border border-slate-300">
+                                <svg class="w-3.5 h-3.5 stroke-current" fill="none" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14"/></svg>
                             </button>
                             <div class="flex-1 relative flex items-center min-w-0">
-                                <input type="number" id="sd-bw" value="4.600" step="0.001" min="0.3" max="10" class="w-full bg-transparent text-right font-black text-teal-400 text-lg focus:outline-none pr-6 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
-                                <span class="absolute right-0 text-xs text-slate-400 font-medium pointer-events-none">kg</span>
+                                <input type="number" id="sd-bw" value="4.600" step="0.001" min="0.3" max="10" class="w-full bg-transparent text-right font-black text-teal-700 text-base focus:outline-none pr-5 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                                <span class="absolute right-0 text-xs text-slate-500 font-bold pointer-events-none">kg</span>
                             </div>
-                            <button id="sd-bw-plus" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-teal-400 flex items-center justify-center font-bold text-base transition-colors shrink-0 active:scale-95">
-                                <i class="fa-solid fa-plus"></i>
+                            <button id="sd-bw-plus" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center font-bold text-sm transition-colors shrink-0 active:scale-95 border border-slate-300">
+                                <svg class="w-3.5 h-3.5 stroke-current" fill="none" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- [A.7] สรุป PMA (ย้ายมาไว้ต่อท้ายน้ำหนักทารกภายใน Sidebar) -->
-                <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-3 text-center space-y-1">
-                    <span class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">สรุปอายุครรภ์ปรับแต่ง (CALCULATED PMA)</span>
-                    <div id="sd-pma-display" class="text-2xl font-black text-teal-400 tracking-tight">33 wk</div>
-                    <p id="sd-pma-desc" class="text-[11px] text-slate-400 font-light leading-snug">
-                        PMA = GA (32w 1d) + PNA (5d) &rarr; วันรวม = 1+5 = 6 วัน (เศษ &lt; 4 วัน) &rarr; PMA = 33 สัปดาห์
-                    </p>
+                <!-- 4 & 5. สรุป PMA + จัดบรรทัดใหม่ไม่เกยกัน -->
+                <div class="bg-slate-950/90 border border-slate-800 rounded-2xl p-3 text-center space-y-1.5">
+                    <span class="text-[11px] uppercase tracking-wider text-teal-400 font-bold block">CALCULATED PMA</span>
+                    <div id="sd-pma-display" class="text-2xl font-black text-teal-300 tracking-tight">33 wk</div>
+                    <div id="sd-pma-desc" class="text-[11px] text-slate-300 font-normal leading-relaxed text-left pt-1 border-t border-slate-800/80 space-y-0.5">
+                        <!-- JS Dynamic Text -->
+                    </div>
                 </div>
 
-                <!-- [A.8 & A.9] เลือกแสดงรายยา -->
+                <!-- 6. เลือกแสดงรายยา (โทนสีแยก 4 ยา) -->
                 <div class="pt-1">
-                    <label class="block text-xs font-semibold text-slate-300 mb-2">เลือกแสดงรายยา</label>
+                    <label class="block text-xs font-bold text-slate-200 mb-2">เลือกแสดงรายยา</label>
                     <div class="grid grid-cols-2 gap-2">
-                        <label class="flex items-center gap-2 p-2 rounded-xl bg-slate-950 border border-slate-800 hover:border-slate-700 cursor-pointer transition-all">
-                            <input type="checkbox" id="sd-chk-ampicillin" checked class="w-4 h-4 rounded accent-teal-500 cursor-pointer">
-                            <span class="text-sm font-bold text-slate-200">Ampicillin</span>
+                        
+                        <!-- Ampicillin (โทนน้ำเงิน/Blue-Indigo) -->
+                        <label class="flex items-center gap-1.5 p-2 rounded-xl bg-slate-950 border border-indigo-500/50 hover:border-indigo-400 cursor-pointer transition-all min-w-0">
+                            <input type="checkbox" id="sd-chk-ampicillin" checked class="w-3.5 h-3.5 rounded accent-indigo-500 cursor-pointer shrink-0">
+                            <span class="text-xs font-bold text-indigo-300 truncate">Ampicillin</span>
                         </label>
-                        <label class="flex items-center gap-2 p-2 rounded-xl bg-slate-950 border border-slate-800 hover:border-slate-700 cursor-pointer transition-all">
-                            <input type="checkbox" id="sd-chk-gentamicin" checked class="w-4 h-4 rounded accent-teal-500 cursor-pointer">
-                            <span class="text-sm font-bold text-slate-200">Gentamicin</span>
+
+                        <!-- Gentamicin (โทนเขียว/Teal-Emerald) -->
+                        <label class="flex items-center gap-1.5 p-2 rounded-xl bg-slate-950 border border-teal-500/50 hover:border-teal-400 cursor-pointer transition-all min-w-0">
+                            <input type="checkbox" id="sd-chk-gentamicin" checked class="w-3.5 h-3.5 rounded accent-teal-500 cursor-pointer shrink-0">
+                            <span class="text-[11px] font-bold text-teal-300 truncate">Gentamicin</span>
                         </label>
-                        <label class="flex items-center gap-2 p-2 rounded-xl bg-slate-950 border border-slate-800 hover:border-slate-700 cursor-pointer transition-all">
-                            <input type="checkbox" id="sd-chk-cloxacillin" class="w-4 h-4 rounded accent-teal-500 cursor-pointer">
-                            <span class="text-sm font-bold text-slate-200">Cloxacillin</span>
+
+                        <!-- Cloxacillin (โทนเหลือง/Amber) -->
+                        <label class="flex items-center gap-1.5 p-2 rounded-xl bg-slate-950 border border-amber-500/50 hover:border-amber-400 cursor-pointer transition-all min-w-0">
+                            <input type="checkbox" id="sd-chk-cloxacillin" class="w-3.5 h-3.5 rounded accent-amber-500 cursor-pointer shrink-0">
+                            <span class="text-[11px] font-bold text-amber-300 truncate">Cloxacillin</span>
                         </label>
-                        <label class="flex items-center gap-2 p-2 rounded-xl bg-slate-950 border border-slate-800 hover:border-slate-700 cursor-pointer transition-all">
-                            <input type="checkbox" id="sd-chk-clindamycin" class="w-4 h-4 rounded accent-teal-500 cursor-pointer">
-                            <span class="text-sm font-bold text-slate-200">Clindamycin</span>
+
+                        <!-- Clindamycin (โทนแดง/Rose-Red) -->
+                        <label class="flex items-center gap-1.5 p-2 rounded-xl bg-slate-950 border border-rose-500/50 hover:border-rose-400 cursor-pointer transition-all min-w-0">
+                            <input type="checkbox" id="sd-chk-clindamycin" class="w-3.5 h-3.5 rounded accent-rose-500 cursor-pointer shrink-0">
+                            <span class="text-[10px] font-bold text-rose-300 truncate">Clindamycin</span>
                         </label>
+
                     </div>
                 </div>
 
             </div>
         </aside>
 
-        <!-- [A.1] Output Display (เพิ่มขยายพื้นที่ฝั่งขวา ~78%) -->
+        <!-- Zone B: Output Display (กว้าง ~78%) -->
         <main class="w-full lg:w-[78%] flex flex-col gap-5">
             
             <!-- Card Ampicillin -->
             <div id="sd-card-ampicillin" class="bg-slate-100/90 backdrop-blur-md rounded-3xl p-5 border border-slate-300 shadow-sm transition-all space-y-4">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div class="flex items-center gap-2">
-                        <span class="w-3 h-3 rounded-full bg-indigo-600 inline-block"></span>
+                        <span class="w-3.5 h-3.5 rounded-full bg-indigo-600 inline-block"></span>
                         <h3 class="text-xl font-bold text-slate-800">Ampicillin <span class="text-sm font-normal text-slate-600">(Dose: 150 - 200 mg/kg/day)</span></h3>
                     </div>
-                    <div id="sd-amp-total" class="bg-indigo-50 border border-indigo-200 text-indigo-700 font-semibold px-3 py-1 rounded-xl text-xs self-start sm:self-auto">
+                    <div id="sd-amp-total" class="bg-indigo-50 border border-indigo-200 text-indigo-700 font-bold px-3 py-1 rounded-xl text-xs self-start sm:self-auto">
                         Total: 690.00 - 920.00 mg/day
                     </div>
                 </div>
@@ -155,10 +172,10 @@ export function render(container) {
             <div id="sd-card-gentamicin" class="bg-slate-100/90 backdrop-blur-md rounded-3xl p-5 border border-slate-300 shadow-sm transition-all space-y-4">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div class="flex items-center gap-2">
-                        <span class="w-3 h-3 rounded-full bg-teal-600 inline-block"></span>
+                        <span class="w-3.5 h-3.5 rounded-full bg-teal-600 inline-block"></span>
                         <h3 class="text-xl font-bold text-slate-800">Gentamicin</h3>
                     </div>
-                    <div id="sd-genta-vol" class="bg-teal-50 border border-teal-200 text-teal-800 font-semibold px-3 py-1 rounded-xl text-xs self-start sm:self-auto">
+                    <div id="sd-genta-vol" class="bg-teal-50 border border-teal-200 text-teal-800 font-bold px-3 py-1 rounded-xl text-xs self-start sm:self-auto">
                         Min Sol Vol (10mg/ml): 2.07 ml
                     </div>
                 </div>
@@ -184,7 +201,7 @@ export function render(container) {
             <!-- Card Cloxacillin -->
             <div id="sd-card-cloxacillin" class="bg-slate-100/90 backdrop-blur-md rounded-3xl p-5 border border-slate-300 shadow-sm transition-all space-y-4 hidden">
                 <div class="flex items-center gap-2">
-                    <span class="w-3 h-3 rounded-full bg-amber-500 inline-block"></span>
+                    <span class="w-3.5 h-3.5 rounded-full bg-amber-500 inline-block"></span>
                     <h3 class="text-xl font-bold text-slate-800">Cloxacillin</h3>
                 </div>
                 <div class="overflow-x-auto rounded-2xl border border-slate-200 bg-white">
@@ -208,7 +225,7 @@ export function render(container) {
             <!-- Card Clindamycin -->
             <div id="sd-card-clindamycin" class="bg-slate-100/90 backdrop-blur-md rounded-3xl p-5 border border-slate-300 shadow-sm transition-all space-y-4 hidden">
                 <div class="flex items-center gap-2">
-                    <span class="w-3 h-3 rounded-full bg-emerald-600 inline-block"></span>
+                    <span class="w-3.5 h-3.5 rounded-full bg-rose-600 inline-block"></span>
                     <h3 class="text-xl font-bold text-slate-800">Clindamycin</h3>
                 </div>
                 <div class="overflow-x-auto rounded-2xl border border-slate-200 bg-white">
@@ -257,7 +274,7 @@ function initSmalldoseEvents(container) {
     const cardClox = container.querySelector('#sd-card-cloxacillin');
     const cardClinda = container.querySelector('#sd-card-clindamycin');
 
-    // [A.6] ซ่อมแซมปุ่ม + และ -
+    // Button +/- Weight
     bwMinusBtn.addEventListener('click', () => {
         let val = parseFloat(bwInput.value) || 0;
         if (val > 0.1) {
@@ -282,6 +299,12 @@ function initSmalldoseEvents(container) {
         chkGenta.checked = true;
         chkClox.checked = false;
         chkClinda.checked = false;
+        
+        cardAmp.classList.remove('hidden');
+        cardGenta.classList.remove('hidden');
+        cardClox.classList.add('hidden');
+        cardClinda.classList.add('hidden');
+
         calculateAll();
     });
 
@@ -309,11 +332,17 @@ function initSmalldoseEvents(container) {
         const roundedWk = remDays >= 4 ? 1 : 0;
         const pma = gaWk + extraWk + roundedWk;
 
-        // อัปเดตการแสดงผล PMA
+        // อัปเดตการแสดงผล PMA และจัดบรรทัดใหม่ไม่ให้ซ้อนกัน
         const pmaDisplay = container.querySelector('#sd-pma-display');
         const pmaDesc = container.querySelector('#sd-pma-desc');
         pmaDisplay.innerText = `${pma} wk`;
-        pmaDesc.innerText = `PMA = GA (${gaWk}w ${gaDay}d) + PNA (${pnaDay}d) → วันรวม = ${gaDay}+${pnaDay} = ${totalDays} วัน (${remDays >= 4 ? `เศษ ≥ 4 วัน ปัดขึ้น +1w` : `เศษ < 4 วัน`}) → PMA = ${pma} สัปดาห์`;
+        
+        pmaDesc.innerHTML = `
+            <div>• PMA = GA (${gaWk}w ${gaDay}d) + PNA (${pnaDay}d)</div>
+            <div>• วันรวม = ${gaDay}+${pnaDay} = ${totalDays} วัน</div>
+            <div>• ${remDays >= 4 ? `เศษ ${remDays} วัน (≥4 วัน) ปัดขึ้น +1w` : `เศษ ${remDays} วัน (<4 วัน) ไม่ปัดขึ้น`}</div>
+            <div class="font-bold text-teal-300 pt-0.5">&rarr; สรุป PMA = ${pma} สัปดาห์</div>
+        `;
 
         // Render Tables
         renderAmpicillin(pma, pnaDay, bw);
@@ -357,7 +386,7 @@ function initSmalldoseEvents(container) {
     }
 
     function renderGentamicin(pma, pna, bw) {
-        const minVol = ((bw * 4.5) / 10).toFixed(2); // Example ratio calculation
+        const minVol = ((bw * 4.5) / 10).toFixed(2);
         container.querySelector('#sd-genta-vol').innerText = `Min Sol Vol (10mg/ml): ${minVol} ml`;
 
         const rows = [
@@ -429,7 +458,7 @@ function initSmalldoseEvents(container) {
         rows.forEach(r => {
             const isMatch = r.pmaCond && r.pnaCond;
             const doseMg = (bw * r.dose).toFixed(2);
-            const activeClass = isMatch ? "bg-emerald-100/90 font-bold text-emerald-900 border-l-4 border-emerald-600" : "";
+            const activeClass = isMatch ? "bg-rose-100/90 font-bold text-rose-900 border-l-4 border-rose-600" : "";
             
             html += `<tr class="${activeClass}">
                 <td class="py-2 px-3">${r.pmaText}</td>
