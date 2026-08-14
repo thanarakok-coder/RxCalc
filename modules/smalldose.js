@@ -1,6 +1,6 @@
 /**
  * Smalldose Calculator Module
- * Refactored Zone A layout with pure Inline SVGs and improved UI visibility.
+ * Refactored Zone A with 0-value reset, placeholder color styling, and monochrome BW text.
  */
 
 export function render(container) {
@@ -14,16 +14,13 @@ export function render(container) {
             <div class="flex items-center justify-between pb-2 border-b border-slate-800">
                 <div class="flex items-center gap-2">
                     <div class="w-8 h-8 bg-teal-500/20 text-teal-300 rounded-xl flex items-center justify-center border border-teal-500/30 shrink-0">
-                        <!-- Pill SVG -->
                         <svg class="w-4 h-4 stroke-current" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg>
                     </div>
                     <div>
                         <h2 class="text-base font-bold text-white leading-tight">Smalldose Calc</h2>
                     </div>
                 </div>
-                <!-- 3. ปุ่ม Reset -->
                 <button id="sd-btn-reset" class="bg-slate-800 hover:bg-slate-700 text-teal-300 hover:text-teal-200 text-xs px-2.5 py-1.5 rounded-xl border border-slate-700 transition-all flex items-center gap-1.5 font-medium shrink-0">
-                    <!-- Refresh SVG -->
                     <svg class="w-3 h-3 stroke-current" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>
                     <span>Reset</span>
                 </button>
@@ -35,20 +32,18 @@ export function render(container) {
                 <!-- กรอบที่ 1: ข้อมูลครรภ์ (ฝั่งแม่) -->
                 <div class="bg-slate-800/80 border border-slate-700 rounded-2xl p-3 space-y-2">
                     <span class="text-[11px] font-bold tracking-wider text-teal-300 uppercase flex items-center gap-1.5">
-                        <!-- Pregnant Icon SVG -->
                         <svg class="w-3.5 h-3.5 stroke-current" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 1 0 0 6 3 3 0 1 0 0-6Z"/><path d="M19 14c0-3.3-2.7-6-6-6h-2c-3.3 0-6 2.7-6 6v7h3v-4h6v4h3v-7Z"/></svg>
                         ข้อมูลครรภ์ (GA)
                     </span>
                     <div>
                         <label class="block text-xs font-semibold text-slate-200 mb-1">GA (อายุครรภ์เมื่อคลอด)</label>
                         <div class="grid grid-cols-2 gap-2">
-                            <!-- 3. Input สีขาว ขนาดเท่ากัน -->
                             <div class="relative flex items-center">
-                                <input type="number" id="sd-ga-wk" value="32" min="20" max="44" class="w-full bg-white border border-slate-300 rounded-xl h-10 px-3 pr-8 text-right font-bold text-slate-900 text-base focus:outline-none focus:ring-2 focus:ring-teal-400">
+                                <input type="number" id="sd-ga-wk" value="29" min="0" max="44" class="sd-input w-full bg-white border border-slate-300 rounded-xl h-10 px-3 pr-8 text-right font-bold text-slate-900 text-base focus:outline-none focus:ring-2 focus:ring-teal-400 transition-colors">
                                 <span class="absolute right-2.5 text-xs text-slate-500 font-bold pointer-events-none">wk</span>
                             </div>
                             <div class="relative flex items-center">
-                                <input type="number" id="sd-ga-day" value="1" min="0" max="6" class="w-full bg-white border border-slate-300 rounded-xl h-10 px-3 pr-9 text-right font-bold text-slate-900 text-base focus:outline-none focus:ring-2 focus:ring-teal-400">
+                                <input type="number" id="sd-ga-day" value="1" min="0" max="6" class="sd-input w-full bg-white border border-slate-300 rounded-xl h-10 px-3 pr-9 text-right font-bold text-slate-900 text-base focus:outline-none focus:ring-2 focus:ring-teal-400 transition-colors">
                                 <span class="absolute right-2 text-xs text-slate-500 font-bold pointer-events-none">days</span>
                             </div>
                         </div>
@@ -58,7 +53,6 @@ export function render(container) {
                 <!-- กรอบที่ 2: ข้อมูลทารก (ฝั่งลูก) -->
                 <div class="bg-slate-800/80 border border-slate-700 rounded-2xl p-3 space-y-3">
                     <span class="text-[11px] font-bold tracking-wider text-teal-300 uppercase flex items-center gap-1.5">
-                        <!-- Baby SVG -->
                         <svg class="w-3.5 h-3.5 stroke-current" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.5 1.5 1 2 1s1.5-.5 2-1"/><path d="M19 6.3a9 9 0 0 1 1.8 3.9 2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 5 6.3"/></svg>
                         ข้อมูลทารก (BABY)
                     </span>
@@ -67,12 +61,12 @@ export function render(container) {
                     <div>
                         <label class="block text-xs font-semibold text-slate-200 mb-1">PNA (อายุหลังคลอด)</label>
                         <div class="relative flex items-center">
-                            <input type="number" id="sd-pna-day" value="5" min="0" max="120" class="w-full bg-white border border-slate-300 rounded-xl h-10 px-3 pr-12 text-right font-bold text-slate-900 text-base focus:outline-none focus:ring-2 focus:ring-teal-400">
+                            <input type="number" id="sd-pna-day" value="5" min="0" max="120" class="sd-input w-full bg-white border border-slate-300 rounded-xl h-10 px-3 pr-12 text-right font-bold text-slate-900 text-base focus:outline-none focus:ring-2 focus:ring-teal-400 transition-colors">
                             <span class="absolute right-3 text-xs text-slate-500 font-bold pointer-events-none">days</span>
                         </div>
                     </div>
 
-                    <!-- BW Input -->
+                    <!-- BW Input (1. เปลี่ยนเป็นสีดำ text-slate-900) -->
                     <div>
                         <label class="block text-xs font-semibold text-slate-200 mb-1">BW (น้ำหนักตัวทารก)</label>
                         <div class="flex items-center gap-1.5 bg-white border border-slate-300 rounded-xl h-10 px-1.5">
@@ -80,7 +74,7 @@ export function render(container) {
                                 <svg class="w-3.5 h-3.5 stroke-current" fill="none" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14"/></svg>
                             </button>
                             <div class="flex-1 relative flex items-center min-w-0">
-                                <input type="number" id="sd-bw" value="4.600" step="0.001" min="0.3" max="10" class="w-full bg-transparent text-right font-black text-teal-700 text-base focus:outline-none pr-5 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                                <input type="number" id="sd-bw" value="4.600" step="0.001" min="0" max="10" class="sd-input w-full bg-transparent text-right font-bold text-slate-900 text-base focus:outline-none pr-5 transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
                                 <span class="absolute right-0 text-xs text-slate-500 font-bold pointer-events-none">kg</span>
                             </div>
                             <button id="sd-bw-plus" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center font-bold text-sm transition-colors shrink-0 active:scale-95 border border-slate-300">
@@ -90,39 +84,36 @@ export function render(container) {
                     </div>
                 </div>
 
-                <!-- 4 & 5. สรุป PMA + จัดบรรทัดใหม่ไม่เกยกัน -->
+                <!-- สรุป PMA -->
                 <div class="bg-slate-950/90 border border-slate-800 rounded-2xl p-3 text-center space-y-1.5">
                     <span class="text-[11px] uppercase tracking-wider text-teal-400 font-bold block">CALCULATED PMA</span>
-                    <div id="sd-pma-display" class="text-2xl font-black text-teal-300 tracking-tight">33 wk</div>
+                    <div id="sd-pma-display" class="text-2xl font-black text-teal-300 tracking-tight">30 wk</div>
+                    <!-- 2. ปรับตัวหนังสือบรรทัดสุดท้ายเป็นสีธรรมดาเท่าคำอธิบายอื่น -->
                     <div id="sd-pma-desc" class="text-[11px] text-slate-300 font-normal leading-relaxed text-left pt-1 border-t border-slate-800/80 space-y-0.5">
                         <!-- JS Dynamic Text -->
                     </div>
                 </div>
 
-                <!-- 6. เลือกแสดงรายยา (โทนสีแยก 4 ยา) -->
+                <!-- เลือกแสดงรายยา -->
                 <div class="pt-1">
                     <label class="block text-xs font-bold text-slate-200 mb-2">เลือกแสดงรายยา</label>
                     <div class="grid grid-cols-2 gap-2">
                         
-                        <!-- Ampicillin (โทนน้ำเงิน/Blue-Indigo) -->
                         <label class="flex items-center gap-1.5 p-2 rounded-xl bg-slate-950 border border-indigo-500/50 hover:border-indigo-400 cursor-pointer transition-all min-w-0">
                             <input type="checkbox" id="sd-chk-ampicillin" checked class="w-3.5 h-3.5 rounded accent-indigo-500 cursor-pointer shrink-0">
                             <span class="text-xs font-bold text-indigo-300 truncate">Ampicillin</span>
                         </label>
 
-                        <!-- Gentamicin (โทนเขียว/Teal-Emerald) -->
                         <label class="flex items-center gap-1.5 p-2 rounded-xl bg-slate-950 border border-teal-500/50 hover:border-teal-400 cursor-pointer transition-all min-w-0">
                             <input type="checkbox" id="sd-chk-gentamicin" checked class="w-3.5 h-3.5 rounded accent-teal-500 cursor-pointer shrink-0">
                             <span class="text-[11px] font-bold text-teal-300 truncate">Gentamicin</span>
                         </label>
 
-                        <!-- Cloxacillin (โทนเหลือง/Amber) -->
                         <label class="flex items-center gap-1.5 p-2 rounded-xl bg-slate-950 border border-amber-500/50 hover:border-amber-400 cursor-pointer transition-all min-w-0">
                             <input type="checkbox" id="sd-chk-cloxacillin" class="w-3.5 h-3.5 rounded accent-amber-500 cursor-pointer shrink-0">
                             <span class="text-[11px] font-bold text-amber-300 truncate">Cloxacillin</span>
                         </label>
 
-                        <!-- Clindamycin (โทนแดง/Rose-Red) -->
                         <label class="flex items-center gap-1.5 p-2 rounded-xl bg-slate-950 border border-rose-500/50 hover:border-rose-400 cursor-pointer transition-all min-w-0">
                             <input type="checkbox" id="sd-chk-clindamycin" class="w-3.5 h-3.5 rounded accent-rose-500 cursor-pointer shrink-0">
                             <span class="text-[10px] font-bold text-rose-300 truncate">Clindamycin</span>
@@ -260,6 +251,8 @@ function initSmalldoseEvents(container) {
     const pnaDayInput = container.querySelector('#sd-pna-day');
     const bwInput = container.querySelector('#sd-bw');
 
+    const inputs = [gaWkInput, gaDayInput, pnaDayInput, bwInput];
+
     const bwMinusBtn = container.querySelector('#sd-bw-minus');
     const bwPlusBtn = container.querySelector('#sd-bw-plus');
     const resetBtn = container.querySelector('#sd-btn-reset');
@@ -274,27 +267,46 @@ function initSmalldoseEvents(container) {
     const cardClox = container.querySelector('#sd-card-cloxacillin');
     const cardClinda = container.querySelector('#sd-card-clindamycin');
 
+    // ฟังก์ชันจัดการสีของ Input (3. ถ้าค่าเป็น 0 ให้เป็นสีเทา / ถ้ากรอกค่าให้เป็นสีดำ)
+    function updateInputColor(input) {
+        const val = parseFloat(input.value);
+        if (isNaN(val) || val === 0 || input.value.trim() === "" || input.value.trim() === "0") {
+            input.classList.remove('text-slate-900');
+            input.classList.add('text-slate-400');
+        } else {
+            input.classList.remove('text-slate-400');
+            input.classList.add('text-slate-900');
+        }
+    }
+
     // Button +/- Weight
     bwMinusBtn.addEventListener('click', () => {
         let val = parseFloat(bwInput.value) || 0;
         if (val > 0.1) {
             bwInput.value = (val - 0.1).toFixed(3);
-            calculateAll();
+        } else {
+            bwInput.value = "0";
         }
+        updateInputColor(bwInput);
+        calculateAll();
     });
 
     bwPlusBtn.addEventListener('click', () => {
         let val = parseFloat(bwInput.value) || 0;
         bwInput.value = (val + 0.1).toFixed(3);
+        updateInputColor(bwInput);
         calculateAll();
     });
 
-    // Reset Button
+    // 3. Reset Button -> เปลี่ยนเป็น 0 และปรับตัวหนังสือสีเทา
     resetBtn.addEventListener('click', () => {
-        gaWkInput.value = 32;
-        gaDayInput.value = 1;
-        pnaDayInput.value = 5;
-        bwInput.value = "4.600";
+        gaWkInput.value = "0";
+        gaDayInput.value = "0";
+        pnaDayInput.value = "0";
+        bwInput.value = "0";
+
+        inputs.forEach(updateInputColor);
+
         chkAmp.checked = true;
         chkGenta.checked = true;
         chkClox.checked = false;
@@ -309,8 +321,12 @@ function initSmalldoseEvents(container) {
     });
 
     // Event Input Listeners
-    [gaWkInput, gaDayInput, pnaDayInput, bwInput].forEach(elem => {
-        elem.addEventListener('input', calculateAll);
+    inputs.forEach(elem => {
+        elem.addEventListener('input', () => {
+            updateInputColor(elem);
+            calculateAll();
+        });
+        updateInputColor(elem); // Initialize color on render
     });
 
     // Toggle Drug Visibility
@@ -332,16 +348,17 @@ function initSmalldoseEvents(container) {
         const roundedWk = remDays >= 4 ? 1 : 0;
         const pma = gaWk + extraWk + roundedWk;
 
-        // อัปเดตการแสดงผล PMA และจัดบรรทัดใหม่ไม่ให้ซ้อนกัน
+        // อัปเดตการแสดงผล PMA
         const pmaDisplay = container.querySelector('#sd-pma-display');
         const pmaDesc = container.querySelector('#sd-pma-desc');
         pmaDisplay.innerText = `${pma} wk`;
         
+        // 2. ปรับแต่งส่วนสรุป ไม่เน้นสีไฮไลต์ เอาเท่าคำอธิบายอื่น
         pmaDesc.innerHTML = `
             <div>• PMA = GA (${gaWk}w ${gaDay}d) + PNA (${pnaDay}d)</div>
             <div>• วันรวม = ${gaDay}+${pnaDay} = ${totalDays} วัน</div>
             <div>• ${remDays >= 4 ? `เศษ ${remDays} วัน (≥4 วัน) ปัดขึ้น +1w` : `เศษ ${remDays} วัน (<4 วัน) ไม่ปัดขึ้น`}</div>
-            <div class="font-bold text-teal-300 pt-0.5">&rarr; สรุป PMA = ${pma} สัปดาห์</div>
+            <div>→ สรุป PMA = ${pma} สัปดาห์</div>
         `;
 
         // Render Tables
