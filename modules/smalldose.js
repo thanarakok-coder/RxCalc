@@ -1,6 +1,6 @@
 /**
  * Smalldose Calculator Module
- * Updated Ampicillin logic & UI: PMA changed to "≤ 29 wk"
+ * Updated: Enter key navigation, Placeholder '0', and Ampicillin administration notes.
  */
 
 export function render(container) {
@@ -39,11 +39,11 @@ export function render(container) {
                         <label class="block text-xs font-semibold text-slate-200 mb-1">GA (อายุครรภ์เมื่อคลอด)</label>
                         <div class="grid grid-cols-2 gap-2">
                             <div class="relative flex items-center">
-                                <input type="number" id="sd-ga-wk" value="29" min="0" max="44" class="sd-input w-full bg-white border border-slate-300 rounded-xl h-10 px-3 pr-8 text-right font-bold text-slate-900 text-base focus:outline-none focus:ring-2 focus:ring-teal-400 transition-colors">
+                                <input type="number" id="sd-ga-wk" placeholder="0" min="0" max="44" class="sd-input w-full bg-white border border-slate-300 rounded-xl h-10 px-3 pr-8 text-right font-bold text-slate-900 text-base focus:outline-none focus:ring-2 focus:ring-teal-400 transition-colors">
                                 <span class="absolute right-2.5 text-xs text-slate-500 font-bold pointer-events-none">wk</span>
                             </div>
                             <div class="relative flex items-center">
-                                <input type="number" id="sd-ga-day" value="1" min="0" max="6" class="sd-input w-full bg-white border border-slate-300 rounded-xl h-10 px-3 pr-9 text-right font-bold text-slate-900 text-base focus:outline-none focus:ring-2 focus:ring-teal-400 transition-colors">
+                                <input type="number" id="sd-ga-day" placeholder="0" min="0" max="6" class="sd-input w-full bg-white border border-slate-300 rounded-xl h-10 px-3 pr-9 text-right font-bold text-slate-900 text-base focus:outline-none focus:ring-2 focus:ring-teal-400 transition-colors">
                                 <span class="absolute right-2 text-xs text-slate-500 font-bold pointer-events-none">days</span>
                             </div>
                         </div>
@@ -61,7 +61,7 @@ export function render(container) {
                     <div>
                         <label class="block text-xs font-semibold text-slate-200 mb-1">PNA (อายุหลังคลอด)</label>
                         <div class="relative flex items-center">
-                            <input type="number" id="sd-pna-day" value="5" min="0" max="120" class="sd-input w-full bg-white border border-slate-300 rounded-xl h-10 px-3 pr-12 text-right font-bold text-slate-900 text-base focus:outline-none focus:ring-2 focus:ring-teal-400 transition-colors">
+                            <input type="number" id="sd-pna-day" placeholder="0" min="0" max="120" class="sd-input w-full bg-white border border-slate-300 rounded-xl h-10 px-3 pr-12 text-right font-bold text-slate-900 text-base focus:outline-none focus:ring-2 focus:ring-teal-400 transition-colors">
                             <span class="absolute right-3 text-xs text-slate-500 font-bold pointer-events-none">days</span>
                         </div>
                     </div>
@@ -74,7 +74,7 @@ export function render(container) {
                                 <svg class="w-3.5 h-3.5 stroke-current" fill="none" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14"/></svg>
                             </button>
                             <div class="flex-1 relative flex items-center min-w-0">
-                                <input type="number" id="sd-bw" value="4.600" step="0.001" min="0" max="10" class="sd-input w-full bg-transparent text-right font-bold text-slate-900 text-base focus:outline-none pr-5 transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                                <input type="number" id="sd-bw" placeholder="0" step="0.001" min="0" max="10" class="sd-input w-full bg-transparent text-right font-bold text-slate-900 text-base focus:outline-none pr-5 transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
                                 <span class="absolute right-0 text-xs text-slate-500 font-bold pointer-events-none">kg</span>
                             </div>
                             <button id="sd-bw-plus" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center font-bold text-sm transition-colors shrink-0 active:scale-95 border border-slate-300">
@@ -87,7 +87,7 @@ export function render(container) {
                 <!-- สรุป PMA -->
                 <div class="bg-slate-950/90 border border-slate-800 rounded-2xl p-3 text-center space-y-1.5">
                     <span class="text-[11px] uppercase tracking-wider text-teal-400 font-bold block">CALCULATED PMA</span>
-                    <div id="sd-pma-display" class="text-2xl font-black text-teal-300 tracking-tight">30 wk</div>
+                    <div id="sd-pma-display" class="text-2xl font-black text-teal-300 tracking-tight">0 wk</div>
                     <div id="sd-pma-desc" class="text-[11px] text-slate-300 font-normal leading-relaxed text-left pt-1 border-t border-slate-800/80 space-y-0.5">
                         <!-- JS Dynamic Text -->
                     </div>
@@ -133,7 +133,7 @@ export function render(container) {
                         <h3 class="text-xl font-bold text-slate-800">Ampicillin <span class="text-sm font-normal text-slate-600">(Dose: 150 - 200 mg/kg/day)</span></h3>
                     </div>
                     <div id="sd-amp-total" class="bg-indigo-50 border border-indigo-200 text-indigo-700 font-bold px-3 py-1 rounded-xl text-xs self-start sm:self-auto">
-                        Total: 690.00 - 920.00 mg/day
+                        Total: 0.00 - 0.00 mg/day
                     </div>
                 </div>
 
@@ -154,6 +154,25 @@ export function render(container) {
                         </tbody>
                     </table>
                 </div>
+
+                <!-- Note Section for Ampicillin -->
+                <div class="bg-slate-50/80 border border-slate-200 rounded-2xl p-3 text-xs text-slate-700 space-y-1.5">
+                    <div class="flex flex-wrap items-baseline gap-1.5">
+                        <span class="font-bold text-slate-900 shrink-0">IV slow push / IM :</span>
+                        <span>ถ้าไม่เกิน 500 mg ให้ <strong class="text-slate-900">slow push 3-5 นาที</strong> ถ้าเกิน ให้ <strong class="text-slate-900">slow push 10-15 นาที</strong></span>
+                    </div>
+                    <div class="flex flex-wrap items-baseline gap-1.5">
+                        <span class="font-bold text-slate-900 shrink-0">Reconstituted solution :</span>
+                        <span class="font-semibold text-slate-800">SWFI</span>
+                    </div>
+                    <div class="flex flex-wrap items-baseline gap-1.5">
+                        <span class="font-bold text-slate-900 shrink-0">Compatible Solution :</span>
+                        <span class="font-semibold text-slate-800">D5W, LRS , NSS, SWI.</span>
+                    </div>
+                    <div class="text-[11px] text-slate-400 italic pt-1 border-t border-slate-200/60">
+                        Recommended concentrations are 30, 40, 50, and 100 mg/mL for intermittent IV
+                    </div>
+                </div>
             </div>
 
             <!-- Card Gentamicin -->
@@ -164,7 +183,7 @@ export function render(container) {
                         <h3 class="text-xl font-bold text-slate-800">Gentamicin</h3>
                     </div>
                     <div id="sd-genta-vol" class="bg-teal-50 border border-teal-200 text-teal-800 font-bold px-3 py-1 rounded-xl text-xs self-start sm:self-auto">
-                        Min Sol Vol (10mg/ml): 2.07 ml
+                        Min Sol Vol (10mg/ml): 0.00 ml
                     </div>
                 </div>
 
@@ -263,42 +282,40 @@ function initSmalldoseEvents(container) {
     const cardClox = container.querySelector('#sd-card-cloxacillin');
     const cardClinda = container.querySelector('#sd-card-clindamycin');
 
-    function updateInputColor(input) {
-        const val = parseFloat(input.value);
-        if (isNaN(val) || val === 0 || input.value.trim() === "" || input.value.trim() === "0") {
-            input.classList.remove('text-slate-900');
-            input.classList.add('text-slate-400');
-        } else {
-            input.classList.remove('text-slate-400');
-            input.classList.add('text-slate-900');
-        }
-    }
+    // กด Enter เลื่อนไปช่องถัดไป
+    inputs.forEach((input, index) => {
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const nextInput = inputs[index + 1];
+                if (nextInput) {
+                    nextInput.focus();
+                    nextInput.select();
+                } else {
+                    input.blur();
+                }
+            }
+        });
+    });
 
     bwMinusBtn.addEventListener('click', () => {
         let val = parseFloat(bwInput.value) || 0;
         if (val > 0.1) {
             bwInput.value = (val - 0.1).toFixed(3);
         } else {
-            bwInput.value = "0";
+            bwInput.value = "";
         }
-        updateInputColor(bwInput);
         calculateAll();
     });
 
     bwPlusBtn.addEventListener('click', () => {
         let val = parseFloat(bwInput.value) || 0;
         bwInput.value = (val + 0.1).toFixed(3);
-        updateInputColor(bwInput);
         calculateAll();
     });
 
     resetBtn.addEventListener('click', () => {
-        gaWkInput.value = "0";
-        gaDayInput.value = "0";
-        pnaDayInput.value = "0";
-        bwInput.value = "0";
-
-        inputs.forEach(updateInputColor);
+        inputs.forEach(input => input.value = "");
 
         chkAmp.checked = true;
         chkGenta.checked = true;
@@ -315,10 +332,8 @@ function initSmalldoseEvents(container) {
 
     inputs.forEach(elem => {
         elem.addEventListener('input', () => {
-            updateInputColor(elem);
             calculateAll();
         });
-        updateInputColor(elem);
     });
 
     chkAmp.addEventListener('change', () => cardAmp.classList.toggle('hidden', !chkAmp.checked));
@@ -360,7 +375,6 @@ function initSmalldoseEvents(container) {
         const maxTotal = (200 * bw).toFixed(2);
         container.querySelector('#sd-amp-total').innerText = `Total: ${minTotal} - ${maxTotal} mg/day`;
 
-        // Updated Ampicillin Conditions (pma <= 29)
         const rows = [
             { pmaCond: pma <= 29, pnaCond: pna <= 28, pmaText: "≤ 29 wk", pnaText: "0 - 28 days", div: 2, freq: "q 12 hr(s)" },
             { pmaCond: pma <= 29, pnaCond: pna > 28, pmaText: "≤ 29 wk", pnaText: "≥ 29 days", div: 3, freq: "q 8 hr(s)" },
