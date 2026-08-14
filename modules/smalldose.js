@@ -1,13 +1,13 @@
 /**
  * Smalldose Calculator Module
- * Refactored Zone A with 0-value reset, placeholder color styling, and monochrome BW text.
+ * Updated Ampicillin logic & UI: PMA changed to "≤ 29 wk"
  */
 
 export function render(container) {
     container.innerHTML = `
     <div class="flex flex-col lg:flex-row gap-5 items-start w-full">
         
-        <!-- Zone A: Sidebar Input (กว้าง ~22%) -->
+        <!-- Zone A: Sidebar Input -->
         <aside class="w-full lg:w-[22%] bg-slate-900 text-slate-100 p-4 rounded-3xl shadow-xl flex flex-col gap-4 shrink-0">
             
             <!-- Header Section -->
@@ -29,7 +29,7 @@ export function render(container) {
             <!-- Inputs Section -->
             <div class="space-y-3.5">
                 
-                <!-- กรอบที่ 1: ข้อมูลครรภ์ (ฝั่งแม่) -->
+                <!-- กรอบที่ 1: ข้อมูลครรภ์ (GA) -->
                 <div class="bg-slate-800/80 border border-slate-700 rounded-2xl p-3 space-y-2">
                     <span class="text-[11px] font-bold tracking-wider text-teal-300 uppercase flex items-center gap-1.5">
                         <svg class="w-3.5 h-3.5 stroke-current" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 1 0 0 6 3 3 0 1 0 0-6Z"/><path d="M19 14c0-3.3-2.7-6-6-6h-2c-3.3 0-6 2.7-6 6v7h3v-4h6v4h3v-7Z"/></svg>
@@ -50,7 +50,7 @@ export function render(container) {
                     </div>
                 </div>
 
-                <!-- กรอบที่ 2: ข้อมูลทารก (ฝั่งลูก) -->
+                <!-- กรอบที่ 2: ข้อมูลทารก (BABY) -->
                 <div class="bg-slate-800/80 border border-slate-700 rounded-2xl p-3 space-y-3">
                     <span class="text-[11px] font-bold tracking-wider text-teal-300 uppercase flex items-center gap-1.5">
                         <svg class="w-3.5 h-3.5 stroke-current" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.5 1.5 1 2 1s1.5-.5 2-1"/><path d="M19 6.3a9 9 0 0 1 1.8 3.9 2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 5 6.3"/></svg>
@@ -66,7 +66,7 @@ export function render(container) {
                         </div>
                     </div>
 
-                    <!-- BW Input (1. เปลี่ยนเป็นสีดำ text-slate-900) -->
+                    <!-- BW Input -->
                     <div>
                         <label class="block text-xs font-semibold text-slate-200 mb-1">BW (น้ำหนักตัวทารก)</label>
                         <div class="flex items-center gap-1.5 bg-white border border-slate-300 rounded-xl h-10 px-1.5">
@@ -88,7 +88,6 @@ export function render(container) {
                 <div class="bg-slate-950/90 border border-slate-800 rounded-2xl p-3 text-center space-y-1.5">
                     <span class="text-[11px] uppercase tracking-wider text-teal-400 font-bold block">CALCULATED PMA</span>
                     <div id="sd-pma-display" class="text-2xl font-black text-teal-300 tracking-tight">30 wk</div>
-                    <!-- 2. ปรับตัวหนังสือบรรทัดสุดท้ายเป็นสีธรรมดาเท่าคำอธิบายอื่น -->
                     <div id="sd-pma-desc" class="text-[11px] text-slate-300 font-normal leading-relaxed text-left pt-1 border-t border-slate-800/80 space-y-0.5">
                         <!-- JS Dynamic Text -->
                     </div>
@@ -98,7 +97,6 @@ export function render(container) {
                 <div class="pt-1">
                     <label class="block text-xs font-bold text-slate-200 mb-2">เลือกแสดงรายยา</label>
                     <div class="grid grid-cols-2 gap-2">
-                        
                         <label class="flex items-center gap-1.5 p-2 rounded-xl bg-slate-950 border border-indigo-500/50 hover:border-indigo-400 cursor-pointer transition-all min-w-0">
                             <input type="checkbox" id="sd-chk-ampicillin" checked class="w-3.5 h-3.5 rounded accent-indigo-500 cursor-pointer shrink-0">
                             <span class="text-xs font-bold text-indigo-300 truncate">Ampicillin</span>
@@ -118,14 +116,13 @@ export function render(container) {
                             <input type="checkbox" id="sd-chk-clindamycin" class="w-3.5 h-3.5 rounded accent-rose-500 cursor-pointer shrink-0">
                             <span class="text-[10px] font-bold text-rose-300 truncate">Clindamycin</span>
                         </label>
-
                     </div>
                 </div>
 
             </div>
         </aside>
 
-        <!-- Zone B: Output Display (กว้าง ~78%) -->
+        <!-- Zone B: Output Display -->
         <main class="w-full lg:w-[78%] flex flex-col gap-5">
             
             <!-- Card Ampicillin -->
@@ -241,7 +238,6 @@ export function render(container) {
     </div>
     `;
 
-    // Initialize Functionality & Event Listeners
     initSmalldoseEvents(container);
 }
 
@@ -267,7 +263,6 @@ function initSmalldoseEvents(container) {
     const cardClox = container.querySelector('#sd-card-cloxacillin');
     const cardClinda = container.querySelector('#sd-card-clindamycin');
 
-    // ฟังก์ชันจัดการสีของ Input (3. ถ้าค่าเป็น 0 ให้เป็นสีเทา / ถ้ากรอกค่าให้เป็นสีดำ)
     function updateInputColor(input) {
         const val = parseFloat(input.value);
         if (isNaN(val) || val === 0 || input.value.trim() === "" || input.value.trim() === "0") {
@@ -279,7 +274,6 @@ function initSmalldoseEvents(container) {
         }
     }
 
-    // Button +/- Weight
     bwMinusBtn.addEventListener('click', () => {
         let val = parseFloat(bwInput.value) || 0;
         if (val > 0.1) {
@@ -298,7 +292,6 @@ function initSmalldoseEvents(container) {
         calculateAll();
     });
 
-    // 3. Reset Button -> เปลี่ยนเป็น 0 และปรับตัวหนังสือสีเทา
     resetBtn.addEventListener('click', () => {
         gaWkInput.value = "0";
         gaDayInput.value = "0";
@@ -320,16 +313,14 @@ function initSmalldoseEvents(container) {
         calculateAll();
     });
 
-    // Event Input Listeners
     inputs.forEach(elem => {
         elem.addEventListener('input', () => {
             updateInputColor(elem);
             calculateAll();
         });
-        updateInputColor(elem); // Initialize color on render
+        updateInputColor(elem);
     });
 
-    // Toggle Drug Visibility
     chkAmp.addEventListener('change', () => cardAmp.classList.toggle('hidden', !chkAmp.checked));
     chkGenta.addEventListener('change', () => cardGenta.classList.toggle('hidden', !chkGenta.checked));
     chkClox.addEventListener('change', () => cardClox.classList.toggle('hidden', !chkClox.checked));
@@ -341,19 +332,16 @@ function initSmalldoseEvents(container) {
         const pnaDay = parseInt(pnaDayInput.value) || 0;
         const bw = parseFloat(bwInput.value) || 0;
 
-        // คำนวณ PMA
         const totalDays = gaDay + pnaDay;
         const extraWk = Math.floor(totalDays / 7);
         const remDays = totalDays % 7;
         const roundedWk = remDays >= 4 ? 1 : 0;
         const pma = gaWk + extraWk + roundedWk;
 
-        // อัปเดตการแสดงผล PMA
         const pmaDisplay = container.querySelector('#sd-pma-display');
         const pmaDesc = container.querySelector('#sd-pma-desc');
         pmaDisplay.innerText = `${pma} wk`;
         
-        // 2. ปรับแต่งส่วนสรุป ไม่เน้นสีไฮไลต์ เอาเท่าคำอธิบายอื่น
         pmaDesc.innerHTML = `
             <div>• PMA = GA (${gaWk}w ${gaDay}d) + PNA (${pnaDay}d)</div>
             <div>• วันรวม = ${gaDay}+${pnaDay} = ${totalDays} วัน</div>
@@ -361,7 +349,6 @@ function initSmalldoseEvents(container) {
             <div>→ สรุป PMA = ${pma} สัปดาห์</div>
         `;
 
-        // Render Tables
         renderAmpicillin(pma, pnaDay, bw);
         renderGentamicin(pma, pnaDay, bw);
         renderCloxacillin(pma, pnaDay, bw);
@@ -373,9 +360,10 @@ function initSmalldoseEvents(container) {
         const maxTotal = (200 * bw).toFixed(2);
         container.querySelector('#sd-amp-total').innerText = `Total: ${minTotal} - ${maxTotal} mg/day`;
 
+        // Updated Ampicillin Conditions (pma <= 29)
         const rows = [
-            { pmaCond: pma < 29, pnaCond: pna <= 28, pmaText: "< 29 wk", pnaText: "0 - 28 days", div: 2, freq: "q 12 hr(s)" },
-            { pmaCond: pma < 29, pnaCond: pna > 28, pmaText: "< 29 wk", pnaText: "≥ 29 days", div: 3, freq: "q 8 hr(s)" },
+            { pmaCond: pma <= 29, pnaCond: pna <= 28, pmaText: "≤ 29 wk", pnaText: "0 - 28 days", div: 2, freq: "q 12 hr(s)" },
+            { pmaCond: pma <= 29, pnaCond: pna > 28, pmaText: "≤ 29 wk", pnaText: "≥ 29 days", div: 3, freq: "q 8 hr(s)" },
             { pmaCond: pma >= 30 && pma <= 36, pnaCond: pna <= 14, pmaText: "30 - 36 wk", pnaText: "0 - 14 days", div: 2, freq: "q 12 hr(s)" },
             { pmaCond: pma >= 30 && pma <= 36, pnaCond: pna > 14, pmaText: "30 - 36 wk", pnaText: "≥ 15 days", div: 3, freq: "q 8 hr(s)" },
             { pmaCond: pma >= 37 && pma <= 44, pnaCond: pna <= 7, pmaText: "37 - 44 wk", pnaText: "0 - 7 days", div: 2, freq: "q 12 hr(s)" },
@@ -488,6 +476,5 @@ function initSmalldoseEvents(container) {
         container.querySelector('#sd-tbl-clindamycin').innerHTML = html;
     }
 
-    // Run Initial Calculation
     calculateAll();
 }
