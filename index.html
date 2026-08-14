@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
-    <!-- Font Awesome Icons CDN (จำเป็นสำหรับ UI ของ DAPT) -->
+    <!-- Font Awesome Icons CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- Tailwind CSS CDN -->
@@ -33,7 +33,6 @@
         <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
             <div class="flex items-center gap-3 cursor-pointer" id="nav-logo">
                 <div class="w-10 h-10 bg-teal-500 text-slate-900 rounded-xl flex items-center justify-center font-bold text-xl shadow-lg">
-                    <!-- SVG Icon Calculator -->
                     <svg class="w-6 h-6 stroke-current text-slate-900" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>
                 </div>
                 <div>
@@ -43,7 +42,6 @@
             </div>
             
             <button id="nav-home-btn" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-4 py-2 rounded-xl text-xs font-semibold transition-all border border-slate-700 flex items-center gap-2">
-                <!-- SVG Icon Home -->
                 <svg class="w-4 h-4 stroke-current" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
                 <span>Home</span>
             </button>
@@ -60,14 +58,13 @@
                 <p class="text-xs sm:text-sm text-slate-600">เลือกเครื่องมือที่ต้องการใช้งานจากรายการด้านล่าง</p>
             </div>
 
-            <!-- Cards Grid -->
+            <!-- Cards Grid (4 Cards) -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                 
                 <!-- Card 1: Insulin Calculator -->
                 <div id="card-insulin" class="bg-white/80 backdrop-blur-sm border border-slate-300 rounded-3xl p-6 hover:border-teal-500 hover:shadow-lg transition-all cursor-pointer group flex flex-col justify-between">
                     <div>
                         <div class="w-12 h-12 bg-teal-600 text-white rounded-2xl flex items-center justify-center mb-4 group-hover:scale-105 transition-transform font-bold">
-                            <!-- SVG Syringe Icon -->
                             <svg class="w-6 h-6 stroke-current text-white" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="m18 2 4 4"/><path d="m17 7 3-3"/><path d="M19 9 8.7 19.3c-1 1-2.5 1-3.4 0l-.6-.6c-1-1-1-2.5 0-3.4L15 5"/><path d="m9 11 4 4"/><path d="m5 19-3 3"/><path d="m14 4 6 6"/></svg>
                         </div>
                         <h3 class="text-xl font-bold text-slate-800 mb-2">Insulin Calculator</h3>
@@ -83,7 +80,6 @@
                 <div id="card-tb" class="bg-white/80 backdrop-blur-sm border border-slate-300 rounded-3xl p-6 hover:border-teal-500 hover:shadow-lg transition-all cursor-pointer group flex flex-col justify-between">
                     <div>
                         <div class="w-12 h-12 bg-teal-600 text-white rounded-2xl flex items-center justify-center mb-4 group-hover:scale-105 transition-transform font-bold">
-                            <!-- SVG Lungs Icon Fixed -->
                             <svg class="w-6 h-6 fill-none stroke-current text-white" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M12 3v10" />
                                 <path d="M12 7c-2-2.5-5-3-7-1.5S3 11 4.5 14.5 8.5 18 10.5 15V10" />
@@ -103,7 +99,6 @@
                 <div id="card-dapt" class="bg-white/80 backdrop-blur-sm border border-slate-300 rounded-3xl p-6 hover:border-teal-500 hover:shadow-lg transition-all cursor-pointer group flex flex-col justify-between">
                     <div>
                         <div class="w-12 h-12 bg-teal-600 text-white rounded-2xl flex items-center justify-center mb-4 group-hover:scale-105 transition-transform font-bold">
-                            <!-- SVG Heart / Stent Icon -->
                             <svg class="w-6 h-6 stroke-current text-white" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
                         </div>
                         <h3 class="text-xl font-bold text-slate-800 mb-2">DAPT Calculator</h3>
@@ -115,13 +110,29 @@
                     </div>
                 </div>
 
+                <!-- Card 4: Smalldose Calculator (ใหม่) -->
+                <div id="card-smalldose" class="bg-white/80 backdrop-blur-sm border border-slate-300 rounded-3xl p-6 hover:border-teal-500 hover:shadow-lg transition-all cursor-pointer group flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 bg-teal-600 text-white rounded-2xl flex items-center justify-center mb-4 group-hover:scale-105 transition-transform font-bold">
+                            <svg class="w-6 h-6 stroke-current text-white" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">Smalldose Calc</h3>
+                        <p class="text-xs text-slate-600 font-normal leading-relaxed mb-6">คำนวณขนาดยาฆ่าเชื้อในทารกแรกเกิด/ก่อนกำหนด (Ampicillin, Gentamicin, Cloxacillin, Clindamycin)</p>
+                    </div>
+                    <div class="text-teal-700 text-xs font-semibold flex items-center gap-2 group-hover:translate-x-1 transition-transform">
+                        <span>เปิดใช้งานเครื่องมือ</span>
+                        <svg class="w-4 h-4 stroke-current" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </div>
+                </div>
+
             </div>
         </div>
 
-        <!-- Dynamic Module Containers (Preloaded for Instant Switching) -->
+        <!-- Dynamic Module Containers -->
         <div id="container-insulin" class="hidden"></div>
         <div id="container-tb" class="hidden"></div>
         <div id="container-dapt" class="hidden"></div>
+        <div id="container-smalldose" class="hidden"></div>
 
     </main>
 
@@ -137,41 +148,29 @@
         const containerInsulin = document.getElementById('container-insulin');
         const containerTb = document.getElementById('container-tb');
         const containerDapt = document.getElementById('container-dapt');
+        const containerSmalldose = document.getElementById('container-smalldose');
         
         const cardInsulin = document.getElementById('card-insulin');
         const cardTb = document.getElementById('card-tb');
         const cardDapt = document.getElementById('card-dapt');
+        const cardSmalldose = document.getElementById('card-smalldose');
+
         const btnHome = document.getElementById('nav-home-btn');
         const navLogo = document.getElementById('nav-logo');
 
-        // Preload ทั้ง 3 โมดูลล่วงหน้าทันทีที่เปิดหน้าเว็บ
-        let insulinLoaded = false;
-        let tbLoaded = false;
-        let daptLoaded = false;
-
         async function initModules() {
             try {
-                const [mInsulin, mTb, mDapt] = await Promise.all([
+                const [mInsulin, mTb, mDapt, mSmalldose] = await Promise.all([
                     import('./modules/insulin-calc.js').catch(e => console.error(e)),
                     import('./modules/tb-calc.js').catch(e => console.error(e)),
-                    import('./modules/dapt.js').catch(e => console.error(e))
+                    import('./modules/dapt.js').catch(e => console.error(e)),
+                    import('./modules/smalldose.js').catch(e => console.error(e))
                 ]);
 
-                if (mInsulin) {
-                    if (typeof mInsulin.render === 'function') mInsulin.render(containerInsulin);
-                    else if (typeof mInsulin.default === 'function') mInsulin.default(containerInsulin);
-                    insulinLoaded = true;
-                }
-                if (mTb) {
-                    if (typeof mTb.render === 'function') mTb.render(containerTb);
-                    else if (typeof mTb.default === 'function') mTb.default(containerTb);
-                    tbLoaded = true;
-                }
-                if (mDapt) {
-                    if (typeof mDapt.render === 'function') mDapt.render(containerDapt);
-                    else if (typeof mDapt.default === 'function') mDapt.default(containerDapt);
-                    daptLoaded = true;
-                }
+                if (mInsulin) (mInsulin.render || mInsulin.default)(containerInsulin);
+                if (mTb) (mTb.render || mTb.default)(containerTb);
+                if (mDapt) (mDapt.render || mDapt.default)(containerDapt);
+                if (mSmalldose) (mSmalldose.render || mSmalldose.default)(containerSmalldose);
             } catch (err) {
                 console.error("Preload error:", err);
             }
@@ -179,41 +178,25 @@
 
         initModules();
 
+        function hideAll() {
+            dashboard.classList.add('hidden');
+            containerInsulin.classList.add('hidden');
+            containerTb.classList.add('hidden');
+            containerDapt.classList.add('hidden');
+            containerSmalldose.classList.add('hidden');
+        }
+
         function goHome() {
+            hideAll();
             dashboard.classList.remove('hidden');
-            containerInsulin.classList.add('hidden');
-            containerTb.classList.add('hidden');
-            containerDapt.classList.add('hidden');
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function showInsulin() {
-            dashboard.classList.add('hidden');
-            containerTb.classList.add('hidden');
-            containerDapt.classList.add('hidden');
-            containerInsulin.classList.remove('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+        cardInsulin.addEventListener('click', () => { hideAll(); containerInsulin.classList.remove('hidden'); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+        cardTb.addEventListener('click', () => { hideAll(); containerTb.classList.remove('hidden'); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+        cardDapt.addEventListener('click', () => { hideAll(); containerDapt.classList.remove('hidden'); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+        cardSmalldose.addEventListener('click', () => { hideAll(); containerSmalldose.classList.remove('hidden'); window.scrollTo({ top: 0, behavior: 'smooth' }); });
 
-        function showTb() {
-            dashboard.classList.add('hidden');
-            containerInsulin.classList.add('hidden');
-            containerDapt.classList.add('hidden');
-            containerTb.classList.remove('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function showDapt() {
-            dashboard.classList.add('hidden');
-            containerInsulin.classList.add('hidden');
-            containerTb.classList.add('hidden');
-            containerDapt.classList.remove('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        cardInsulin.addEventListener('click', showInsulin);
-        cardTb.addEventListener('click', showTb);
-        cardDapt.addEventListener('click', showDapt);
         btnHome.addEventListener('click', goHome);
         navLogo.addEventListener('click', goHome);
     </script>
