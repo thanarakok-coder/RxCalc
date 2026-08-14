@@ -1,6 +1,6 @@
 /**
  * Smalldose Calculator Module
- * Updated: Enter key navigation, Placeholder '0', and Ampicillin administration notes.
+ * Updated: Added +/- buttons to PNA input & added comma formatting for all dose numbers.
  */
 
 export function render(container) {
@@ -57,12 +57,20 @@ export function render(container) {
                         ข้อมูลทารก (BABY)
                     </span>
                     
-                    <!-- PNA Input -->
+                    <!-- PNA Input (พร้อมปุ่ม +/-) -->
                     <div>
                         <label class="block text-xs font-semibold text-slate-200 mb-1">PNA (อายุหลังคลอด)</label>
-                        <div class="relative flex items-center">
-                            <input type="number" id="sd-pna-day" placeholder="0" min="0" max="120" class="sd-input w-full bg-white border border-slate-300 rounded-xl h-10 px-3 pr-12 text-right font-bold text-slate-900 text-base focus:outline-none focus:ring-2 focus:ring-teal-400 transition-colors">
-                            <span class="absolute right-3 text-xs text-slate-500 font-bold pointer-events-none">days</span>
+                        <div class="flex items-center gap-1.5 bg-white border border-slate-300 rounded-xl h-10 px-1.5">
+                            <button id="sd-pna-minus" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center font-bold text-sm transition-colors shrink-0 active:scale-95 border border-slate-300">
+                                <svg class="w-3.5 h-3.5 stroke-current" fill="none" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14"/></svg>
+                            </button>
+                            <div class="flex-1 relative flex items-center min-w-0">
+                                <input type="number" id="sd-pna-day" placeholder="0" min="0" max="120" class="sd-input w-full bg-transparent text-right font-bold text-slate-900 text-base focus:outline-none pr-8 transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                                <span class="absolute right-0 text-xs text-slate-500 font-bold pointer-events-none">days</span>
+                            </div>
+                            <button id="sd-pna-plus" class="w-7 h-7 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center font-bold text-sm transition-colors shrink-0 active:scale-95 border border-slate-300">
+                                <svg class="w-3.5 h-3.5 stroke-current" fill="none" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+                            </button>
                         </div>
                     </div>
 
@@ -268,6 +276,8 @@ function initSmalldoseEvents(container) {
 
     const inputs = [gaWkInput, gaDayInput, pnaDayInput, bwInput];
 
+    const pnaMinusBtn = container.querySelector('#sd-pna-minus');
+    const pnaPlusBtn = container.querySelector('#sd-pna-plus');
     const bwMinusBtn = container.querySelector('#sd-bw-minus');
     const bwPlusBtn = container.querySelector('#sd-bw-plus');
     const resetBtn = container.querySelector('#sd-btn-reset');
@@ -282,7 +292,17 @@ function initSmalldoseEvents(container) {
     const cardClox = container.querySelector('#sd-card-cloxacillin');
     const cardClinda = container.querySelector('#sd-card-clindamycin');
 
-    // กด Enter เลื่อนไปช่องถัดไป
+    // Helper สำหรับฟอร์แมต Comma
+    function formatNum(val, decimals = 2) {
+        const num = parseFloat(val);
+        if (isNaN(num)) return "0.00";
+        return num.toLocaleString('en-US', {
+            minimumFractionDigits: decimals,
+            maximumFractionDigits: decimals
+        });
+    }
+
+    // Enter Navigation
     inputs.forEach((input, index) => {
         input.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
@@ -298,6 +318,24 @@ function initSmalldoseEvents(container) {
         });
     });
 
+    // PNA +/- Handlers
+    pnaMinusBtn.addEventListener('click', () => {
+        let val = parseInt(pnaDayInput.value) || 0;
+        if (val > 1) {
+            pnaDayInput.value = val - 1;
+        } else {
+            pnaDayInput.value = "";
+        }
+        calculateAll();
+    });
+
+    pnaPlusBtn.addEventListener('click', () => {
+        let val = parseInt(pnaDayInput.value) || 0;
+        pnaDayInput.value = val + 1;
+        calculateAll();
+    });
+
+    // BW +/- Handlers
     bwMinusBtn.addEventListener('click', () => {
         let val = parseFloat(bwInput.value) || 0;
         if (val > 0.1) {
@@ -314,6 +352,7 @@ function initSmalldoseEvents(container) {
         calculateAll();
     });
 
+    // Reset Handler
     resetBtn.addEventListener('click', () => {
         inputs.forEach(input => input.value = "");
 
@@ -371,9 +410,9 @@ function initSmalldoseEvents(container) {
     }
 
     function renderAmpicillin(pma, pna, bw) {
-        const minTotal = (150 * bw).toFixed(2);
-        const maxTotal = (200 * bw).toFixed(2);
-        container.querySelector('#sd-amp-total').innerText = `Total: ${minTotal} - ${maxTotal} mg/day`;
+        const minTotalNum = 150 * bw;
+        const maxTotalNum = 200 * bw;
+        container.querySelector('#sd-amp-total').innerText = `Total: ${formatNum(minTotalNum)} - ${formatNum(maxTotalNum)} mg/day`;
 
         const rows = [
             { pmaCond: pma <= 29, pnaCond: pna <= 28, pmaText: "≤ 29 wk", pnaText: "0 - 28 days", div: 2, freq: "q 12 hr(s)" },
@@ -388,15 +427,15 @@ function initSmalldoseEvents(container) {
         let html = "";
         rows.forEach(r => {
             const isMatch = r.pmaCond && r.pnaCond;
-            const minDose = (minTotal / r.div).toFixed(2);
-            const maxDose = (maxTotal / r.div).toFixed(2);
+            const minDose = minTotalNum / r.div;
+            const maxDose = maxTotalNum / r.div;
             const activeClass = isMatch ? "bg-indigo-100/90 font-bold text-indigo-900 border-l-4 border-indigo-600" : "";
             
             html += `<tr class="${activeClass}">
                 <td class="py-2 px-3">${r.pmaText}</td>
                 <td class="py-2 px-3">${r.pnaText}</td>
-                <td class="py-2 px-3 text-right">${minDose}</td>
-                <td class="py-2 px-3 text-right">${maxDose}</td>
+                <td class="py-2 px-3 text-right">${formatNum(minDose)}</td>
+                <td class="py-2 px-3 text-right">${formatNum(maxDose)}</td>
                 <td class="py-2 px-3">mg</td>
                 <td class="py-2 px-3">${r.freq}</td>
             </tr>`;
@@ -405,8 +444,8 @@ function initSmalldoseEvents(container) {
     }
 
     function renderGentamicin(pma, pna, bw) {
-        const minVol = ((bw * 4.5) / 10).toFixed(2);
-        container.querySelector('#sd-genta-vol').innerText = `Min Sol Vol (10mg/ml): ${minVol} ml`;
+        const minVolNum = (bw * 4.5) / 10;
+        container.querySelector('#sd-genta-vol').innerText = `Min Sol Vol (10mg/ml): ${formatNum(minVolNum)} ml`;
 
         const rows = [
             { pmaCond: pma < 29, pnaCond: pna <= 7, pmaText: "< 29 wk", pnaText: "0 - 7 days", dose: 5.0, freq: "q 48 hr(s)" },
@@ -420,13 +459,13 @@ function initSmalldoseEvents(container) {
         let html = "";
         rows.forEach(r => {
             const isMatch = r.pmaCond && r.pnaCond;
-            const doseMg = (bw * r.dose).toFixed(2);
+            const doseMg = bw * r.dose;
             const activeClass = isMatch ? "bg-teal-100/90 font-bold text-teal-900 border-l-4 border-teal-600" : "";
             
             html += `<tr class="${activeClass}">
                 <td class="py-2 px-3">${r.pmaText}</td>
                 <td class="py-2 px-3">${r.pnaText}</td>
-                <td class="py-2 px-3 text-right">${doseMg}</td>
+                <td class="py-2 px-3 text-right">${formatNum(doseMg)}</td>
                 <td class="py-2 px-3">mg</td>
                 <td class="py-2 px-3">${r.freq}</td>
             </tr>`;
@@ -448,13 +487,13 @@ function initSmalldoseEvents(container) {
         let html = "";
         rows.forEach(r => {
             const isMatch = r.pmaCond && r.pnaCond;
-            const doseMg = (bw * r.dose).toFixed(2);
+            const doseMg = bw * r.dose;
             const activeClass = isMatch ? "bg-amber-100/90 font-bold text-amber-900 border-l-4 border-amber-600" : "";
             
             html += `<tr class="${activeClass}">
                 <td class="py-2 px-3">${r.pmaText}</td>
                 <td class="py-2 px-3">${r.pnaText}</td>
-                <td class="py-2 px-3 text-right">${doseMg}</td>
+                <td class="py-2 px-3 text-right">${formatNum(doseMg)}</td>
                 <td class="py-2 px-3">mg</td>
                 <td class="py-2 px-3">${r.freq}</td>
             </tr>`;
@@ -476,13 +515,13 @@ function initSmalldoseEvents(container) {
         let html = "";
         rows.forEach(r => {
             const isMatch = r.pmaCond && r.pnaCond;
-            const doseMg = (bw * r.dose).toFixed(2);
+            const doseMg = bw * r.dose;
             const activeClass = isMatch ? "bg-rose-100/90 font-bold text-rose-900 border-l-4 border-rose-600" : "";
             
             html += `<tr class="${activeClass}">
                 <td class="py-2 px-3">${r.pmaText}</td>
                 <td class="py-2 px-3">${r.pnaText}</td>
-                <td class="py-2 px-3 text-right">${doseMg}</td>
+                <td class="py-2 px-3 text-right">${formatNum(doseMg)}</td>
                 <td class="py-2 px-3">mg</td>
                 <td class="py-2 px-3">${r.freq}</td>
             </tr>`;
