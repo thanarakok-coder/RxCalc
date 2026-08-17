@@ -1,6 +1,6 @@
 /**
  * Smalldose Calculator Module
- * Updated: Gentamicin <= 29 wk logic, Cloxacillin & Clindamycin PNA threshold fixes, Clindamycin Min/Max 5-7 mg/kg columns.
+ * Updated: Gentamicin Detail Card (Bottom section additions & top-right badge removal)
  */
 
 export function render(container) {
@@ -179,14 +179,9 @@ export function render(container) {
 
             <!-- Card Gentamicin -->
             <div id="sd-card-gentamicin" class="bg-slate-100/90 backdrop-blur-md rounded-3xl p-5 border border-slate-300 shadow-sm transition-all space-y-4">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                    <div class="flex items-center gap-2">
-                        <span class="w-3.5 h-3.5 rounded-full bg-teal-600 inline-block"></span>
-                        <h3 class="text-xl font-bold text-slate-800">Gentamicin</h3>
-                    </div>
-                    <div id="sd-genta-vol" class="bg-teal-50 border border-teal-200 text-teal-800 font-bold px-3 py-1 rounded-xl text-xs self-start sm:self-auto">
-                        Min Sol Vol (10mg/ml): 0.00 ml
-                    </div>
+                <div class="flex items-center gap-2">
+                    <span class="w-3.5 h-3.5 rounded-full bg-teal-600 inline-block"></span>
+                    <h3 class="text-xl font-bold text-slate-800">Gentamicin</h3>
                 </div>
 
                 <div class="overflow-x-auto rounded-2xl border border-slate-200 bg-white">
@@ -202,6 +197,67 @@ export function render(container) {
                         </thead>
                         <tbody id="sd-tbl-gentamicin" class="divide-y divide-slate-100 text-slate-700 font-medium"></tbody>
                     </table>
+                </div>
+
+                <!-- Gentamicin Detail Section (แบ่ง 2 ฝั่ง ซ้าย-ขวา) -->
+                <div class="bg-slate-50/80 border border-slate-200 rounded-2xl p-4 text-xs text-slate-700">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 divide-y md:divide-y-0 md:divide-x divide-slate-200">
+                        
+                        <!-- ฝั่งซ้าย: ข้อมูลพื้นฐาน -->
+                        <div class="space-y-2 pr-0 md:pr-4">
+                            <div class="flex flex-wrap items-baseline gap-1.5">
+                                <span class="font-bold text-slate-900 shrink-0">Compatible Solution :</span>
+                                <span class="font-semibold text-slate-800">D5W, D10W, NSS</span>
+                            </div>
+                            <div class="flex flex-wrap items-baseline gap-1.5">
+                                <span class="font-bold text-slate-900 shrink-0">Max Conc. 10mg/ml :</span>
+                                <span>ต้องใช้สารละลาย<strong class="text-slate-900 font-black">อย่างน้อย</strong> <span id="sd-genta-min-sol" class="font-bold text-slate-900">0.00</span> ml</span>
+                            </div>
+                            <div class="flex flex-wrap items-baseline gap-1.5">
+                                <span class="font-bold text-slate-900 shrink-0">IV infusion :</span>
+                                <span><strong class="text-slate-900 font-black">อย่างน้อย</strong> 30-120 นาที</span>
+                            </div>
+                        </div>
+
+                        <!-- ฝั่งขวา: คำนวณเตรียมยา Infusion -->
+                        <div class="pt-3 md:pt-0 pl-0 md:pl-4 space-y-2.5">
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                                <div>
+                                    <label class="block text-[11px] font-bold text-slate-800 mb-1">Head Order [A]</label>
+                                    <div class="relative flex items-center">
+                                        <input type="number" id="sd-genta-input-a" step="0.1" placeholder="0" class="w-full bg-white border border-slate-300 rounded-lg h-8 px-2 pr-7 text-right font-bold text-slate-900 text-xs focus:outline-none focus:ring-1 focus:ring-teal-500">
+                                        <span class="absolute right-1.5 text-[10px] text-slate-500 font-bold pointer-events-none">mg</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] font-bold text-slate-800 mb-1">Target conc. [B]</label>
+                                    <div class="relative flex items-center">
+                                        <input type="number" id="sd-genta-input-b" value="2" step="0.1" placeholder="2" class="w-full bg-white border border-slate-300 rounded-lg h-8 px-2 pr-10 text-right font-bold text-slate-900 text-xs focus:outline-none focus:ring-1 focus:ring-teal-500">
+                                        <span class="absolute right-1.5 text-[10px] text-slate-500 font-bold pointer-events-none">mg/ml</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-[11px] font-bold text-slate-800 mb-1">เผื่อค้างสาย [C]</label>
+                                    <div class="relative flex items-center">
+                                        <input type="number" id="sd-genta-input-c" value="5" step="0.5" placeholder="5" class="w-full bg-white border border-slate-300 rounded-lg h-8 px-2 pr-7 text-right font-bold text-slate-900 text-xs focus:outline-none focus:ring-1 focus:ring-teal-500">
+                                        <span class="absolute right-1.5 text-[10px] text-slate-500 font-bold pointer-events-none">ml</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="bg-teal-50/60 border border-teal-200/80 rounded-xl p-2.5 space-y-1 text-teal-950 font-medium">
+                                <div class="flex items-center justify-between flex-wrap gap-1">
+                                    <span>ปริมาณยาที่ต้องดูดเพื่อเตรียม:</span>
+                                    <span class="font-bold"><span id="sd-genta-calc-total-vol">0.00</span> ml (คิดเป็นยา <span id="sd-genta-calc-drug-vol">0.00</span> ml)</span>
+                                </div>
+                                <div class="flex items-center justify-between flex-wrap gap-1">
+                                    <span>ใช้สารละลาย:</span>
+                                    <span class="font-bold text-teal-700"><span id="sd-genta-calc-diluent-vol">0.00</span> ml</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
             </div>
 
@@ -287,6 +343,19 @@ function initSmalldoseEvents(container) {
     const cardClox = container.querySelector('#sd-card-cloxacillin');
     const cardClinda = container.querySelector('#sd-card-clindamycin');
 
+    // Gentamicin Specific Inputs
+    const gentaInputA = container.querySelector('#sd-genta-input-a');
+    const gentaInputB = container.querySelector('#sd-genta-input-b');
+    const gentaInputC = container.querySelector('#sd-genta-input-c');
+    let isUserModifiedA = false;
+
+    gentaInputA.addEventListener('input', () => {
+        isUserModifiedA = true;
+        calculateAll();
+    });
+    gentaInputB.addEventListener('input', calculateAll);
+    gentaInputC.addEventListener('input', calculateAll);
+
     function formatNum(val, decimals = 2) {
         const num = parseFloat(val);
         if (isNaN(num)) return "0.00";
@@ -349,6 +418,10 @@ function initSmalldoseEvents(container) {
         chkGenta.checked = true;
         chkClox.checked = true;
         chkClinda.checked = true;
+
+        gentaInputB.value = "2";
+        gentaInputC.value = "5";
+        isUserModifiedA = false;
         
         cardAmp.classList.remove('hidden');
         cardGenta.classList.remove('hidden');
@@ -433,9 +506,6 @@ function initSmalldoseEvents(container) {
     }
 
     function renderGentamicin(pma, pna, bw) {
-        const minVolNum = (bw * 4.5) / 10;
-        container.querySelector('#sd-genta-vol').innerText = `Min Sol Vol (10mg/ml): ${formatNum(minVolNum)} ml`;
-
         const rows = [
             { pmaCond: pma <= 29, pnaCond: pna <= 7, pmaText: "≤ 29 wk", pnaText: "0 - 7 days", dose: 5.0, freq: "q 48 hr(s)" },
             { pmaCond: pma <= 29, pnaCond: pna >= 8 && pna <= 28, pmaText: "≤ 29 wk", pnaText: "8 - 28 days", dose: 4.0, freq: "q 36 hr(s)" },
@@ -446,9 +516,14 @@ function initSmalldoseEvents(container) {
         ];
 
         let html = "";
+        let calculatedDoseMg = 0;
+
         rows.forEach(r => {
             const isMatch = r.pmaCond && r.pnaCond;
             const doseMg = bw * r.dose;
+            if (isMatch) {
+                calculatedDoseMg = doseMg;
+            }
             const activeClass = isMatch ? "bg-teal-100/90 font-bold text-teal-900 border-l-4 border-teal-600" : "";
             
             html += `<tr class="${activeClass}">
@@ -460,6 +535,32 @@ function initSmalldoseEvents(container) {
             </tr>`;
         });
         container.querySelector('#sd-tbl-gentamicin').innerHTML = html;
+
+        // 1.2 Max Conc. 10mg/ml = ขนาดยาที่คำนวณได้ / 10
+        const minSolVol = calculatedDoseMg / 10;
+        container.querySelector('#sd-genta-min-sol').innerText = formatNum(minSolVol);
+
+        // 1.4 Head Order [A] Default = ขนาดยาที่คำนวณได้ (ถ้าผู้ใช้ไม่ได้แก้ไขเอง)
+        if (!isUserModifiedA) {
+            gentaInputA.value = calculatedDoseMg > 0 ? calculatedDoseMg.toFixed(2) : "";
+        }
+
+        // อ่านค่า A, B, C สำหรับคำนวณ
+        const inputA = parseFloat(gentaInputA.value) || 0;
+        const inputB = parseFloat(gentaInputB.value) || 0;
+        const inputC = parseFloat(gentaInputC.value) || 0;
+
+        // Formula Calculation
+        // 1. ปริมาณยารวมที่ต้องเตรียม (รวม deadspace ค้างสายทั้ง 2 ด้าน)
+        const totalPrepVol = inputB > 0 ? ((inputA + inputC) / inputB) + inputC : 0;
+        // 2. ปริมาณยา Gentamicin Injection (40 mg/ml) ที่ต้องดูด
+        const drugVol = (inputB * totalPrepVol) / 40;
+        // 3. ปริมาณสารละลาย (Diluent) ที่ต้องใช้
+        const diluentVol = totalPrepVol - drugVol;
+
+        container.querySelector('#sd-genta-calc-total-vol').innerText = formatNum(totalPrepVol);
+        container.querySelector('#sd-genta-calc-drug-vol').innerText = formatNum(drugVol > 0 ? drugVol : 0);
+        container.querySelector('#sd-genta-calc-diluent-vol').innerText = formatNum(diluentVol > 0 ? diluentVol : 0);
     }
 
     function renderCloxacillin(pma, pna, bw) {
