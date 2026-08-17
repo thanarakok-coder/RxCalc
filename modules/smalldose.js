@@ -1,6 +1,7 @@
 /**
  * Smalldose Calculator Module
- * Updated: UI Labels & Logic correction based on Google Sheets formula
+ * Updated: Corrected Compounding Logic for Gentamicin (No Flush Technique)
+ * Total Vol: 11.80 ml | Drug Vol: 0.59 ml (23.6 mg) | Diluent: 11.21 ml | Target Conc: 2 mg/ml
  */
 
 export function render(container) {
@@ -199,8 +200,8 @@ export function render(container) {
                     </table>
                 </div>
 
-                <!-- Gentamicin Detail Section (แบ่ง 2 ฝั่ง ซ้าย-ขวา) -->
-                <div class="bg-slate-50/80 border border-slate-200 rounded-2xl p-4 text-xs text-slate-700">
+                <!-- Gentamicin Detail Section -->
+                <div class="bg-slate-50/80 border border-slate-200 rounded-2xl p-4 text-xs text-slate-700 space-y-4">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 divide-y md:divide-y-0 md:divide-x divide-slate-200">
                         
                         <!-- ฝั่งซ้าย: ข้อมูลพื้นฐาน -->
@@ -209,7 +210,6 @@ export function render(container) {
                                 <span class="font-bold text-slate-900 shrink-0">Compatible Solution :</span>
                                 <span class="font-semibold text-slate-800">D5W, D10W, NSS</span>
                             </div>
-                            <!-- ข้อ 4: เปลี่ยนเครื่องหมาย : เป็น = -->
                             <div class="flex flex-wrap items-baseline gap-1.5">
                                 <span class="font-bold text-slate-900 shrink-0">Max Conc. 10mg/ml =</span>
                                 <span>ต้องใช้สารละลาย<strong class="text-slate-900 font-black">อย่างน้อย</strong> <span id="sd-genta-min-sol" class="font-bold text-slate-900">0.00</span> ml</span>
@@ -220,11 +220,10 @@ export function render(container) {
                             </div>
                         </div>
 
-                        <!-- ฝั่งขวา: คำนวณเตรียมยา Infusion -->
+                        <!-- ฝั่งขวา: พารามิเตอร์คำนวณ -->
                         <div class="pt-3 md:pt-0 pl-0 md:pl-4 space-y-2.5">
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
                                 <div>
-                                    <!-- ข้อ 1: เปลี่ยนเป็น [A] Order IV Infusion -->
                                     <label class="block text-[11px] font-bold text-slate-800 mb-1">[A] Order IV Infusion</label>
                                     <div class="relative flex items-center">
                                         <input type="number" id="sd-genta-input-a" step="0.1" placeholder="0" class="w-full bg-white border border-slate-300 rounded-lg h-8 px-2 pr-7 text-right font-bold text-slate-900 text-xs focus:outline-none focus:ring-1 focus:ring-teal-500">
@@ -232,7 +231,6 @@ export function render(container) {
                                     </div>
                                 </div>
                                 <div>
-                                    <!-- ข้อ 2: เปลี่ยนเป็น [B] Target conc. (mg/ml) -->
                                     <label class="block text-[11px] font-bold text-slate-800 mb-1">[B] Target conc. (mg/ml)</label>
                                     <div class="relative flex items-center">
                                         <input type="number" id="sd-genta-input-b" value="2" step="0.1" placeholder="2" class="w-full bg-white border border-slate-300 rounded-lg h-8 px-2 pr-10 text-right font-bold text-slate-900 text-xs focus:outline-none focus:ring-1 focus:ring-teal-500">
@@ -240,7 +238,6 @@ export function render(container) {
                                     </div>
                                 </div>
                                 <div>
-                                    <!-- ข้อ 3: เปลี่ยนเป็น [C] ปริมาตรเผื่อค้างสาย -->
                                     <label class="block text-[11px] font-bold text-slate-800 mb-1">[C] ปริมาตรเผื่อค้างสาย</label>
                                     <div class="relative flex items-center">
                                         <input type="number" id="sd-genta-input-c" value="5" step="0.5" placeholder="5" class="w-full bg-white border border-slate-300 rounded-lg h-8 px-2 pr-7 text-right font-bold text-slate-900 text-xs focus:outline-none focus:ring-1 focus:ring-teal-500">
@@ -251,17 +248,48 @@ export function render(container) {
 
                             <div class="bg-teal-50/60 border border-teal-200/80 rounded-xl p-2.5 space-y-1 text-teal-950 font-medium">
                                 <div class="flex items-center justify-between flex-wrap gap-1">
-                                    <span>ปริมาณยาที่ต้องดูดเพื่อเตรียม:</span>
-                                    <span class="font-bold"><span id="sd-genta-calc-total-vol">0.00</span> ml (คิดเป็นยา <span id="sd-genta-calc-drug-vol">0.00</span> ml)</span>
+                                    <span>ปริมาตรรวมใน Syringe หลัก:</span>
+                                    <span class="font-bold"><span id="sd-genta-calc-total-vol">0.00</span> ml (มียารวม <span id="sd-genta-calc-total-mg">0.00</span> mg)</span>
                                 </div>
                                 <div class="flex items-center justify-between flex-wrap gap-1">
-                                    <span>ใช้สารละลาย:</span>
-                                    <span class="font-bold text-teal-700"><span id="sd-genta-calc-diluent-vol">0.00</span> ml</span>
+                                    <span>ใช้ยา Gentamicin (40mg/ml):</span>
+                                    <span class="font-bold text-teal-700"><span id="sd-genta-calc-drug-vol">0.00</span> ml</span>
+                                </div>
+                                <div class="flex items-center justify-between flex-wrap gap-1">
+                                    <span>ใช้สารละลาย (Diluent):</span>
+                                    <span class="font-bold text-slate-700"><span id="sd-genta-calc-diluent-vol">0.00</span> ml</span>
                                 </div>
                             </div>
                         </div>
 
                     </div>
+
+                    <!-- ขั้นตอนการเตรียมยา และ คำเตือนสำคัญ (NO FLUSH LOGIC) -->
+                    <div class="border-t border-slate-200 pt-3 space-y-2">
+                        <h4 class="font-bold text-slate-900 text-xs flex items-center gap-1.5">
+                            <svg class="w-4 h-4 stroke-teal-600" fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><path d="M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v0Z"/><path d="M9 12h6"/><path d="M9 16h6"/></svg>
+                            ขั้นตอนการเตรียมและบริหารยา (ความเข้มข้นสม่ำเสมอ - ไม่ต้อง Flush)
+                        </h4>
+                        <ol class="list-decimal list-inside space-y-1 text-[11px] text-slate-700 font-medium leading-relaxed pl-1">
+                            <li>ใช้ Syringe หลัก ดูดสารน้ำ (Diluent) ปริมาตร <strong class="text-slate-900"><span id="sd-step-diluent">0.00</span> ml</strong> เพื่อให้อยู่ส่วนลึกใน Syringe</li>
+                            <li>ใช้ Syringe เล็ก (1 ml) ดูดยา Gentamicin (40 mg/ml) ปริมาตร <strong class="text-teal-700"><span id="sd-step-drug">0.00</span> ml</strong> (มียารวม <span id="sd-step-drug-mg">0.00</span> mg)</li>
+                            <li>ถ่ายยาจาก Syringe เล็ก เข้าสู่ Syringe หลัก แบบปากต่อปาก (ยาจะอยู่ส่วนปลาย Syringe หลัก)</li>
+                            <li>Draw ผสมยาให้เป็นเนื้อเดียวกัน (จะได้ปริมาตรรวมใน Syringe หลัก = <strong class="text-slate-900"><span id="sd-step-total">0.00</span> ml</strong> ความเข้มข้น <span id="sd-step-target-conc">0.00</span> mg/ml)</li>
+                            <li>ต่อ Syringe หลักเข้ากับ Infusion Set แล้วบริหารยาด้วยเครื่อง Syringe Pump</li>
+                        </ol>
+
+                        <!-- ข้อความแจ้งเตือนตัวแดง -->
+                        <div class="bg-rose-50 border-l-4 border-rose-500 p-2.5 rounded-r-xl text-rose-900 text-xs font-bold space-y-1 mt-2">
+                            <div class="flex items-center gap-1.5 text-rose-700">
+                                <svg class="w-4 h-4 stroke-current shrink-0" fill="none" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
+                                <span>ข้อระวังสำคัญในการบริหารยา:</span>
+                            </div>
+                            <div class="pl-5 text-[11px] font-semibold leading-normal">
+                                ให้ยาในปริมาตร <span id="sd-alert-vol" class="text-rose-700 underline font-black">0.00</span> ml ในกรอบเวลา 30-120 นาที <span class="text-rose-700 font-black uppercase underline">โดยไม่ต้อง FLUSH สายตามหลัง</span> (ยาส่วนที่เหลือ <span id="sd-alert-remain">0.00</span> ml จะค้างอยู่ในสายพอดี)
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -484,7 +512,7 @@ function initSmalldoseEvents(container) {
             { pmaCond: pma <= 29, pnaCond: pna <= 28, pmaText: "≤ 29 wk", pnaText: "0 - 28 days", div: 2, freq: "q 12 hr(s)" },
             { pmaCond: pma <= 29, pnaCond: pna >= 29, pmaText: "≤ 29 wk", pnaText: "≥ 29 days", div: 3, freq: "q 8 hr(s)" },
             { pmaCond: pma >= 30 && pma <= 36, pnaCond: pna <= 14, pmaText: "30 - 36 wk", pnaText: "0 - 14 days", div: 2, freq: "q 12 hr(s)" },
-            { pmaCond: pma >= 30 && pma <= 36, pnaCond: pna >= 15, pmaText: "30 - 36 wk", pnaText: "≥ 15 days", div: 3, freq: "q 8 hr(s)" },
+            { pmaCond: pma >= 30 && pma <= 36, pnaCond: pna >= 15, pmaText: "30 - 36 wk", pnaText: "≥ 8 days", div: 3, freq: "q 8 hr(s)" },
             { pmaCond: pma >= 37 && pma <= 44, pnaCond: pna <= 7, pmaText: "37 - 44 wk", pnaText: "0 - 7 days", div: 2, freq: "q 12 hr(s)" },
             { pmaCond: pma >= 37 && pma <= 44, pnaCond: pna >= 8, pmaText: "37 - 44 wk", pnaText: "≥ 8 days", div: 3, freq: "q 8 hr(s)" },
             { pmaCond: pma >= 45, pnaCond: true, pmaText: "≥ 45 wk", pnaText: "All days", div: 4, freq: "q 6 hr(s)" },
@@ -544,7 +572,7 @@ function initSmalldoseEvents(container) {
         const minSolVol = calculatedDoseMg / 10;
         container.querySelector('#sd-genta-min-sol').innerText = formatNum(minSolVol);
 
-        // Default [A] Order IV Infusion = ขนาดยาที่คำนวณได้ (ถ้าผู้ใช้ไม่ได้แก้ไขเอง)
+        // Default [A] Order IV Infusion = ขนาดยาที่คำนวณได้
         if (!isUserModifiedA) {
             gentaInputA.value = calculatedDoseMg > 0 ? calculatedDoseMg.toFixed(2) : "";
         }
@@ -554,22 +582,36 @@ function initSmalldoseEvents(container) {
         const inputB = parseFloat(gentaInputB.value) || 0; // Target conc. (mg/ml)
         const inputC = parseFloat(gentaInputC.value) || 0; // ปริมาตรเผื่อค้างสาย (ml)
 
-        // UPDATED LOGIC (อ้างอิงตรงตาม Google Sheets):
-        // 1. ปริมาตรรวมที่ต้องเตรียมใน Syringe (ml) = (Order / Target Conc) + Deadspace
-        const totalPrepVol = inputB > 0 ? (inputA / inputB) + inputC : 0;
-        
-        // 2. ปริมาณยารวมใน Syringe (mg) = ปริมาตรรวม * Target Conc
-        const totalDrugMg = totalPrepVol * inputB;
+        // CORRECT NO-FLUSH LOGIC (UNIFORM CONCENTRATION):
+        // 1. ปริมาตรสารละลายยาที่ต้องเข้าตัวเด็กจริง (ml) = Order / Target Conc
+        const patientInfuseVol = inputB > 0 ? (inputA / inputB) : 0;
 
-        // 3. ปริมาตรยา Gentamicin Injection (40 mg/ml) ที่ต้องดูดจริง (ml) = ปริมาณยารวม / 40
-        const drugVol = totalDrugMg / 40;
+        // 2. ปริมาตรรวมสารละลายใน Syringe หลัก (ml) = ปริมาตรเข้าตัวเด็ก + ปริมาตรเผื่อค้างสาย
+        const totalPrepVol = patientInfuseVol + inputC;
 
-        // 4. ปริมาตร Diluent สารละลายที่ต้องใช้ (ml) = ปริมาตรรวม - ปริมาตรยาที่ดูดจริง
+        // 3. ตัวยาทั้งหมดใน Syringe หลัก (mg) = ปริมาตรรวม * Target Conc
+        const totalMgInSyringe = totalPrepVol * inputB;
+
+        // 4. ปริมาตรยา Gentamicin Injection (40 mg/ml) ที่ต้องดูดด้วย Syringe เล็ก (ml) = ตัวยาทั้งหมด / 40
+        const drugVol = totalMgInSyringe / 40;
+
+        // 5. ปริมาตร Diluent ที่ต้องใช้ใน Syringe หลัก (ml) = ปริมาตรรวม - ปริมาตรยา
         const diluentVol = totalPrepVol - drugVol;
 
+        // อัปเดตส่วนแสดงผลตัวเลข
         container.querySelector('#sd-genta-calc-total-vol').innerText = formatNum(totalPrepVol);
+        container.querySelector('#sd-genta-calc-total-mg').innerText = formatNum(totalMgInSyringe);
         container.querySelector('#sd-genta-calc-drug-vol').innerText = formatNum(drugVol > 0 ? drugVol : 0);
         container.querySelector('#sd-genta-calc-diluent-vol').innerText = formatNum(diluentVol > 0 ? diluentVol : 0);
+
+        // อัปเดตขั้นตอน 1-5 และ คำเตือนสีแดง
+        container.querySelector('#sd-step-diluent').innerText = formatNum(diluentVol > 0 ? diluentVol : 0);
+        container.querySelector('#sd-step-drug').innerText = formatNum(drugVol > 0 ? drugVol : 0);
+        container.querySelector('#sd-step-drug-mg').innerText = formatNum(totalMgInSyringe);
+        container.querySelector('#sd-step-total').innerText = formatNum(totalPrepVol);
+        container.querySelector('#sd-step-target-conc').innerText = formatNum(inputB);
+        container.querySelector('#sd-alert-vol').innerText = formatNum(patientInfuseVol);
+        container.querySelector('#sd-alert-remain').innerText = formatNum(inputC);
     }
 
     function renderCloxacillin(pma, pna, bw) {
