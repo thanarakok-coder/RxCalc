@@ -1,6 +1,6 @@
 /**
  * Smalldose Calculator Module
- * Updated: Gentamicin Detail Card (Bottom section additions & top-right badge removal)
+ * Updated: UI Labels & Logic correction based on Google Sheets formula
  */
 
 export function render(container) {
@@ -209,8 +209,9 @@ export function render(container) {
                                 <span class="font-bold text-slate-900 shrink-0">Compatible Solution :</span>
                                 <span class="font-semibold text-slate-800">D5W, D10W, NSS</span>
                             </div>
+                            <!-- ข้อ 4: เปลี่ยนเครื่องหมาย : เป็น = -->
                             <div class="flex flex-wrap items-baseline gap-1.5">
-                                <span class="font-bold text-slate-900 shrink-0">Max Conc. 10mg/ml :</span>
+                                <span class="font-bold text-slate-900 shrink-0">Max Conc. 10mg/ml =</span>
                                 <span>ต้องใช้สารละลาย<strong class="text-slate-900 font-black">อย่างน้อย</strong> <span id="sd-genta-min-sol" class="font-bold text-slate-900">0.00</span> ml</span>
                             </div>
                             <div class="flex flex-wrap items-baseline gap-1.5">
@@ -223,21 +224,24 @@ export function render(container) {
                         <div class="pt-3 md:pt-0 pl-0 md:pl-4 space-y-2.5">
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
                                 <div>
-                                    <label class="block text-[11px] font-bold text-slate-800 mb-1">Head Order [A]</label>
+                                    <!-- ข้อ 1: เปลี่ยนเป็น [A] Order IV Infusion -->
+                                    <label class="block text-[11px] font-bold text-slate-800 mb-1">[A] Order IV Infusion</label>
                                     <div class="relative flex items-center">
                                         <input type="number" id="sd-genta-input-a" step="0.1" placeholder="0" class="w-full bg-white border border-slate-300 rounded-lg h-8 px-2 pr-7 text-right font-bold text-slate-900 text-xs focus:outline-none focus:ring-1 focus:ring-teal-500">
                                         <span class="absolute right-1.5 text-[10px] text-slate-500 font-bold pointer-events-none">mg</span>
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block text-[11px] font-bold text-slate-800 mb-1">Target conc. [B]</label>
+                                    <!-- ข้อ 2: เปลี่ยนเป็น [B] Target conc. (mg/ml) -->
+                                    <label class="block text-[11px] font-bold text-slate-800 mb-1">[B] Target conc. (mg/ml)</label>
                                     <div class="relative flex items-center">
                                         <input type="number" id="sd-genta-input-b" value="2" step="0.1" placeholder="2" class="w-full bg-white border border-slate-300 rounded-lg h-8 px-2 pr-10 text-right font-bold text-slate-900 text-xs focus:outline-none focus:ring-1 focus:ring-teal-500">
                                         <span class="absolute right-1.5 text-[10px] text-slate-500 font-bold pointer-events-none">mg/ml</span>
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block text-[11px] font-bold text-slate-800 mb-1">เผื่อค้างสาย [C]</label>
+                                    <!-- ข้อ 3: เปลี่ยนเป็น [C] ปริมาตรเผื่อค้างสาย -->
+                                    <label class="block text-[11px] font-bold text-slate-800 mb-1">[C] ปริมาตรเผื่อค้างสาย</label>
                                     <div class="relative flex items-center">
                                         <input type="number" id="sd-genta-input-c" value="5" step="0.5" placeholder="5" class="w-full bg-white border border-slate-300 rounded-lg h-8 px-2 pr-7 text-right font-bold text-slate-900 text-xs focus:outline-none focus:ring-1 focus:ring-teal-500">
                                         <span class="absolute right-1.5 text-[10px] text-slate-500 font-bold pointer-events-none">ml</span>
@@ -536,26 +540,31 @@ function initSmalldoseEvents(container) {
         });
         container.querySelector('#sd-tbl-gentamicin').innerHTML = html;
 
-        // 1.2 Max Conc. 10mg/ml = ขนาดยาที่คำนวณได้ / 10
+        // Max Conc. 10mg/ml = ขนาดยาที่คำนวณได้ / 10
         const minSolVol = calculatedDoseMg / 10;
         container.querySelector('#sd-genta-min-sol').innerText = formatNum(minSolVol);
 
-        // 1.4 Head Order [A] Default = ขนาดยาที่คำนวณได้ (ถ้าผู้ใช้ไม่ได้แก้ไขเอง)
+        // Default [A] Order IV Infusion = ขนาดยาที่คำนวณได้ (ถ้าผู้ใช้ไม่ได้แก้ไขเอง)
         if (!isUserModifiedA) {
             gentaInputA.value = calculatedDoseMg > 0 ? calculatedDoseMg.toFixed(2) : "";
         }
 
         // อ่านค่า A, B, C สำหรับคำนวณ
-        const inputA = parseFloat(gentaInputA.value) || 0;
-        const inputB = parseFloat(gentaInputB.value) || 0;
-        const inputC = parseFloat(gentaInputC.value) || 0;
+        const inputA = parseFloat(gentaInputA.value) || 0; // Order IV Infusion (mg)
+        const inputB = parseFloat(gentaInputB.value) || 0; // Target conc. (mg/ml)
+        const inputC = parseFloat(gentaInputC.value) || 0; // ปริมาตรเผื่อค้างสาย (ml)
 
-        // Formula Calculation
-        // 1. ปริมาณยารวมที่ต้องเตรียม (รวม deadspace ค้างสายทั้ง 2 ด้าน)
-        const totalPrepVol = inputB > 0 ? ((inputA + inputC) / inputB) + inputC : 0;
-        // 2. ปริมาณยา Gentamicin Injection (40 mg/ml) ที่ต้องดูด
-        const drugVol = (inputB * totalPrepVol) / 40;
-        // 3. ปริมาณสารละลาย (Diluent) ที่ต้องใช้
+        // UPDATED LOGIC (อ้างอิงตรงตาม Google Sheets):
+        // 1. ปริมาตรรวมที่ต้องเตรียมใน Syringe (ml) = (Order / Target Conc) + Deadspace
+        const totalPrepVol = inputB > 0 ? (inputA / inputB) + inputC : 0;
+        
+        // 2. ปริมาณยารวมใน Syringe (mg) = ปริมาตรรวม * Target Conc
+        const totalDrugMg = totalPrepVol * inputB;
+
+        // 3. ปริมาตรยา Gentamicin Injection (40 mg/ml) ที่ต้องดูดจริง (ml) = ปริมาณยารวม / 40
+        const drugVol = totalDrugMg / 40;
+
+        // 4. ปริมาตร Diluent สารละลายที่ต้องใช้ (ml) = ปริมาตรรวม - ปริมาตรยาที่ดูดจริง
         const diluentVol = totalPrepVol - drugVol;
 
         container.querySelector('#sd-genta-calc-total-vol').innerText = formatNum(totalPrepVol);
@@ -568,7 +577,7 @@ function initSmalldoseEvents(container) {
             { pmaCond: pma <= 29, pnaCond: pna <= 28, pmaText: "≤ 29 wk", pnaText: "0 - 28 days", dose: 25, freq: "q 12 hr(s)" },
             { pmaCond: pma <= 29, pnaCond: pna >= 29, pmaText: "≤ 29 wk", pnaText: "≥ 29 days", dose: 25, freq: "q 8 hr(s)" },
             { pmaCond: pma >= 30 && pma <= 36, pnaCond: pna <= 14, pmaText: "30 - 36 wk", pnaText: "0 - 14 days", dose: 25, freq: "q 12 hr(s)" },
-            { pmaCond: pma >= 30 && pma <= 36, pnaCond: pna >= 15, pmaText: "30 - 36 wk", pnaText: "≥ 15 days", dose: 25, freq: "q 8 hr(s)" },
+            { pmaCond: pma >= 30 && pma <= 36, pnaCond: pna >= 15, pmaText: "30 - 36 wk", pnaText: "≥ 8 days", dose: 25, freq: "q 8 hr(s)" },
             { pmaCond: pma >= 37 && pma <= 44, pnaCond: pna <= 7, pmaText: "37 - 44 wk", pnaText: "0 - 7 days", dose: 25, freq: "q 12 hr(s)" },
             { pmaCond: pma >= 37 && pma <= 44, pnaCond: pna >= 8, pmaText: "37 - 44 wk", pnaText: "≥ 8 days", dose: 25, freq: "q 8 hr(s)" },
             { pmaCond: pma >= 45, pnaCond: true, pmaText: "≥ 45 wk", pnaText: "All days", dose: 25, freq: "q 6 hr(s)" },
@@ -596,7 +605,7 @@ function initSmalldoseEvents(container) {
             { pmaCond: pma <= 29, pnaCond: pna <= 28, pmaText: "≤ 29 wk", pnaText: "0 - 28 days", doseMin: 5, doseMax: 7, freq: "q 12 hr(s)" },
             { pmaCond: pma <= 29, pnaCond: pna >= 29, pmaText: "≤ 29 wk", pnaText: "≥ 29 days", doseMin: 5, doseMax: 7, freq: "q 8 hr(s)" },
             { pmaCond: pma >= 30 && pma <= 36, pnaCond: pna <= 14, pmaText: "30 - 36 wk", pnaText: "0 - 14 days", doseMin: 5, doseMax: 7, freq: "q 12 hr(s)" },
-            { pmaCond: pma >= 30 && pma <= 36, pnaCond: pna >= 15, pmaText: "30 - 36 wk", pnaText: "≥ 15 days", doseMin: 5, doseMax: 7, freq: "q 8 hr(s)" },
+            { pmaCond: pma >= 30 && pma <= 36, pnaCond: pna >= 15, pmaText: "30 - 36 wk", pnaText: "≥ 8 days", doseMin: 5, doseMax: 7, freq: "q 8 hr(s)" },
             { pmaCond: pma >= 37 && pma <= 44, pnaCond: pna <= 7, pmaText: "37 - 44 wk", pnaText: "0 - 7 days", doseMin: 5, doseMax: 7, freq: "q 12 hr(s)" },
             { pmaCond: pma >= 37 && pma <= 44, pnaCond: pna >= 8, pmaText: "37 - 44 wk", pnaText: "≥ 8 days", doseMin: 5, doseMax: 7, freq: "q 8 hr(s)" },
             { pmaCond: pma >= 45, pnaCond: true, pmaText: "≥ 45 wk", pnaText: "All days", doseMin: 5, doseMax: 7, freq: "q 6 hr(s)" },
