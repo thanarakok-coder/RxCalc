@@ -1,8 +1,8 @@
 /**
  * Smalldose Calculator Module
  * Updated: Complete Vanilla JS with 4 Drug Cards (Ampicillin, Gentamicin, Cloxacillin, Clindamycin)
- * Cloxacillin Card updated: SWFI moved to common info & Prep Guide moved to Popover inside IV Infusion box.
- * Timestamp: 2026-08-18 12:15
+ * Clindamycin Card updated: Added headnote, Max Conc, Max IV rate, alternative FDA reference dosing, and dynamic PMA highlight.
+ * Timestamp: 2026-08-18 15:42
  */
 
 export function render(container) {
@@ -474,11 +474,20 @@ export function render(container) {
                 </div>
             </div>
 
-            <div id="sd-card-clindamycin" class="bg-slate-100/90 backdrop-blur-md rounded-3xl p-5 border border-slate-300 shadow-sm transition-all space-y-4">
-                <div class="flex items-center gap-2">
-                    <span class="w-3.5 h-3.5 rounded-full bg-rose-600 inline-block"></span>
-                    <h3 class="text-xl font-bold text-slate-800">Clindamycin <span class="text-sm font-normal text-slate-600">(Dose: 5 - 7 mg/kg)</span></h3>
+            <div id="sd-card-clindamycin" class="bg-slate-100/90 backdrop-blur-md rounded-3xl p-5 border border-slate-300 shadow-sm transition-all space-y-4 relative">
+                
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div class="flex items-center gap-2">
+                        <span class="w-3.5 h-3.5 rounded-full bg-rose-600 inline-block"></span>
+                        <h3 class="text-xl font-bold text-slate-800">Clindamycin <span class="text-sm font-normal text-slate-600">(Dose: 5 - 7 mg/kg)</span></h3>
+                    </div>
+                    <div class="text-right self-end sm:self-auto">
+                        <span class="inline-block bg-white text-slate-500 text-[11px] px-2.5 py-1 rounded-lg font-medium border border-slate-200 shadow-sm">
+                            ข้อมูลดังกล่าว อ้างอิงจาก neofax
+                        </span>
+                    </div>
                 </div>
+
                 <div class="overflow-x-auto rounded-2xl border border-slate-200 bg-white">
                     <table class="w-full text-left border-collapse text-xs">
                         <thead>
@@ -494,12 +503,43 @@ export function render(container) {
                         <tbody id="sd-tbl-clindamycin" class="divide-y divide-slate-100 text-slate-700 font-medium"></tbody>
                     </table>
                 </div>
-                <div class="bg-slate-50/80 border border-slate-200 rounded-2xl p-3 text-xs text-slate-700 space-y-1">
-                    <div class="flex flex-wrap items-baseline gap-1.5">
-                        <span class="font-bold text-slate-900 shrink-0">Compatible Solution :</span>
+
+                <div class="bg-slate-50/80 border border-slate-200 rounded-2xl p-3 text-xs text-slate-700 space-y-2">
+                    <div class="flex flex-wrap items-baseline gap-1.5 border-b border-slate-200/80 pb-2">
+                        <span class="font-bold text-slate-900 shrink-0">Compat. sol. :</span>
                         <span class="font-semibold text-slate-800">D5W, D10W, NSS</span>
+                        <span class="text-slate-300">|</span>
+                        <span class="font-bold text-slate-900">Max Conc. :</span>
+                        <span class="font-semibold text-slate-800">18 mg/ml</span>
+                        <span class="text-slate-300">|</span>
+                        <span class="font-bold text-slate-900">Max IV rate :</span>
+                        <span class="font-semibold text-slate-800">30 mg/min</span>
+                    </div>
+
+                    <div class="space-y-1 pt-0.5">
+                        <div class="font-bold text-slate-800 flex items-center gap-1">
+                            <span>**บาง ref. อาจแนะนำขนาดยาต่างออกไป</span>
+                            <a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/050441s090lbl.pdf" target="_blank" rel="noopener noreferrer" class="text-rose-600 hover:text-rose-800 underline inline-flex items-center gap-0.5 font-semibold" title="เปิดเอกสารอ้างอิง FDA (PDF)">
+                                (แนบลิงค์ : https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/050441s090lbl.pdf)
+                                <svg class="w-3 h-3 stroke-current" fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                            </a>
+                        </div>
+                        
+                        <ul class="list-disc list-inside space-y-1 pl-1 text-slate-700">
+                            <li id="sd-clinda-ref-line1">
+                                <span>Postmenstrual Age น้อยกว่าหรือเท่ากับ 32 Weeks : 5 mg/kg IV every 8 hours</span>
+                                <span> = </span>
+                                <span id="sd-clinda-ref-val1" class="text-slate-900"><strong id="sd-clinda-ref-dose1">0.00</strong> mg q 8 hr(s).</span>
+                            </li>
+                            <li id="sd-clinda-ref-line2">
+                                <span>Postmenstrual Age มากกว่า 32 Weeks ถึง 40 Weeks : 7 mg/kg IV every 8 hours</span>
+                                <span> = </span>
+                                <span id="sd-clinda-ref-val2" class="text-slate-900"><strong id="sd-clinda-ref-dose2">0.00</strong> mg q 8 hr(s).</span>
+                            </li>
+                        </ul>
                     </div>
                 </div>
+
             </div>
 
         </main>
@@ -849,6 +889,28 @@ function initSmalldoseEvents(container) {
             </tr>`;
         });
         container.querySelector('#sd-tbl-clindamycin').innerHTML = html;
+
+        // คำนวณขนาดยาของ Ref FDA ตามน้ำหนักทารก
+        const refDose1 = bw * 5;
+        const refDose2 = bw * 7;
+
+        container.querySelector('#sd-clinda-ref-dose1').innerText = formatNum(refDose1);
+        container.querySelector('#sd-clinda-ref-dose2').innerText = formatNum(refDose2);
+
+        // ตรวจสอบเกณฑ์ PMA เพื่อทำตัวหนา (Highlight) ที่ข้อความ
+        const line1 = container.querySelector('#sd-clinda-ref-line1');
+        const line2 = container.querySelector('#sd-clinda-ref-line2');
+        const val1 = container.querySelector('#sd-clinda-ref-val1');
+        const val2 = container.querySelector('#sd-clinda-ref-val2');
+
+        const isMatchPma1 = pma > 0 && pma <= 32;
+        const isMatchPma2 = pma > 32 && pma <= 40;
+
+        line1.className = isMatchPma1 ? "font-bold text-rose-950 bg-rose-100/70 p-1 rounded-lg border-l-2 border-rose-500" : "font-normal text-slate-700";
+        line2.className = isMatchPma2 ? "font-bold text-rose-950 bg-rose-100/70 p-1 rounded-lg border-l-2 border-rose-500" : "font-normal text-slate-700";
+
+        val1.className = isMatchPma1 ? "font-black text-rose-700 underline" : "text-slate-900";
+        val2.className = isMatchPma2 ? "font-black text-rose-700 underline" : "text-slate-900";
     }
 
     calculateAll();
