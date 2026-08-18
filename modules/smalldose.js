@@ -1,8 +1,8 @@
 /**
  * Smalldose Calculator Module
  * Updated: Complete Vanilla JS with 4 Drug Cards (Ampicillin, Gentamicin, Cloxacillin, Clindamycin)
- * Gentamicin Card updated with Ampule tag, text lightness, A/B ml labels, fit-in popover & high z-index.
- * Timestamp: 2026-08-18 10:30
+ * Cloxacillin Card updated with Editable Vial strength, SWFI input, Dynamic calculations & Prep Guide.
+ * Timestamp: 2026-08-18 11:27
  */
 
 export function render(container) {
@@ -91,7 +91,7 @@ export function render(container) {
                     <span class="text-[11px] uppercase tracking-wider text-teal-400 font-bold block">CALCULATED PMA</span>
                     <div id="sd-pma-display" class="text-2xl font-black text-teal-300 tracking-tight">0 wk</div>
                     <div id="sd-pma-desc" class="text-[11px] text-slate-300 font-normal leading-relaxed text-left pt-1 border-t border-slate-800/80 space-y-0.5">
-                        </div>
+                    </div>
                 </div>
 
                 <div class="pt-1">
@@ -344,10 +344,19 @@ export function render(container) {
             </div>
 
             <div id="sd-card-cloxacillin" class="bg-slate-100/90 backdrop-blur-md rounded-3xl p-5 border border-slate-300 shadow-sm transition-all space-y-4">
-                <div class="flex items-center gap-2">
-                    <span class="w-3.5 h-3.5 rounded-full bg-amber-500 inline-block"></span>
-                    <h3 class="text-xl font-bold text-slate-800">Cloxacillin</h3>
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                    <div class="flex items-center gap-2">
+                        <span class="w-3.5 h-3.5 rounded-full bg-amber-500 inline-block"></span>
+                        <h3 class="text-xl font-bold text-slate-800">Cloxacillin</h3>
+                    </div>
+                    
+                    <div class="flex items-center gap-1.5 bg-white text-slate-700 text-xs px-2.5 py-1 rounded-xl border border-slate-200 shadow-sm">
+                        <span>คำนวนจากรูปแบบ Vial</span>
+                        <input type="number" id="sd-clox-vial-strength" value="1000" min="1" class="w-16 bg-slate-50 border border-slate-300 rounded px-1 text-center font-bold text-amber-700 focus:outline-none focus:ring-1 focus:ring-amber-500">
+                        <span class="font-medium">mg/vial</span>
+                    </div>
                 </div>
+
                 <div class="overflow-x-auto rounded-2xl border border-slate-200 bg-white">
                     <table class="w-full text-left border-collapse text-xs">
                         <thead>
@@ -361,6 +370,100 @@ export function render(container) {
                         </thead>
                         <tbody id="sd-tbl-cloxacillin" class="divide-y divide-slate-100 text-slate-700 font-medium"></tbody>
                     </table>
+                </div>
+
+                <div class="bg-slate-50/80 border border-slate-200 rounded-2xl p-4 text-xs text-slate-700 space-y-4">
+                    <div class="flex flex-wrap items-center gap-2 pb-3 border-b border-slate-200 text-xs">
+                        <span class="font-bold text-slate-900">Compatible Solution :</span>
+                        <span class="font-semibold text-slate-800">D5W, D10W, NSS</span>
+                        <span class="text-slate-400">|</span>
+                        <span class="font-bold text-slate-900">ความเข้มข้นที่กำหนด :</span>
+                        <span class="font-semibold text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">10 mg/ml ถึง 40 mg/ml</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 divide-y md:divide-y-0 md:divide-x divide-slate-200">
+                        
+                        <div class="space-y-2 pr-0 md:pr-3">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-amber-600 inline-block"></span>
+                                <h4 class="font-bold text-slate-900 text-sm">แบบ A : IV SLOW push</h4>
+                            </div>
+                            <div class="bg-white p-3 rounded-xl border border-slate-200 space-y-1.5 text-slate-700">
+                                <div><strong class="text-slate-900">Duration :</strong> 10 min</div>
+                                <div><strong class="text-slate-900">Max Conc. :</strong> 100 mg/ml</div>
+                                <div class="pt-1 text-slate-800">
+                                    ใช้สารละลาย<strong class="text-slate-900 font-bold">อย่างน้อย</strong> = 
+                                    <span id="sd-clox-slow-min" class="font-bold text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">0.00</span> 
+                                    <strong class="text-slate-900 font-bold">ml</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-3 md:pt-0 pl-0 md:pl-4 space-y-2">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-teal-600 inline-block"></span>
+                                <h4 class="font-bold text-slate-900 text-sm">แบบ B : IV infusion</h4>
+                            </div>
+                            <div class="bg-white p-3 rounded-xl border border-slate-200 space-y-1.5 text-slate-700">
+                                <div><strong class="text-slate-900">Duration :</strong> 15 - 60 min</div>
+                                <div><strong class="text-slate-900">Conc. range :</strong> 10 mg/ml - 40 mg/ml</div>
+                                <div class="pt-1 space-y-1 text-slate-800">
+                                    <div>
+                                        ใช้สารละลาย<strong class="text-slate-900 font-bold">อย่างน้อย</strong> = 
+                                        <span id="sd-clox-infusion-min" class="font-bold text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">0.00</span> 
+                                        <strong class="text-slate-900 font-bold">ml</strong>
+                                    </div>
+                                    <div>
+                                        ใช้สารละลาย<strong class="text-slate-900 font-bold">ไม่เกิน</strong> = 
+                                        <span id="sd-clox-infusion-max" class="font-bold text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">0.00</span> 
+                                        <strong class="text-slate-900 font-bold">ml</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="bg-amber-50/70 border border-amber-200/90 rounded-2xl p-4 space-y-2.5 text-slate-800">
+                        <div class="flex items-center justify-between flex-wrap gap-2 border-b border-amber-200/80 pb-2">
+                            <span class="font-bold text-amber-950 flex items-center gap-1.5 text-xs">
+                                <svg class="w-4 h-4 stroke-amber-700" fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 2 2h10a2 2 0 0 2 2-2V7a2 2 0 0 0-2-2h-2"/><path d="M9 12h6"/><path d="M9 16h6"/></svg>
+                                วิธีเตรียม IV infusion
+                            </span>
+                            
+                            <div class="flex items-center gap-1.5 bg-white text-slate-700 text-[11px] px-2 py-0.5 rounded-lg border border-amber-200 shadow-sm">
+                                <span>ละลายผงยาด้วย</span>
+                                <a href="https://pdf.hres.ca/dpd_pm/00019026.PDF" target="_blank" rel="noopener noreferrer" class="font-bold text-indigo-600 hover:text-indigo-800 underline inline-flex items-center gap-0.5" title="เปิดเอกสารอ้างอิง SWFI (PDF)">
+                                    SWFI
+                                    <svg class="w-3 h-3 stroke-current" fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                                </a>
+                                <input type="number" id="sd-clox-swfi-vol" value="5" min="0.1" step="0.5" class="w-12 bg-amber-50 border border-amber-300 rounded text-center font-bold text-amber-900 focus:outline-none focus:ring-1 focus:ring-amber-500">
+                                <span>ml</span>
+                            </div>
+                        </div>
+
+                        <ol class="list-decimal list-inside space-y-1.5 text-xs font-medium leading-relaxed text-slate-700">
+                            <li>ละลายผงยา Cloxacillin (<span id="sd-clox-vial-label">1,000</span> mg) ด้วย SWFI ปริมาตร <span id="sd-clox-swfi-label" class="font-bold text-slate-900">5</span> ml</li>
+                            <li>
+                                ดูดสารละลายยามาใช้ = 
+                                <span class="font-bold text-amber-800 bg-white px-1.5 py-0.5 rounded border border-amber-200">
+                                    <span id="sd-clox-draw-vol">0.00</span> ml
+                                </span> 
+                                <span class="text-slate-500 text-[11px] font-normal">(คำนวณจาก: [<span id="sd-clox-swfi-label2">5</span> ml × <span id="sd-clox-dose-label">0.00</span> mg] / <span id="sd-clox-vial-label2">1,000</span> mg)</span>
+                            </li>
+                            <li>
+                                ใช้ Syringe ดูด NSS มา ปริมาตรระหว่าง : 
+                                <strong class="text-slate-900 font-bold"><span id="sd-clox-nss-min">0.00</span> ml</strong> - 
+                                <strong class="text-slate-900 font-bold"><span id="sd-clox-nss-max">0.00</span> ml</strong>
+                            </li>
+                            <li>นำยาในข้อ 2. เติมไปใน Syringe ข้อ 3. แบบปลาย Syringe ชนกัน (จุ่มกันไปเลย)</li>
+                            <li>ต่อ Syringe (ข้อ 4.) เข้ากับ Extension พร้อมกับ push เติมยาไปในสายเลย <span class="text-slate-500">(กะปริมาตร ได้ประมาณ 2 cc)</span></li>
+                            <li>บริหารยาด้วยเครื่อง Syringe pump <span class="text-slate-600 font-semibold">(ตั้งเวลาที่จะใช้ 15 - 60 นาที + ระบุสารน้ำที่ใช้)</span> เครื่องคำนวณอัตราให้เอง</li>
+                            <li class="text-slate-900 font-semibold">
+                                เติม NSS อีกประมาณ <strong class="text-amber-800 underline">2 cc</strong> เพื่อ flush ยาที่อาจตกค้างอยู่ในสาย Extension pump
+                            </li>
+                        </ol>
+                    </div>
                 </div>
             </div>
 
@@ -428,12 +531,18 @@ function initSmalldoseEvents(container) {
     const gentaInputC = container.querySelector('#sd-genta-input-c');
     let isUserModifiedA = false;
 
+    const cloxVialStrengthInput = container.querySelector('#sd-clox-vial-strength');
+    const cloxSwfiVolInput = container.querySelector('#sd-clox-swfi-vol');
+
     gentaInputA.addEventListener('input', () => {
         isUserModifiedA = true;
         calculateAll();
     });
     gentaInputB.addEventListener('input', calculateAll);
     gentaInputC.addEventListener('input', calculateAll);
+
+    cloxVialStrengthInput.addEventListener('input', calculateAll);
+    cloxSwfiVolInput.addEventListener('input', calculateAll);
 
     function formatNum(val, decimals = 2) {
         const num = parseFloat(val);
@@ -501,6 +610,9 @@ function initSmalldoseEvents(container) {
         gentaInputB.value = "2";
         gentaInputC.value = "5";
         isUserModifiedA = false;
+
+        cloxVialStrengthInput.value = "1000";
+        cloxSwfiVolInput.value = "5";
         
         cardAmp.classList.remove('hidden');
         cardGenta.classList.remove('hidden');
@@ -658,9 +770,14 @@ function initSmalldoseEvents(container) {
         ];
 
         let html = "";
+        let matchedDoseMg = 0;
+
         rows.forEach(r => {
             const isMatch = r.pmaCond && r.pnaCond;
             const doseMg = bw * r.dose;
+            if (isMatch) {
+                matchedDoseMg = doseMg;
+            }
             const activeClass = isMatch ? "bg-amber-100/90 font-bold text-amber-900 border-l-4 border-amber-600" : "";
             
             html += `<tr class="${activeClass}">
@@ -672,6 +789,35 @@ function initSmalldoseEvents(container) {
             </tr>`;
         });
         container.querySelector('#sd-tbl-cloxacillin').innerHTML = html;
+
+        // Calculations for Cloxacillin Card Details
+        const vialMg = parseFloat(cloxVialStrengthInput.value) || 1000;
+        const swfiVol = parseFloat(cloxSwfiVolInput.value) || 5;
+
+        // Slow Push: Max conc 100 mg/ml
+        const slowPushMinVol = matchedDoseMg / 100;
+        
+        // IV Infusion: Conc range 10 - 40 mg/ml
+        const infusionMinVol = matchedDoseMg / 40;
+        const infusionMaxVol = matchedDoseMg / 10;
+
+        // Draw volume calculation: (swfiVol * matchedDoseMg) / vialMg
+        const drawVol = vialMg > 0 ? (swfiVol * matchedDoseMg) / vialMg : 0;
+
+        // Update DOM
+        container.querySelector('#sd-clox-slow-min').innerText = formatNum(slowPushMinVol);
+        container.querySelector('#sd-clox-infusion-min').innerText = formatNum(infusionMinVol);
+        container.querySelector('#sd-clox-infusion-max').innerText = formatNum(infusionMaxVol);
+
+        container.querySelector('#sd-clox-vial-label').innerText = formatNum(vialMg, 0);
+        container.querySelector('#sd-clox-vial-label2').innerText = formatNum(vialMg, 0);
+        container.querySelector('#sd-clox-swfi-label').innerText = formatNum(swfiVol, 1);
+        container.querySelector('#sd-clox-swfi-label2').innerText = formatNum(swfiVol, 1);
+        container.querySelector('#sd-clox-dose-label').innerText = formatNum(matchedDoseMg);
+        container.querySelector('#sd-clox-draw-vol').innerText = formatNum(drawVol);
+
+        container.querySelector('#sd-clox-nss-min').innerText = formatNum(infusionMinVol);
+        container.querySelector('#sd-clox-nss-max').innerText = formatNum(infusionMaxVol);
     }
 
     function renderClindamycin(pma, pna, bw) {
