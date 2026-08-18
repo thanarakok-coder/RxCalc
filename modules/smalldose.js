@@ -1,7 +1,8 @@
 /**
  * Smalldose Calculator Module
- * Updated: Clean SVG Fonts, Dynamic SVG Data Binding [A]/[B], Expanded Popover & Exact Line Breaks
- * Timestamp: 2026-08-18 10:12
+ * Updated: Complete Vanilla JS with 4 Drug Cards (Ampicillin, Gentamicin, Cloxacillin, Clindamycin)
+ * Gentamicin Card updated with Ampule tag, text lightness, A/B ml labels, fit-in popover & high z-index.
+ * Timestamp: 2026-08-18 10:30
  */
 
 export function render(container) {
@@ -166,10 +167,18 @@ export function render(container) {
                 </div>
             </div>
 
-            <div id="sd-card-gentamicin" class="bg-slate-100/90 backdrop-blur-md rounded-3xl p-5 border border-slate-300 shadow-sm transition-all space-y-4">
-                <div class="flex items-center gap-2">
-                    <span class="w-3.5 h-3.5 rounded-full bg-teal-600 inline-block"></span>
-                    <h3 class="text-xl font-bold text-slate-800">Gentamicin</h3>
+            <div id="sd-card-gentamicin" class="bg-slate-100/90 backdrop-blur-md rounded-3xl p-5 border border-slate-300 shadow-sm transition-all space-y-4 relative z-30">
+                
+                <div class="flex justify-between items-start">
+                    <div class="flex items-center gap-2">
+                        <span class="w-3.5 h-3.5 rounded-full bg-teal-600 inline-block"></span>
+                        <h3 class="text-xl font-bold text-slate-800">Gentamicin</h3>
+                    </div>
+                    <div class="text-right">
+                        <span class="inline-block bg-white text-slate-600 text-xs px-2.5 py-1 rounded-lg font-medium border border-slate-200 shadow-sm">
+                            คำนวนจากรูปแบบ Ampule 80mg/2ml
+                        </span>
+                    </div>
                 </div>
 
                 <div class="overflow-x-auto rounded-2xl border border-slate-200 bg-white">
@@ -200,11 +209,11 @@ export function render(container) {
 
                                     <span class="font-bold text-slate-900">Max Conc. 10mg/ml</span>
                                     <span class="font-bold text-slate-900">=</span>
-                                    <span>ต้องใช้สารละลาย<strong class="text-slate-900 font-black">อย่างน้อย</strong> <span id="sd-genta-min-sol" class="font-bold text-slate-900">0.00</span> ml</span>
+                                    <span>ต้องใช้สารละลาย<strong class="text-slate-900 font-bold">อย่างน้อย</strong> <span id="sd-genta-min-sol" class="font-bold text-slate-900">0.00</span> ml</span>
 
                                     <span class="font-bold text-slate-900">IV infusion</span>
                                     <span class="font-bold text-slate-900">:</span>
-                                    <span><strong class="text-slate-900 font-black">อย่างน้อย</strong> 30-120 นาที</span>
+                                    <span><strong class="text-slate-900 font-bold">อย่างน้อย</strong> 30-120 นาที</span>
                                 </div>
 
                                 <div class="relative group cursor-pointer inline-flex items-center justify-center shrink-0">
@@ -212,34 +221,31 @@ export function render(container) {
                                         ?
                                     </div>
                                     
-                                    <div class="absolute top-0 right-7 w-[34rem] bg-slate-900 text-slate-100 text-[11px] p-4 rounded-2xl shadow-2xl border border-slate-700 z-50 hidden group-hover:block transition-all space-y-3 pointer-events-auto">
-                                        <div class="font-bold text-teal-300 border-b border-slate-800 pb-1.5 flex items-center gap-1.5">
+                                    <div class="absolute top-0 right-7 w-max max-w-sm bg-slate-900 text-slate-100 text-[11px] p-4 rounded-2xl shadow-2xl border border-slate-700 z-[9999] hidden group-hover:block transition-all space-y-3 pointer-events-auto">
+                                        <div class="font-normal text-teal-300 border-b border-slate-800 pb-1.5 flex items-center gap-1.5">
                                             <svg class="w-4 h-4 stroke-teal-400" fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 2 2h10a2 2 0 0 2 2-2V7a2 2 0 0 0-2-2h-2"/><path d="M9 12h6"/><path d="M9 16h6"/></svg>
-                                            ขั้นตอนการเตรียมและบริหารยา (ความเข้มข้นสม่ำเสมอ)
+                                            <span>ขั้นตอนการเตรียมและบริหารยา (ความเข้มข้นสม่ำเสมอ)</span>
                                         </div>
                                         
                                         <ol class="list-decimal list-inside space-y-1.5 font-normal leading-relaxed text-slate-200">
-                                            <li>ใช้ Syringe หลัก ดูดสารน้ำ (Diluent) ปริมาตร <strong class="text-white"><span id="sd-step-diluent">0.00</span> ml</strong></li>
-                                            <li>ใช้ Syringe เล็ก (1 ml) ดูดยา Gentamicin ปริมาตร <strong class="text-teal-300"><span id="sd-step-drug">0.00</span> ml</strong> (<span id="sd-step-drug-mg">0.00</span> mg)</li>
+                                            <li>ใช้ Syringe หลัก ดูดสารน้ำ (Diluent) ปริมาตร <span class="text-white font-normal"><span id="sd-step-diluent">0.00</span> ml</span></li>
+                                            <li>ใช้ Syringe เล็ก (1 ml) ดูดยา Gentamicin ปริมาตร <span class="text-teal-300 font-normal"><span id="sd-step-drug">0.00</span> ml</span> (<span id="sd-step-drug-mg">0.00</span> mg)</li>
                                             <li>ถ่ายยาจาก Syringe เล็ก เข้าสู่ Syringe หลัก แบบปากต่อปาก</li>
-                                            <li class="text-teal-200"><strong class="font-black underline text-white">Draw ผสมยาให้เข้ากัน</strong> (ปริมาตรรวม = <span id="sd-step-total">0.00</span> ml)</li>
+                                            <li class="text-teal-200"><span class="underline text-white font-normal">Draw ผสมยาให้เข้ากัน</span> (ปริมาตรรวม = <span id="sd-step-total">0.00</span> ml)</li>
                                             <li>ต่อ Syringe หลักเข้ากับ Infusion Set แล้วบริหารยาผ่าน Syringe Pump</li>
                                         </ol>
 
-                                        <div class="bg-rose-950/80 border border-rose-600/60 rounded-xl p-2.5 text-rose-200 text-[11px] font-medium leading-relaxed space-y-1">
-                                            <div class="flex items-center gap-1 text-rose-400 font-bold">
-                                                <svg class="w-3.5 h-3.5 stroke-current" fill="none" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
+                                        <div class="bg-rose-950/80 border border-rose-600/60 rounded-xl p-2.5 text-rose-200 text-[11px] font-normal leading-relaxed space-y-1">
+                                            <div class="flex items-center gap-1 text-rose-400 font-normal">
+                                                <svg class="w-3.5 h-3.5 stroke-current" fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
                                                 <span>ข้อระวังสำคัญ:</span>
                                             </div>
                                             <div>
-                                                ให้ยาปริมาตร <span id="sd-alert-vol" class="text-white font-bold underline">0.00</span> ml ในเวลา 30-120 นาที <strong class="text-rose-300 font-black underline whitespace-nowrap">โดยไม่ต้อง FLUSH สายตามหลัง</strong>
-                                            </div>
-                                            <div class="text-rose-200/90 pt-0.5">
-                                                (ยาส่วนที่เหลือ <span id="sd-alert-remain">0.00</span> ml จะค้างอยู่ในสายพอดี)
+                                                ให้ยาปริมาตร <span id="sd-alert-vol" class="text-white font-normal underline">0.00</span> ml ในเวลา 30-120 นาที <span class="text-rose-300 font-normal underline">โดยไม่ต้อง FLUSH สายตามหลัง</span> (ยาส่วนที่เหลือ <span id="sd-alert-remain">0.00</span> ml จะค้างอยู่ในสายพอดี)
                                             </div>
                                         </div>
 
-                                        <div class="text-[10px] text-slate-400 font-normal italic border-t border-slate-800 pt-2 leading-normal whitespace-nowrap">
+                                        <div class="text-[10px] text-slate-400 font-normal italic border-t border-slate-800 pt-2 leading-normal">
                                             * เป็นเพียงข้อเสนอแนะ เทคนิควิธีขึ้นกับแต่ละบริบท ความชำนาญ และอุปกรณ์ที่มีของหน่วยบริการ
                                         </div>
                                     </div>
@@ -247,45 +253,45 @@ export function render(container) {
                             </div>
 
                             <div class="bg-white rounded-2xl p-3 border border-slate-200 flex flex-col items-center justify-center shadow-sm">
-                                <svg class="w-full h-36" viewBox="0 0 450 170" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="250" y="30" width="140" height="50" rx="2" fill="#ffffff" stroke="#334155" stroke-width="2"/>
-                                    <line x1="390" y1="20" x2="390" y2="90" stroke="#334155" stroke-width="2.5"/>
-                                    <line x1="390" y1="55" x2="425" y2="55" stroke="#334155" stroke-width="2.5"/>
-                                    <line x1="425" y1="40" x2="425" y2="70" stroke="#334155" stroke-width="2.5"/>
-                                    <rect x="372" y="32" width="18" height="46" fill="#64748b" stroke="#334155"/>
+                                <svg class="w-full h-32" viewBox="0 0 440 160" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="250" y="30" width="140" height="50" rx="2" fill="#ffffff" stroke="#1e293b" stroke-width="2"/>
+                                    <line x1="390" y1="20" x2="390" y2="90" stroke="#1e293b" stroke-width="2.5"/>
+                                    <line x1="390" y1="55" x2="425" y2="55" stroke="#1e293b" stroke-width="2.5"/>
+                                    <line x1="425" y1="40" x2="425" y2="70" stroke="#1e293b" stroke-width="2.5"/>
+                                    <rect x="372" y="32" width="18" height="46" fill="#475569" stroke="#1e293b"/>
                                     
                                     <pattern id="sd-hatch" width="6" height="6" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
-                                        <line x1="0" y1="0" x2="0" y2="6" stroke="#0f766e" stroke-width="1.5" />
+                                        <line x1="0" y1="0" x2="0" y2="6" stroke="#475569" stroke-width="1.5" />
                                     </pattern>
                                     <rect x="260" y="32" width="35" height="46" fill="url(#sd-hatch)" />
-                                    <line x1="295" y1="30" x2="295" y2="80" stroke="#334155" stroke-width="1.5"/>
+                                    <line x1="295" y1="30" x2="295" y2="80" stroke="#1e293b" stroke-width="1.5"/>
 
                                     <rect x="295" y="32" width="77" height="46" fill="#f8fafc"/>
-                                    <line x1="310" y1="32" x2="310" y2="44" stroke="#cbd5e1" stroke-width="1.5"/>
-                                    <line x1="325" y1="32" x2="325" y2="44" stroke="#cbd5e1" stroke-width="1.5"/>
-                                    <line x1="340" y1="32" x2="340" y2="44" stroke="#cbd5e1" stroke-width="1.5"/>
-                                    <line x1="355" y1="32" x2="355" y2="44" stroke="#cbd5e1" stroke-width="1.5"/>
+                                    <line x1="310" y1="32" x2="310" y2="44" stroke="#94a3b8" stroke-width="1"/>
+                                    <line x1="325" y1="32" x2="325" y2="44" stroke="#94a3b8" stroke-width="1"/>
+                                    <line x1="340" y1="32" x2="340" y2="44" stroke="#94a3b8" stroke-width="1"/>
+                                    <line x1="355" y1="32" x2="355" y2="44" stroke="#94a3b8" stroke-width="1"/>
 
-                                    <rect x="242" y="50" width="8" height="10" fill="#e2e8f0" stroke="#334155"/>
+                                    <rect x="242" y="50" width="8" height="10" fill="#cbd5e1" stroke="#1e293b"/>
 
-                                    <path d="M 242 55 C 180 55, 180 110, 110 110 L 30 110" fill="none" stroke="#334155" stroke-width="2.5"/>
-                                    <rect x="18" y="105" width="12" height="10" rx="1" fill="#cbd5e1" stroke="#334155"/>
-                                    <line x1="18" y1="110" x2="5" y2="110" stroke="#334155" stroke-width="2"/>
+                                    <path d="M 242 55 C 180 55, 180 110, 110 110 L 30 110" fill="none" stroke="#1e293b" stroke-width="2"/>
+                                    <rect x="18" y="105" width="12" height="10" rx="1" fill="#94a3b8" stroke="#1e293b"/>
+                                    <line x1="18" y1="110" x2="5" y2="110" stroke="#1e293b" stroke-width="2"/>
 
-                                    <text x="320" y="20" font-size="13" font-weight="500" fill="#334155" text-anchor="middle">Syringe</text>
-                                    <text x="130" y="70" font-size="12" font-weight="500" fill="#334155" text-anchor="middle">Infusion Set.</text>
+                                    <text x="320" y="20" font-size="13" font-weight="normal" fill="#1e293b" text-anchor="middle">Syringe</text>
+                                    <text x="130" y="70" font-size="12" font-weight="normal" fill="#1e293b" text-anchor="middle">Infusion Set.</text>
 
-                                    <path d="M 277 125 L 277 88" stroke="#0f766e" stroke-width="1.2" marker-end="url(#sd-arrow)"/>
-                                    <text x="277" y="138" font-size="11" font-weight="500" fill="#0f766e" text-anchor="middle">ยาให้ผู้ป่วย</text>
-                                    <text x="277" y="153" font-size="11" font-weight="600" fill="#0f766e" text-anchor="middle"><tspan id="sd-svg-drug-vol">0.00</tspan> ml</text>
+                                    <path d="M 277 125 L 277 88" stroke="#1e293b" stroke-width="1" marker-end="url(#sd-arrow)"/>
+                                    <text x="277" y="138" font-size="11" font-weight="normal" fill="#0f766e" text-anchor="middle">ยาให้ผู้ป่วย</text>
+                                    <text x="277" y="152" font-size="11" font-weight="normal" fill="#0f766e" text-anchor="middle">A ml</text>
 
-                                    <path d="M 340 125 L 340 88" stroke="#475569" stroke-width="1.2" marker-end="url(#sd-arrow)"/>
-                                    <text x="340" y="138" font-size="11" font-weight="500" fill="#475569" text-anchor="middle">เผื่อค้างสาย</text>
-                                    <text x="340" y="153" font-size="11" font-weight="600" fill="#475569" text-anchor="middle"><tspan id="sd-svg-hold-vol">0.00</tspan> ml</text>
+                                    <path d="M 335 125 L 335 88" stroke="#1e293b" stroke-width="1" marker-end="url(#sd-arrow)"/>
+                                    <text x="335" y="138" font-size="11" font-weight="normal" fill="#334155" text-anchor="middle">เผื่อค้างสาย</text>
+                                    <text x="335" y="152" font-size="11" font-weight="normal" fill="#334155" text-anchor="middle">B ml</text>
 
                                     <defs>
                                         <marker id="sd-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-                                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#334155"/>
+                                            <path d="M 0 0 L 10 5 L 0 10 z" fill="#1e293b"/>
                                         </marker>
                                     </defs>
                                 </svg>
@@ -317,17 +323,17 @@ export function render(container) {
                                 </div>
                             </div>
 
-                            <div class="bg-teal-50/60 border border-teal-200/80 rounded-xl p-3 space-y-1.5 text-teal-950 font-medium text-xs">
+                            <div class="bg-teal-50/60 border border-teal-200/80 rounded-xl p-3 space-y-1.5 text-teal-950 font-medium">
                                 <div class="flex items-center justify-between flex-wrap gap-1">
                                     <span>ปริมาตรรวมใน Syringe หลัก:</span>
                                     <span class="font-bold"><span id="sd-genta-calc-total-vol">0.00</span> ml (มียารวม <span id="sd-genta-calc-total-mg">0.00</span> mg)</span>
                                 </div>
                                 <div class="flex items-center justify-between flex-wrap gap-1">
-                                    <span>ใช้ยา Gentamicin (40mg/ml) <strong class="text-teal-700 font-bold">[A]</strong>:</span>
+                                    <span>ใช้ยา Gentamicin (40mg/ml):</span>
                                     <span class="font-bold text-teal-700"><span id="sd-genta-calc-drug-vol">0.00</span> ml</span>
                                 </div>
                                 <div class="flex items-center justify-between flex-wrap gap-1">
-                                    <span>ใช้สารละลาย (Diluent) <strong class="text-slate-700 font-bold">[B]</strong>:</span>
+                                    <span>ใช้สารละลาย (Diluent):</span>
                                     <span class="font-bold text-slate-700"><span id="sd-genta-calc-diluent-vol">0.00</span> ml</span>
                                 </div>
                             </div>
@@ -631,17 +637,13 @@ function initSmalldoseEvents(container) {
         container.querySelector('#sd-genta-calc-drug-vol').innerText = formatNum(drugVol > 0 ? drugVol : 0);
         container.querySelector('#sd-genta-calc-diluent-vol').innerText = formatNum(diluentVol > 0 ? diluentVol : 0);
 
-        // Update Popover Elements
+        // Update Popover Values Dynamic Elements
         container.querySelector('#sd-step-diluent').innerText = formatNum(diluentVol > 0 ? diluentVol : 0);
         container.querySelector('#sd-step-drug').innerText = formatNum(drugVol > 0 ? drugVol : 0);
         container.querySelector('#sd-step-drug-mg').innerText = formatNum(totalMgInSyringe);
         container.querySelector('#sd-step-total').innerText = formatNum(totalPrepVol);
         container.querySelector('#sd-alert-vol').innerText = formatNum(patientInfuseVol);
         container.querySelector('#sd-alert-remain').innerText = formatNum(inputC);
-
-        // SVG Dynamic Text Updates (อัพเดทค่าในภาพ Diagram ตามการคำนวณสด)
-        container.querySelector('#sd-svg-drug-vol').innerText = formatNum(patientInfuseVol);
-        container.querySelector('#sd-svg-hold-vol').innerText = formatNum(inputC);
     }
 
     function renderCloxacillin(pma, pna, bw) {
