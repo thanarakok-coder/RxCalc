@@ -1,17 +1,14 @@
 /**
  * Smalldose Calculator Module
- * Updated: Corrected Compounding Logic for Gentamicin (No Flush Technique)
- * Total Vol: 11.80 ml | Drug Vol: 0.59 ml (23.6 mg) | Diluent: 11.21 ml | Target Conc: 2 mg/ml
+ * Updated: UI adjustments, Aligned Symbols, Popover Tooltip, Custom SVG Infusion Graphic
  */
 
 export function render(container) {
     container.innerHTML = `
     <div class="flex flex-col lg:flex-row gap-5 items-start w-full">
         
-        <!-- Zone A: Sidebar Input -->
         <aside class="w-full lg:w-[22%] bg-slate-900 text-slate-100 p-4 rounded-3xl shadow-xl flex flex-col gap-4 shrink-0">
             
-            <!-- Header Section -->
             <div class="flex items-center justify-between pb-2 border-b border-slate-800">
                 <div class="flex items-center gap-2">
                     <div class="w-8 h-8 bg-teal-500/20 text-teal-300 rounded-xl flex items-center justify-center border border-teal-500/30 shrink-0">
@@ -27,10 +24,8 @@ export function render(container) {
                 </button>
             </div>
 
-            <!-- Inputs Section -->
             <div class="space-y-3.5">
                 
-                <!-- กรอบที่ 1: ข้อมูลครรภ์ (GA) -->
                 <div class="bg-slate-800/80 border border-slate-700 rounded-2xl p-3 space-y-2">
                     <span class="text-[11px] font-bold tracking-wider text-teal-300 uppercase flex items-center gap-1.5">
                         <svg class="w-3.5 h-3.5 stroke-current" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 1 0 0 6 3 3 0 1 0 0-6Z"/><path d="M19 14c0-3.3-2.7-6-6-6h-2c-3.3 0-6 2.7-6 6v7h3v-4h6v4h3v-7Z"/></svg>
@@ -51,14 +46,12 @@ export function render(container) {
                     </div>
                 </div>
 
-                <!-- กรอบที่ 2: ข้อมูลทารก (BABY) -->
                 <div class="bg-slate-800/80 border border-slate-700 rounded-2xl p-3 space-y-3">
                     <span class="text-[11px] font-bold tracking-wider text-teal-300 uppercase flex items-center gap-1.5">
                         <svg class="w-3.5 h-3.5 stroke-current" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.5 1.5 1 2 1s1.5-.5 2-1"/><path d="M19 6.3a9 9 0 0 1 1.8 3.9 2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 5 6.3"/></svg>
                         ข้อมูลทารก (BABY)
                     </span>
                     
-                    <!-- PNA Input -->
                     <div>
                         <label class="block text-xs font-semibold text-slate-200 mb-1">PNA (อายุหลังคลอด)</label>
                         <div class="flex items-center gap-1.5 bg-white border border-slate-300 rounded-xl h-10 px-1.5">
@@ -75,7 +68,6 @@ export function render(container) {
                         </div>
                     </div>
 
-                    <!-- BW Input -->
                     <div>
                         <label class="block text-xs font-semibold text-slate-200 mb-1">BW (น้ำหนักตัวทารก)</label>
                         <div class="flex items-center gap-1.5 bg-white border border-slate-300 rounded-xl h-10 px-1.5">
@@ -93,16 +85,13 @@ export function render(container) {
                     </div>
                 </div>
 
-                <!-- สรุป PMA -->
                 <div class="bg-slate-950/90 border border-slate-800 rounded-2xl p-3 text-center space-y-1.5">
                     <span class="text-[11px] uppercase tracking-wider text-teal-400 font-bold block">CALCULATED PMA</span>
                     <div id="sd-pma-display" class="text-2xl font-black text-teal-300 tracking-tight">0 wk</div>
                     <div id="sd-pma-desc" class="text-[11px] text-slate-300 font-normal leading-relaxed text-left pt-1 border-t border-slate-800/80 space-y-0.5">
-                        <!-- JS Dynamic Text -->
-                    </div>
+                        </div>
                 </div>
 
-                <!-- เลือกแสดงรายยา -->
                 <div class="pt-1">
                     <label class="block text-xs font-bold text-slate-200 mb-2">เลือกแสดงรายยา</label>
                     <div class="grid grid-cols-2 gap-2">
@@ -131,10 +120,8 @@ export function render(container) {
             </div>
         </aside>
 
-        <!-- Zone B: Output Display -->
         <main class="w-full lg:w-[78%] flex flex-col gap-5">
             
-            <!-- Card Ampicillin -->
             <div id="sd-card-ampicillin" class="bg-slate-100/90 backdrop-blur-md rounded-3xl p-5 border border-slate-300 shadow-sm transition-all space-y-4">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div class="flex items-center gap-2">
@@ -178,7 +165,6 @@ export function render(container) {
                 </div>
             </div>
 
-            <!-- Card Gentamicin -->
             <div id="sd-card-gentamicin" class="bg-slate-100/90 backdrop-blur-md rounded-3xl p-5 border border-slate-300 shadow-sm transition-all space-y-4">
                 <div class="flex items-center gap-2">
                     <span class="w-3.5 h-3.5 rounded-full bg-teal-600 inline-block"></span>
@@ -200,45 +186,62 @@ export function render(container) {
                     </table>
                 </div>
 
-                <!-- Gentamicin Detail Section -->
                 <div class="bg-slate-50/80 border border-slate-200 rounded-2xl p-4 text-xs text-slate-700 space-y-4">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 divide-y md:divide-y-0 md:divide-x divide-slate-200">
                         
-                        <!-- ฝั่งซ้าย: ข้อมูลพื้นฐาน -->
-                        <div class="space-y-2 pr-0 md:pr-4">
-                            <div class="flex flex-wrap items-baseline gap-1.5">
-                                <span class="font-bold text-slate-900 shrink-0">Compatible Solution :</span>
+                        <div class="space-y-3 pr-0 md:pr-4 flex flex-col justify-between">
+                            
+                            <div class="grid grid-cols-[auto_auto_1fr] gap-x-2 gap-y-1.5 items-baseline text-xs">
+                                <span class="font-bold text-slate-900">Compatible Solution</span>
+                                <span class="font-bold text-slate-900">:</span>
                                 <span class="font-semibold text-slate-800">D5W, D10W, NSS</span>
-                            </div>
-                            <div class="flex flex-wrap items-baseline gap-1.5">
-                                <span class="font-bold text-slate-900 shrink-0">Max Conc. 10mg/ml =</span>
+
+                                <span class="font-bold text-slate-900">Max Conc. 10mg/ml</span>
+                                <span class="font-bold text-slate-900">=</span>
                                 <span>ต้องใช้สารละลาย<strong class="text-slate-900 font-black">อย่างน้อย</strong> <span id="sd-genta-min-sol" class="font-bold text-slate-900">0.00</span> ml</span>
-                            </div>
-                            <div class="flex flex-wrap items-baseline gap-1.5">
-                                <span class="font-bold text-slate-900 shrink-0">IV infusion :</span>
+
+                                <span class="font-bold text-slate-900">IV infusion</span>
+                                <span class="font-bold text-slate-900">:</span>
                                 <span><strong class="text-slate-900 font-black">อย่างน้อย</strong> 30-120 นาที</span>
                             </div>
+
+                            <div class="bg-slate-900 rounded-2xl p-3 border border-slate-800 text-white flex flex-col items-center justify-center gap-1.5 shadow-inner">
+                                <svg class="w-full h-16 stroke-teal-400 fill-none" viewBox="0 0 280 60">
+                                    <rect x="10" y="18" width="80" height="24" rx="3" stroke="#94a3b8" stroke-width="2" fill="#1e293b"/>
+                                    <rect x="2" y="24" width="8" height="12" fill="#64748b"/>
+                                    <line x1="10" y1="30" x2="-10" y2="30" stroke="#94a3b8" stroke-width="2"/>
+                                    <rect x="30" y="20" width="60" height="20" fill="#0d9488" fill-opacity="0.6"/>
+                                    <line x1="30" y1="18" x2="30" y2="24" stroke="#e2e8f0" stroke-width="1.5"/>
+                                    <line x1="50" y1="18" x2="50" y2="24" stroke="#e2e8f0" stroke-width="1.5"/>
+                                    <line x1="70" y1="18" x2="70" y2="24" stroke="#e2e8f0" stroke-width="1.5"/>
+                                    <path d="M90 26 L105 26 L105 34 L90 34 Z" fill="#94a3b8"/>
+                                    <path d="M105 30 C 130 30, 130 45, 160 45 C 190 45, 190 15, 220 15 L 260 15" stroke="#38bdf8" stroke-width="3" stroke-dasharray="4 2" stroke-linecap="round"/>
+                                    <text x="50" y="34" font-size="9" fill="#ffffff" font-weight="bold" text-anchor="middle">Syringe</text>
+                                    <text x="180" y="32" font-size="8" fill="#38bdf8" font-weight="bold" text-anchor="middle">Infusion Set Line</text>
+                                </svg>
+                                <span class="text-[10px] text-slate-400 font-medium">ภาพจำลอง Syringe ต่อกับ Extension Infusion Set</span>
+                            </div>
+
                         </div>
 
-                        <!-- ฝั่งขวา: พารามิเตอร์คำนวณ -->
                         <div class="pt-3 md:pt-0 pl-0 md:pl-4 space-y-2.5">
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
                                 <div>
-                                    <label class="block text-[11px] font-bold text-slate-800 mb-1">[A] Order IV Infusion</label>
+                                    <label class="block text-[11px] font-bold text-slate-800 mb-1">Order IV Infusion</label>
                                     <div class="relative flex items-center">
                                         <input type="number" id="sd-genta-input-a" step="0.1" placeholder="0" class="w-full bg-white border border-slate-300 rounded-lg h-8 px-2 pr-7 text-right font-bold text-slate-900 text-xs focus:outline-none focus:ring-1 focus:ring-teal-500">
                                         <span class="absolute right-1.5 text-[10px] text-slate-500 font-bold pointer-events-none">mg</span>
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block text-[11px] font-bold text-slate-800 mb-1">[B] Target conc. (mg/ml)</label>
+                                    <label class="block text-[11px] font-bold text-slate-800 mb-1">Target conc.</label>
                                     <div class="relative flex items-center">
                                         <input type="number" id="sd-genta-input-b" value="2" step="0.1" placeholder="2" class="w-full bg-white border border-slate-300 rounded-lg h-8 px-2 pr-10 text-right font-bold text-slate-900 text-xs focus:outline-none focus:ring-1 focus:ring-teal-500">
                                         <span class="absolute right-1.5 text-[10px] text-slate-500 font-bold pointer-events-none">mg/ml</span>
                                     </div>
                                 </div>
                                 <div>
-                                    <label class="block text-[11px] font-bold text-slate-800 mb-1">[C] ปริมาตรเผื่อค้างสาย</label>
+                                    <label class="block text-[11px] font-bold text-slate-800 mb-1">ปริมาตรเผื่อค้างสาย</label>
                                     <div class="relative flex items-center">
                                         <input type="number" id="sd-genta-input-c" value="5" step="0.5" placeholder="5" class="w-full bg-white border border-slate-300 rounded-lg h-8 px-2 pr-7 text-right font-bold text-slate-900 text-xs focus:outline-none focus:ring-1 focus:ring-teal-500">
                                         <span class="absolute right-1.5 text-[10px] text-slate-500 font-bold pointer-events-none">ml</span>
@@ -264,36 +267,52 @@ export function render(container) {
 
                     </div>
 
-                    <!-- ขั้นตอนการเตรียมยา และ คำเตือนสำคัญ (NO FLUSH LOGIC) -->
                     <div class="border-t border-slate-200 pt-3 space-y-2">
-                        <h4 class="font-bold text-slate-900 text-xs flex items-center gap-1.5">
-                            <svg class="w-4 h-4 stroke-teal-600" fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><path d="M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v0Z"/><path d="M9 12h6"/><path d="M9 16h6"/></svg>
-                            ขั้นตอนการเตรียมและบริหารยา (ความเข้มข้นสม่ำเสมอ - ไม่ต้อง Flush)
-                        </h4>
-                        <ol class="list-decimal list-inside space-y-1 text-[11px] text-slate-700 font-medium leading-relaxed pl-1">
-                            <li>ใช้ Syringe หลัก ดูดสารน้ำ (Diluent) ปริมาตร <strong class="text-slate-900"><span id="sd-step-diluent">0.00</span> ml</strong> เพื่อให้อยู่ส่วนลึกใน Syringe</li>
-                            <li>ใช้ Syringe เล็ก (1 ml) ดูดยา Gentamicin (40 mg/ml) ปริมาตร <strong class="text-teal-700"><span id="sd-step-drug">0.00</span> ml</strong> (มียารวม <span id="sd-step-drug-mg">0.00</span> mg)</li>
-                            <li>ถ่ายยาจาก Syringe เล็ก เข้าสู่ Syringe หลัก แบบปากต่อปาก (ยาจะอยู่ส่วนปลาย Syringe หลัก)</li>
-                            <li>Draw ผสมยาให้เป็นเนื้อเดียวกัน (จะได้ปริมาตรรวมใน Syringe หลัก = <strong class="text-slate-900"><span id="sd-step-total">0.00</span> ml</strong> ความเข้มข้น <span id="sd-step-target-conc">0.00</span> mg/ml)</li>
-                            <li>ต่อ Syringe หลักเข้ากับ Infusion Set แล้วบริหารยาด้วยเครื่อง Syringe Pump</li>
-                        </ol>
+                        
+                        <div class="flex items-center gap-2">
+                            <div class="relative group cursor-pointer inline-flex items-center justify-center">
+                                <div class="w-5 h-5 rounded-full bg-teal-600 hover:bg-teal-700 text-white flex items-center justify-center text-xs font-bold transition-colors shadow">
+                                    ?
+                                </div>
+                                
+                                <div class="absolute bottom-full left-0 mb-2 hidden group-hover:block w-80 bg-slate-900 text-slate-100 text-[11px] p-3.5 rounded-2xl shadow-2xl border border-slate-700 z-50 pointer-events-none space-y-2">
+                                    <div class="font-bold text-teal-300 border-b border-slate-800 pb-1 flex items-center gap-1.5">
+                                        <svg class="w-3.5 h-3.5 stroke-teal-400" fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><path d="M9 12h6"/><path d="M9 16h6"/></svg>
+                                        ขั้นตอนการเตรียมยา (ความเข้มข้นสม่ำเสมอ)
+                                    </div>
+                                    <ol class="list-decimal list-inside space-y-1.5 font-normal leading-relaxed text-slate-200">
+                                        <li>ใช้ Syringe หลัก ดูดสารน้ำ (Diluent) ปริมาตร <strong class="text-white"><span id="sd-step-diluent">0.00</span> ml</strong></li>
+                                        <li>ใช้ Syringe เล็ก (1 ml) ดูดยา Gentamicin ปริมาตร <strong class="text-teal-300"><span id="sd-step-drug">0.00</span> ml</strong> (<span id="sd-step-drug-mg">0.00</span> mg)</li>
+                                        <li>ถ่ายยาจาก Syringe เล็ก เข้าสู่ Syringe หลัก แบบปากต่อปาก</li>
+                                        <li class="text-teal-200"><strong class="font-black underline text-white">Draw ผสมยาให้เข้ากัน</strong> (ปริมาตรรวม = <span id="sd-step-total">0.00</span> ml)</li>
+                                        <li>ต่อ Syringe หลักเข้ากับ Infusion Set แล้วบริหารยาผ่าน Syringe Pump</li>
+                                    </ol>
+                                    <div class="absolute -bottom-1.5 left-2 w-3 h-3 bg-slate-900 rotate-45 border-r border-b border-slate-700"></div>
+                                </div>
+                            </div>
 
-                        <!-- ข้อความแจ้งเตือนตัวแดง -->
+                            <span class="font-bold text-slate-900 text-xs">ขั้นตอนการเตรียมและบริหารยา (ความเข้มข้นสม่ำเสมอ - ไม่ต้อง Flush)</span>
+                        </div>
+
+                        <div class="text-[11px] text-slate-500 font-semibold italic pl-7 leading-normal">
+                            * เป็นเพียงข้อเสนอแนะ เทคนิควิธีขึ้นกับแต่ละบริบท ความชำนาญ และอุปกรณ์ที่มีของหน่วยบริการ
+                        </div>
+
                         <div class="bg-rose-50 border-l-4 border-rose-500 p-2.5 rounded-r-xl text-rose-900 text-xs font-bold space-y-1 mt-2">
                             <div class="flex items-center gap-1.5 text-rose-700">
                                 <svg class="w-4 h-4 stroke-current shrink-0" fill="none" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
                                 <span>ข้อระวังสำคัญในการบริหารยา:</span>
                             </div>
                             <div class="pl-5 text-[11px] font-semibold leading-normal">
-                                ให้ยาในปริมาตร <span id="sd-alert-vol" class="text-rose-700 underline font-black">0.00</span> ml ในกรอบเวลา 30-120 นาที <span class="text-rose-700 font-black uppercase underline">โดยไม่ต้อง FLUSH สายตามหลัง</span> (ยาส่วนที่เหลือ <span id="sd-alert-remain">0.00</span> ml จะค้างอยู่ในสายพอดี)
+                                ให้ยาในปริมาตร <span id="sd-alert-vol" class="text-rose-700 underline font-black">0.00</span> ml ในกรอบเวลา 30-120 นาที <strong class="text-rose-700 font-black underline uppercase">โดยไม่ต้อง FLUSH สายตามหลัง</strong> (ยาส่วนที่เหลือ <span id="sd-alert-remain">0.00</span> ml จะค้างอยู่ในสายพอดี)
                             </div>
                         </div>
+
                     </div>
 
                 </div>
             </div>
 
-            <!-- Card Cloxacillin -->
             <div id="sd-card-cloxacillin" class="bg-slate-100/90 backdrop-blur-md rounded-3xl p-5 border border-slate-300 shadow-sm transition-all space-y-4">
                 <div class="flex items-center gap-2">
                     <span class="w-3.5 h-3.5 rounded-full bg-amber-500 inline-block"></span>
@@ -315,7 +334,6 @@ export function render(container) {
                 </div>
             </div>
 
-            <!-- Card Clindamycin -->
             <div id="sd-card-clindamycin" class="bg-slate-100/90 backdrop-blur-md rounded-3xl p-5 border border-slate-300 shadow-sm transition-all space-y-4">
                 <div class="flex items-center gap-2">
                     <span class="w-3.5 h-3.5 rounded-full bg-rose-600 inline-block"></span>
@@ -440,237 +458,4 @@ function initSmalldoseEvents(container) {
 
     bwPlusBtn.addEventListener('click', () => {
         let val = parseFloat(bwInput.value) || 0;
-        bwInput.value = (val + 0.1).toFixed(3);
-        calculateAll();
-    });
-
-    resetBtn.addEventListener('click', () => {
-        inputs.forEach(input => input.value = "");
-        chkAmp.checked = true;
-        chkGenta.checked = true;
-        chkClox.checked = true;
-        chkClinda.checked = true;
-
-        gentaInputB.value = "2";
-        gentaInputC.value = "5";
-        isUserModifiedA = false;
-        
-        cardAmp.classList.remove('hidden');
-        cardGenta.classList.remove('hidden');
-        cardClox.classList.remove('hidden');
-        cardClinda.classList.remove('hidden');
-
-        calculateAll();
-    });
-
-    inputs.forEach(elem => {
-        elem.addEventListener('input', () => {
-            calculateAll();
-        });
-    });
-
-    chkAmp.addEventListener('change', () => cardAmp.classList.toggle('hidden', !chkAmp.checked));
-    chkGenta.addEventListener('change', () => cardGenta.classList.toggle('hidden', !chkGenta.checked));
-    chkClox.addEventListener('change', () => cardClox.classList.toggle('hidden', !chkClox.checked));
-    chkClinda.addEventListener('change', () => cardClinda.classList.toggle('hidden', !chkClinda.checked));
-
-    function calculateAll() {
-        const gaWk = parseInt(gaWkInput.value) || 0;
-        const gaDay = parseInt(gaDayInput.value) || 0;
-        const pnaDay = parseInt(pnaDayInput.value) || 0;
-        const bw = parseFloat(bwInput.value) || 0;
-
-        const totalDays = gaDay + pnaDay;
-        const extraWk = Math.floor(totalDays / 7);
-        const remDays = totalDays % 7;
-        const roundedWk = remDays >= 4 ? 1 : 0;
-        const pma = gaWk + extraWk + roundedWk;
-
-        const pmaDisplay = container.querySelector('#sd-pma-display');
-        const pmaDesc = container.querySelector('#sd-pma-desc');
-        pmaDisplay.innerText = `${pma} wk`;
-        
-        pmaDesc.innerHTML = `
-            <div>• PMA = GA (${gaWk}w ${gaDay}d) + PNA (${pnaDay}d)</div>
-            <div>• วันรวม = ${gaDay}+${pnaDay} = ${totalDays} วัน</div>
-            <div>• ${remDays >= 4 ? `เศษ ${remDays} วัน (≥4 วัน) ปัดขึ้น +1w` : `เศษ ${remDays} วัน (<4 วัน) ไม่ปัดขึ้น`}</div>
-            <div>→ สรุป PMA = ${pma} สัปดาห์</div>
-        `;
-
-        renderAmpicillin(pma, pnaDay, bw);
-        renderGentamicin(pma, pnaDay, bw);
-        renderCloxacillin(pma, pnaDay, bw);
-        renderClindamycin(pma, pnaDay, bw);
-    }
-
-    function renderAmpicillin(pma, pna, bw) {
-        const minTotalNum = 150 * bw;
-        const maxTotalNum = 200 * bw;
-        container.querySelector('#sd-amp-total').innerText = `Total: ${formatNum(minTotalNum)} - ${formatNum(maxTotalNum)} mg/day`;
-
-        const rows = [
-            { pmaCond: pma <= 29, pnaCond: pna <= 28, pmaText: "≤ 29 wk", pnaText: "0 - 28 days", div: 2, freq: "q 12 hr(s)" },
-            { pmaCond: pma <= 29, pnaCond: pna >= 29, pmaText: "≤ 29 wk", pnaText: "≥ 29 days", div: 3, freq: "q 8 hr(s)" },
-            { pmaCond: pma >= 30 && pma <= 36, pnaCond: pna <= 14, pmaText: "30 - 36 wk", pnaText: "0 - 14 days", div: 2, freq: "q 12 hr(s)" },
-            { pmaCond: pma >= 30 && pma <= 36, pnaCond: pna >= 15, pmaText: "30 - 36 wk", pnaText: "≥ 8 days", div: 3, freq: "q 8 hr(s)" },
-            { pmaCond: pma >= 37 && pma <= 44, pnaCond: pna <= 7, pmaText: "37 - 44 wk", pnaText: "0 - 7 days", div: 2, freq: "q 12 hr(s)" },
-            { pmaCond: pma >= 37 && pma <= 44, pnaCond: pna >= 8, pmaText: "37 - 44 wk", pnaText: "≥ 8 days", div: 3, freq: "q 8 hr(s)" },
-            { pmaCond: pma >= 45, pnaCond: true, pmaText: "≥ 45 wk", pnaText: "All days", div: 4, freq: "q 6 hr(s)" },
-        ];
-
-        let html = "";
-        rows.forEach(r => {
-            const isMatch = r.pmaCond && r.pnaCond;
-            const minDose = minTotalNum / r.div;
-            const maxDose = maxTotalNum / r.div;
-            const activeClass = isMatch ? "bg-indigo-100/90 font-bold text-indigo-900 border-l-4 border-indigo-600" : "";
-            
-            html += `<tr class="${activeClass}">
-                <td class="py-2 px-3">${r.pmaText}</td>
-                <td class="py-2 px-3">${r.pnaText}</td>
-                <td class="py-2 px-3 text-right">${formatNum(minDose)}</td>
-                <td class="py-2 px-3 text-right">${formatNum(maxDose)}</td>
-                <td class="py-2 px-3">mg</td>
-                <td class="py-2 px-3">${r.freq}</td>
-            </tr>`;
-        });
-        container.querySelector('#sd-tbl-ampicillin').innerHTML = html;
-    }
-
-    function renderGentamicin(pma, pna, bw) {
-        const rows = [
-            { pmaCond: pma <= 29, pnaCond: pna <= 7, pmaText: "≤ 29 wk", pnaText: "0 - 7 days", dose: 5.0, freq: "q 48 hr(s)" },
-            { pmaCond: pma <= 29, pnaCond: pna >= 8 && pna <= 28, pmaText: "≤ 29 wk", pnaText: "8 - 28 days", dose: 4.0, freq: "q 36 hr(s)" },
-            { pmaCond: pma <= 29, pnaCond: pna >= 29, pmaText: "≤ 29 wk", pnaText: "≥ 29 days", dose: 4.0, freq: "q 24 hr(s)" },
-            { pmaCond: pma >= 30 && pma <= 34, pnaCond: pna <= 7, pmaText: "30 - 34 wk", pnaText: "0 - 7 days", dose: 4.5, freq: "q 36 hr(s)" },
-            { pmaCond: pma >= 30 && pma <= 34, pnaCond: pna >= 8, pmaText: "30 - 34 wk", pnaText: "≥ 8 days", dose: 4.0, freq: "q 24 hr(s)" },
-            { pmaCond: pma >= 35, pnaCond: true, pmaText: "≥ 35 wk", pnaText: "All days", dose: 4.0, freq: "q 24 hr(s)" },
-        ];
-
-        let html = "";
-        let calculatedDoseMg = 0;
-
-        rows.forEach(r => {
-            const isMatch = r.pmaCond && r.pnaCond;
-            const doseMg = bw * r.dose;
-            if (isMatch) {
-                calculatedDoseMg = doseMg;
-            }
-            const activeClass = isMatch ? "bg-teal-100/90 font-bold text-teal-900 border-l-4 border-teal-600" : "";
-            
-            html += `<tr class="${activeClass}">
-                <td class="py-2 px-3">${r.pmaText}</td>
-                <td class="py-2 px-3">${r.pnaText}</td>
-                <td class="py-2 px-3 text-right">${formatNum(doseMg)}</td>
-                <td class="py-2 px-3">mg</td>
-                <td class="py-2 px-3">${r.freq}</td>
-            </tr>`;
-        });
-        container.querySelector('#sd-tbl-gentamicin').innerHTML = html;
-
-        // Max Conc. 10mg/ml = ขนาดยาที่คำนวณได้ / 10
-        const minSolVol = calculatedDoseMg / 10;
-        container.querySelector('#sd-genta-min-sol').innerText = formatNum(minSolVol);
-
-        // Default [A] Order IV Infusion = ขนาดยาที่คำนวณได้
-        if (!isUserModifiedA) {
-            gentaInputA.value = calculatedDoseMg > 0 ? calculatedDoseMg.toFixed(2) : "";
-        }
-
-        // อ่านค่า A, B, C สำหรับคำนวณ
-        const inputA = parseFloat(gentaInputA.value) || 0; // Order IV Infusion (mg)
-        const inputB = parseFloat(gentaInputB.value) || 0; // Target conc. (mg/ml)
-        const inputC = parseFloat(gentaInputC.value) || 0; // ปริมาตรเผื่อค้างสาย (ml)
-
-        // CORRECT NO-FLUSH LOGIC (UNIFORM CONCENTRATION):
-        // 1. ปริมาตรสารละลายยาที่ต้องเข้าตัวเด็กจริง (ml) = Order / Target Conc
-        const patientInfuseVol = inputB > 0 ? (inputA / inputB) : 0;
-
-        // 2. ปริมาตรรวมสารละลายใน Syringe หลัก (ml) = ปริมาตรเข้าตัวเด็ก + ปริมาตรเผื่อค้างสาย
-        const totalPrepVol = patientInfuseVol + inputC;
-
-        // 3. ตัวยาทั้งหมดใน Syringe หลัก (mg) = ปริมาตรรวม * Target Conc
-        const totalMgInSyringe = totalPrepVol * inputB;
-
-        // 4. ปริมาตรยา Gentamicin Injection (40 mg/ml) ที่ต้องดูดด้วย Syringe เล็ก (ml) = ตัวยาทั้งหมด / 40
-        const drugVol = totalMgInSyringe / 40;
-
-        // 5. ปริมาตร Diluent ที่ต้องใช้ใน Syringe หลัก (ml) = ปริมาตรรวม - ปริมาตรยา
-        const diluentVol = totalPrepVol - drugVol;
-
-        // อัปเดตส่วนแสดงผลตัวเลข
-        container.querySelector('#sd-genta-calc-total-vol').innerText = formatNum(totalPrepVol);
-        container.querySelector('#sd-genta-calc-total-mg').innerText = formatNum(totalMgInSyringe);
-        container.querySelector('#sd-genta-calc-drug-vol').innerText = formatNum(drugVol > 0 ? drugVol : 0);
-        container.querySelector('#sd-genta-calc-diluent-vol').innerText = formatNum(diluentVol > 0 ? diluentVol : 0);
-
-        // อัปเดตขั้นตอน 1-5 และ คำเตือนสีแดง
-        container.querySelector('#sd-step-diluent').innerText = formatNum(diluentVol > 0 ? diluentVol : 0);
-        container.querySelector('#sd-step-drug').innerText = formatNum(drugVol > 0 ? drugVol : 0);
-        container.querySelector('#sd-step-drug-mg').innerText = formatNum(totalMgInSyringe);
-        container.querySelector('#sd-step-total').innerText = formatNum(totalPrepVol);
-        container.querySelector('#sd-step-target-conc').innerText = formatNum(inputB);
-        container.querySelector('#sd-alert-vol').innerText = formatNum(patientInfuseVol);
-        container.querySelector('#sd-alert-remain').innerText = formatNum(inputC);
-    }
-
-    function renderCloxacillin(pma, pna, bw) {
-        const rows = [
-            { pmaCond: pma <= 29, pnaCond: pna <= 28, pmaText: "≤ 29 wk", pnaText: "0 - 28 days", dose: 25, freq: "q 12 hr(s)" },
-            { pmaCond: pma <= 29, pnaCond: pna >= 29, pmaText: "≤ 29 wk", pnaText: "≥ 29 days", dose: 25, freq: "q 8 hr(s)" },
-            { pmaCond: pma >= 30 && pma <= 36, pnaCond: pna <= 14, pmaText: "30 - 36 wk", pnaText: "0 - 14 days", dose: 25, freq: "q 12 hr(s)" },
-            { pmaCond: pma >= 30 && pma <= 36, pnaCond: pna >= 15, pmaText: "30 - 36 wk", pnaText: "≥ 8 days", dose: 25, freq: "q 8 hr(s)" },
-            { pmaCond: pma >= 37 && pma <= 44, pnaCond: pna <= 7, pmaText: "37 - 44 wk", pnaText: "0 - 7 days", dose: 25, freq: "q 12 hr(s)" },
-            { pmaCond: pma >= 37 && pma <= 44, pnaCond: pna >= 8, pmaText: "37 - 44 wk", pnaText: "≥ 8 days", dose: 25, freq: "q 8 hr(s)" },
-            { pmaCond: pma >= 45, pnaCond: true, pmaText: "≥ 45 wk", pnaText: "All days", dose: 25, freq: "q 6 hr(s)" },
-        ];
-
-        let html = "";
-        rows.forEach(r => {
-            const isMatch = r.pmaCond && r.pnaCond;
-            const doseMg = bw * r.dose;
-            const activeClass = isMatch ? "bg-amber-100/90 font-bold text-amber-900 border-l-4 border-amber-600" : "";
-            
-            html += `<tr class="${activeClass}">
-                <td class="py-2 px-3">${r.pmaText}</td>
-                <td class="py-2 px-3">${r.pnaText}</td>
-                <td class="py-2 px-3 text-right">${formatNum(doseMg)}</td>
-                <td class="py-2 px-3">mg</td>
-                <td class="py-2 px-3">${r.freq}</td>
-            </tr>`;
-        });
-        container.querySelector('#sd-tbl-cloxacillin').innerHTML = html;
-    }
-
-    function renderClindamycin(pma, pna, bw) {
-        const rows = [
-            { pmaCond: pma <= 29, pnaCond: pna <= 28, pmaText: "≤ 29 wk", pnaText: "0 - 28 days", doseMin: 5, doseMax: 7, freq: "q 12 hr(s)" },
-            { pmaCond: pma <= 29, pnaCond: pna >= 29, pmaText: "≤ 29 wk", pnaText: "≥ 29 days", doseMin: 5, doseMax: 7, freq: "q 8 hr(s)" },
-            { pmaCond: pma >= 30 && pma <= 36, pnaCond: pna <= 14, pmaText: "30 - 36 wk", pnaText: "0 - 14 days", doseMin: 5, doseMax: 7, freq: "q 12 hr(s)" },
-            { pmaCond: pma >= 30 && pma <= 36, pnaCond: pna >= 15, pmaText: "30 - 36 wk", pnaText: "≥ 8 days", doseMin: 5, doseMax: 7, freq: "q 8 hr(s)" },
-            { pmaCond: pma >= 37 && pma <= 44, pnaCond: pna <= 7, pmaText: "37 - 44 wk", pnaText: "0 - 7 days", doseMin: 5, doseMax: 7, freq: "q 12 hr(s)" },
-            { pmaCond: pma >= 37 && pma <= 44, pnaCond: pna >= 8, pmaText: "37 - 44 wk", pnaText: "≥ 8 days", doseMin: 5, doseMax: 7, freq: "q 8 hr(s)" },
-            { pmaCond: pma >= 45, pnaCond: true, pmaText: "≥ 45 wk", pnaText: "All days", doseMin: 5, doseMax: 7, freq: "q 6 hr(s)" },
-        ];
-
-        let html = "";
-        rows.forEach(r => {
-            const isMatch = r.pmaCond && r.pnaCond;
-            const doseMinVal = bw * r.doseMin;
-            const doseMaxVal = bw * r.doseMax;
-            const activeClass = isMatch ? "bg-rose-100/90 font-bold text-rose-900 border-l-4 border-rose-600" : "";
-            
-            html += `<tr class="${activeClass}">
-                <td class="py-2 px-3">${r.pmaText}</td>
-                <td class="py-2 px-3">${r.pnaText}</td>
-                <td class="py-2 px-3 text-right">${formatNum(doseMinVal)}</td>
-                <td class="py-2 px-3 text-right">${formatNum(doseMaxVal)}</td>
-                <td class="py-2 px-3">mg</td>
-                <td class="py-2 px-3">${r.freq}</td>
-            </tr>`;
-        });
-        container.querySelector('#sd-tbl-clindamycin').innerHTML = html;
-    }
-
-    calculateAll();
-}
+        bwInput.value = (val +
