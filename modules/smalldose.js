@@ -1,14 +1,17 @@
 /**
  * Smalldose Calculator Module
- * Updated: UI adjustments, Aligned Symbols, Popover Tooltip, Custom SVG Infusion Graphic
+ * Updated: Fixed Syntax Error (Nested Backticks in SVG), UI Alignments, Popover Tooltip
+ * Timestamp: 2026-08-18
  */
 
 export function render(container) {
     container.innerHTML = `
     <div class="flex flex-col lg:flex-row gap-5 items-start w-full">
         
+        <!-- Zone A: Sidebar Input -->
         <aside class="w-full lg:w-[22%] bg-slate-900 text-slate-100 p-4 rounded-3xl shadow-xl flex flex-col gap-4 shrink-0">
             
+            <!-- Header Section -->
             <div class="flex items-center justify-between pb-2 border-b border-slate-800">
                 <div class="flex items-center gap-2">
                     <div class="w-8 h-8 bg-teal-500/20 text-teal-300 rounded-xl flex items-center justify-center border border-teal-500/30 shrink-0">
@@ -24,8 +27,10 @@ export function render(container) {
                 </button>
             </div>
 
+            <!-- Inputs Section -->
             <div class="space-y-3.5">
                 
+                <!-- กรอบที่ 1: ข้อมูลครรภ์ (GA) -->
                 <div class="bg-slate-800/80 border border-slate-700 rounded-2xl p-3 space-y-2">
                     <span class="text-[11px] font-bold tracking-wider text-teal-300 uppercase flex items-center gap-1.5">
                         <svg class="w-3.5 h-3.5 stroke-current" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 1 0 0 6 3 3 0 1 0 0-6Z"/><path d="M19 14c0-3.3-2.7-6-6-6h-2c-3.3 0-6 2.7-6 6v7h3v-4h6v4h3v-7Z"/></svg>
@@ -46,12 +51,14 @@ export function render(container) {
                     </div>
                 </div>
 
+                <!-- กรอบที่ 2: ข้อมูลทารก (BABY) -->
                 <div class="bg-slate-800/80 border border-slate-700 rounded-2xl p-3 space-y-3">
                     <span class="text-[11px] font-bold tracking-wider text-teal-300 uppercase flex items-center gap-1.5">
                         <svg class="w-3.5 h-3.5 stroke-current" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.5 1.5 1 2 1s1.5-.5 2-1"/><path d="M19 6.3a9 9 0 0 1 1.8 3.9 2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 5 6.3"/></svg>
                         ข้อมูลทารก (BABY)
                     </span>
                     
+                    <!-- PNA Input -->
                     <div>
                         <label class="block text-xs font-semibold text-slate-200 mb-1">PNA (อายุหลังคลอด)</label>
                         <div class="flex items-center gap-1.5 bg-white border border-slate-300 rounded-xl h-10 px-1.5">
@@ -68,6 +75,7 @@ export function render(container) {
                         </div>
                     </div>
 
+                    <!-- BW Input -->
                     <div>
                         <label class="block text-xs font-semibold text-slate-200 mb-1">BW (น้ำหนักตัวทารก)</label>
                         <div class="flex items-center gap-1.5 bg-white border border-slate-300 rounded-xl h-10 px-1.5">
@@ -85,13 +93,16 @@ export function render(container) {
                     </div>
                 </div>
 
+                <!-- สรุป PMA -->
                 <div class="bg-slate-950/90 border border-slate-800 rounded-2xl p-3 text-center space-y-1.5">
                     <span class="text-[11px] uppercase tracking-wider text-teal-400 font-bold block">CALCULATED PMA</span>
                     <div id="sd-pma-display" class="text-2xl font-black text-teal-300 tracking-tight">0 wk</div>
                     <div id="sd-pma-desc" class="text-[11px] text-slate-300 font-normal leading-relaxed text-left pt-1 border-t border-slate-800/80 space-y-0.5">
-                        </div>
+                        <!-- JS Dynamic Text -->
+                    </div>
                 </div>
 
+                <!-- เลือกแสดงรายยา -->
                 <div class="pt-1">
                     <label class="block text-xs font-bold text-slate-200 mb-2">เลือกแสดงรายยา</label>
                     <div class="grid grid-cols-2 gap-2">
@@ -120,8 +131,10 @@ export function render(container) {
             </div>
         </aside>
 
+        <!-- Zone B: Output Display -->
         <main class="w-full lg:w-[78%] flex flex-col gap-5">
             
+            <!-- Card Ampicillin -->
             <div id="sd-card-ampicillin" class="bg-slate-100/90 backdrop-blur-md rounded-3xl p-5 border border-slate-300 shadow-sm transition-all space-y-4">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div class="flex items-center gap-2">
@@ -165,6 +178,7 @@ export function render(container) {
                 </div>
             </div>
 
+            <!-- Card Gentamicin -->
             <div id="sd-card-gentamicin" class="bg-slate-100/90 backdrop-blur-md rounded-3xl p-5 border border-slate-300 shadow-sm transition-all space-y-4">
                 <div class="flex items-center gap-2">
                     <span class="w-3.5 h-3.5 rounded-full bg-teal-600 inline-block"></span>
@@ -186,11 +200,12 @@ export function render(container) {
                     </table>
                 </div>
 
+                <!-- Gentamicin Detail Section -->
                 <div class="bg-slate-50/80 border border-slate-200 rounded-2xl p-4 text-xs text-slate-700 space-y-4">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 divide-y md:divide-y-0 md:divide-x divide-slate-200">
                         
+                        <!-- ฝั่งซ้าย -->
                         <div class="space-y-3 pr-0 md:pr-4 flex flex-col justify-between">
-                            
                             <div class="grid grid-cols-[auto_auto_1fr] gap-x-2 gap-y-1.5 items-baseline text-xs">
                                 <span class="font-bold text-slate-900">Compatible Solution</span>
                                 <span class="font-bold text-slate-900">:</span>
@@ -205,6 +220,7 @@ export function render(container) {
                                 <span><strong class="text-slate-900 font-black">อย่างน้อย</strong> 30-120 นาที</span>
                             </div>
 
+                            <!-- รูป SVG แก้ไขจุด Backtick แล้ว -->
                             <div class="bg-slate-900 rounded-2xl p-3 border border-slate-800 text-white flex flex-col items-center justify-center gap-1.5 shadow-inner">
                                 <svg class="w-full h-16 stroke-teal-400 fill-none" viewBox="0 0 280 60">
                                     <rect x="10" y="18" width="80" height="24" rx="3" stroke="#94a3b8" stroke-width="2" fill="#1e293b"/>
@@ -221,9 +237,9 @@ export function render(container) {
                                 </svg>
                                 <span class="text-[10px] text-slate-400 font-medium">ภาพจำลอง Syringe ต่อกับ Extension Infusion Set</span>
                             </div>
-
                         </div>
 
+                        <!-- ฝั่งขวา -->
                         <div class="pt-3 md:pt-0 pl-0 md:pl-4 space-y-2.5">
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
                                 <div>
@@ -268,7 +284,6 @@ export function render(container) {
                     </div>
 
                     <div class="border-t border-slate-200 pt-3 space-y-2">
-                        
                         <div class="flex items-center gap-2">
                             <div class="relative group cursor-pointer inline-flex items-center justify-center">
                                 <div class="w-5 h-5 rounded-full bg-teal-600 hover:bg-teal-700 text-white flex items-center justify-center text-xs font-bold transition-colors shadow">
@@ -277,7 +292,7 @@ export function render(container) {
                                 
                                 <div class="absolute bottom-full left-0 mb-2 hidden group-hover:block w-80 bg-slate-900 text-slate-100 text-[11px] p-3.5 rounded-2xl shadow-2xl border border-slate-700 z-50 pointer-events-none space-y-2">
                                     <div class="font-bold text-teal-300 border-b border-slate-800 pb-1 flex items-center gap-1.5">
-                                        <svg class="w-3.5 h-3.5 stroke-teal-400" fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><path d="M9 12h6"/><path d="M9 16h6"/></svg>
+                                        <svg class="w-3.5 h-3.5 stroke-teal-400" fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 2 2h10a2 2 0 0 2 2-2V7a2 2 0 0 0-2-2h-2"/><path d="M9 12h6"/><path d="M9 16h6"/></svg>
                                         ขั้นตอนการเตรียมยา (ความเข้มข้นสม่ำเสมอ)
                                     </div>
                                     <ol class="list-decimal list-inside space-y-1.5 font-normal leading-relaxed text-slate-200">
@@ -313,6 +328,7 @@ export function render(container) {
                 </div>
             </div>
 
+            <!-- Card Cloxacillin -->
             <div id="sd-card-cloxacillin" class="bg-slate-100/90 backdrop-blur-md rounded-3xl p-5 border border-slate-300 shadow-sm transition-all space-y-4">
                 <div class="flex items-center gap-2">
                     <span class="w-3.5 h-3.5 rounded-full bg-amber-500 inline-block"></span>
@@ -334,6 +350,7 @@ export function render(container) {
                 </div>
             </div>
 
+            <!-- Card Clindamycin -->
             <div id="sd-card-clindamycin" class="bg-slate-100/90 backdrop-blur-md rounded-3xl p-5 border border-slate-300 shadow-sm transition-all space-y-4">
                 <div class="flex items-center gap-2">
                     <span class="w-3.5 h-3.5 rounded-full bg-rose-600 inline-block"></span>
@@ -393,7 +410,6 @@ function initSmalldoseEvents(container) {
     const cardClox = container.querySelector('#sd-card-cloxacillin');
     const cardClinda = container.querySelector('#sd-card-clindamycin');
 
-    // Gentamicin Specific Inputs
     const gentaInputA = container.querySelector('#sd-genta-input-a');
     const gentaInputB = container.querySelector('#sd-genta-input-b');
     const gentaInputC = container.querySelector('#sd-genta-input-c');
@@ -458,4 +474,221 @@ function initSmalldoseEvents(container) {
 
     bwPlusBtn.addEventListener('click', () => {
         let val = parseFloat(bwInput.value) || 0;
-        bwInput.value = (val +
+        bwInput.value = (val + 0.1).toFixed(3);
+        calculateAll();
+    });
+
+    resetBtn.addEventListener('click', () => {
+        inputs.forEach(input => input.value = "");
+        chkAmp.checked = true;
+        chkGenta.checked = true;
+        chkClox.checked = true;
+        chkClinda.checked = true;
+
+        gentaInputB.value = "2";
+        gentaInputC.value = "5";
+        isUserModifiedA = false;
+        
+        cardAmp.classList.remove('hidden');
+        cardGenta.classList.remove('hidden');
+        cardClox.classList.remove('hidden');
+        cardClinda.classList.remove('hidden');
+
+        calculateAll();
+    });
+
+    inputs.forEach(elem => {
+        elem.addEventListener('input', () => {
+            calculateAll();
+        });
+    });
+
+    chkAmp.addEventListener('change', () => cardAmp.classList.toggle('hidden', !chkAmp.checked));
+    chkGenta.addEventListener('change', () => cardGenta.classList.toggle('hidden', !chkGenta.checked));
+    chkClox.addEventListener('change', () => cardClox.classList.toggle('hidden', !chkClox.checked));
+    chkClinda.addEventListener('change', () => cardClinda.classList.toggle('hidden', !chkClinda.checked));
+
+    function calculateAll() {
+        const gaWk = parseInt(gaWkInput.value) || 0;
+        const gaDay = parseInt(gaDayInput.value) || 0;
+        const pnaDay = parseInt(pnaDayInput.value) || 0;
+        const bw = parseFloat(bwInput.value) || 0;
+
+        const totalDays = gaDay + pnaDay;
+        const extraWk = Math.floor(totalDays / 7);
+        const remDays = totalDays % 7;
+        const roundedWk = remDays >= 4 ? 1 : 0;
+        const pma = gaWk + extraWk + roundedWk;
+
+        const pmaDisplay = container.querySelector('#sd-pma-display');
+        const pmaDesc = container.querySelector('#sd-pma-desc');
+        pmaDisplay.innerText = `${pma} wk`;
+        
+        pmaDesc.innerHTML = `
+            <div>• PMA = GA (${gaWk}w ${gaDay}d) + PNA (${pnaDay}d)</div>
+            <div>• วันรวม = ${gaDay}+${pnaDay} = ${totalDays} วัน</div>
+            <div>• ${remDays >= 4 ? `เศษ ${remDays} วัน (≥4 วัน) ปัดขึ้น +1w` : `เศษ ${remDays} วัน (<4 วัน) ไม่ปัดขึ้น`}</div>
+            <div>→ สรุป PMA = ${pma} สัปดาห์</div>
+        `;
+
+        renderAmpicillin(pma, pnaDay, bw);
+        renderGentamicin(pma, pnaDay, bw);
+        renderCloxacillin(pma, pnaDay, bw);
+        renderClindamycin(pma, pnaDay, bw);
+    }
+
+    function renderAmpicillin(pma, pna, bw) {
+        const minTotalNum = 150 * bw;
+        const maxTotalNum = 200 * bw;
+        container.querySelector('#sd-amp-total').innerText = `Total: ${formatNum(minTotalNum)} - ${formatNum(maxTotalNum)} mg/day`;
+
+        const rows = [
+            { pmaCond: pma <= 29, pnaCond: pna <= 28, pmaText: "≤ 29 wk", pnaText: "0 - 28 days", div: 2, freq: "q 12 hr(s)" },
+            { pmaCond: pma <= 29, pnaCond: pna >= 29, pmaText: "≤ 29 wk", pnaText: "≥ 29 days", div: 3, freq: "q 8 hr(s)" },
+            { pmaCond: pma >= 30 && pma <= 36, pnaCond: pna <= 14, pmaText: "30 - 36 wk", pnaText: "0 - 14 days", div: 2, freq: "q 12 hr(s)" },
+            { pmaCond: pma >= 30 && pma <= 36, pnaCond: pna >= 15, pmaText: "30 - 36 wk", pnaText: "≥ 8 days", div: 3, freq: "q 8 hr(s)" },
+            { pmaCond: pma >= 37 && pma <= 44, pnaCond: pna <= 7, pmaText: "37 - 44 wk", pnaText: "0 - 7 days", div: 2, freq: "q 12 hr(s)" },
+            { pmaCond: pma >= 37 && pma <= 44, pnaCond: pna >= 8, pmaText: "37 - 44 wk", pnaText: "≥ 8 days", div: 3, freq: "q 8 hr(s)" },
+            { pmaCond: pma >= 45, pnaCond: true, pmaText: "≥ 45 wk", pnaText: "All days", div: 4, freq: "q 6 hr(s)" },
+        ];
+
+        let html = "";
+        rows.forEach(r => {
+            const isMatch = r.pmaCond && r.pnaCond;
+            const minDose = minTotalNum / r.div;
+            const maxDose = maxTotalNum / r.div;
+            const activeClass = isMatch ? "bg-indigo-100/90 font-bold text-indigo-900 border-l-4 border-indigo-600" : "";
+            
+            html += `<tr class="${activeClass}">
+                <td class="py-2 px-3">${r.pmaText}</td>
+                <td class="py-2 px-3">${r.pnaText}</td>
+                <td class="py-2 px-3 text-right">${formatNum(minDose)}</td>
+                <td class="py-2 px-3 text-right">${formatNum(maxDose)}</td>
+                <td class="py-2 px-3">mg</td>
+                <td class="py-2 px-3">${r.freq}</td>
+            </tr>`;
+        });
+        container.querySelector('#sd-tbl-ampicillin').innerHTML = html;
+    }
+
+    function renderGentamicin(pma, pna, bw) {
+        const rows = [
+            { pmaCond: pma <= 29, pnaCond: pna <= 7, pmaText: "≤ 29 wk", pnaText: "0 - 7 days", dose: 5.0, freq: "q 48 hr(s)" },
+            { pmaCond: pma <= 29, pnaCond: pna >= 8 && pna <= 28, pmaText: "≤ 29 wk", pnaText: "8 - 28 days", dose: 4.0, freq: "q 36 hr(s)" },
+            { pmaCond: pma <= 29, pnaCond: pna >= 29, pmaText: "≤ 29 wk", pnaText: "≥ 29 days", dose: 4.0, freq: "q 24 hr(s)" },
+            { pmaCond: pma >= 30 && pma <= 34, pnaCond: pna <= 7, pmaText: "30 - 34 wk", pnaText: "0 - 7 days", dose: 4.5, freq: "q 36 hr(s)" },
+            { pmaCond: pma >= 30 && pma <= 34, pnaCond: pna >= 8, pmaText: "30 - 34 wk", pnaText: "≥ 8 days", dose: 4.0, freq: "q 24 hr(s)" },
+            { pmaCond: pma >= 35, pnaCond: true, pmaText: "≥ 35 wk", pnaText: "All days", dose: 4.0, freq: "q 24 hr(s)" },
+        ];
+
+        let html = "";
+        let calculatedDoseMg = 0;
+
+        rows.forEach(r => {
+            const isMatch = r.pmaCond && r.pnaCond;
+            const doseMg = bw * r.dose;
+            if (isMatch) {
+                calculatedDoseMg = doseMg;
+            }
+            const activeClass = isMatch ? "bg-teal-100/90 font-bold text-teal-900 border-l-4 border-teal-600" : "";
+            
+            html += `<tr class="${activeClass}">
+                <td class="py-2 px-3">${r.pmaText}</td>
+                <td class="py-2 px-3">${r.pnaText}</td>
+                <td class="py-2 px-3 text-right">${formatNum(doseMg)}</td>
+                <td class="py-2 px-3">mg</td>
+                <td class="py-2 px-3">${r.freq}</td>
+            </tr>`;
+        });
+        container.querySelector('#sd-tbl-gentamicin').innerHTML = html;
+
+        const minSolVol = calculatedDoseMg / 10;
+        container.querySelector('#sd-genta-min-sol').innerText = formatNum(minSolVol);
+
+        if (!isUserModifiedA) {
+            gentaInputA.value = calculatedDoseMg > 0 ? calculatedDoseMg.toFixed(2) : "";
+        }
+
+        const inputA = parseFloat(gentaInputA.value) || 0; 
+        const inputB = parseFloat(gentaInputB.value) || 0; 
+        const inputC = parseFloat(gentaInputC.value) || 0; 
+
+        const patientInfuseVol = inputB > 0 ? (inputA / inputB) : 0;
+        const totalPrepVol = patientInfuseVol + inputC;
+        const totalMgInSyringe = totalPrepVol * inputB;
+        const drugVol = totalMgInSyringe / 40;
+        const diluentVol = totalPrepVol - drugVol;
+
+        container.querySelector('#sd-genta-calc-total-vol').innerText = formatNum(totalPrepVol);
+        container.querySelector('#sd-genta-calc-total-mg').innerText = formatNum(totalMgInSyringe);
+        container.querySelector('#sd-genta-calc-drug-vol').innerText = formatNum(drugVol > 0 ? drugVol : 0);
+        container.querySelector('#sd-genta-calc-diluent-vol').innerText = formatNum(diluentVol > 0 ? diluentVol : 0);
+
+        container.querySelector('#sd-step-diluent').innerText = formatNum(diluentVol > 0 ? diluentVol : 0);
+        container.querySelector('#sd-step-drug').innerText = formatNum(drugVol > 0 ? drugVol : 0);
+        container.querySelector('#sd-step-drug-mg').innerText = formatNum(totalMgInSyringe);
+        container.querySelector('#sd-step-total').innerText = formatNum(totalPrepVol);
+        container.querySelector('#sd-alert-vol').innerText = formatNum(patientInfuseVol);
+        container.querySelector('#sd-alert-remain').innerText = formatNum(inputC);
+    }
+
+    function renderCloxacillin(pma, pna, bw) {
+        const rows = [
+            { pmaCond: pma <= 29, pnaCond: pna <= 28, pmaText: "≤ 29 wk", pnaText: "0 - 28 days", dose: 25, freq: "q 12 hr(s)" },
+            { pmaCond: pma <= 29, pnaCond: pna >= 29, pmaText: "≤ 29 wk", pnaText: "≥ 29 days", dose: 25, freq: "q 8 hr(s)" },
+            { pmaCond: pma >= 30 && pma <= 36, pnaCond: pna <= 14, pmaText: "30 - 36 wk", pnaText: "0 - 14 days", dose: 25, freq: "q 12 hr(s)" },
+            { pmaCond: pma >= 30 && pma <= 36, pnaCond: pna >= 15, pmaText: "30 - 36 wk", pnaText: "≥ 8 days", dose: 25, freq: "q 8 hr(s)" },
+            { pmaCond: pma >= 37 && pma <= 44, pnaCond: pna <= 7, pmaText: "37 - 44 wk", pnaText: "0 - 7 days", dose: 25, freq: "q 12 hr(s)" },
+            { pmaCond: pma >= 37 && pma <= 44, pnaCond: pna >= 8, pmaText: "37 - 44 wk", pnaText: "≥ 8 days", dose: 25, freq: "q 8 hr(s)" },
+            { pmaCond: pma >= 45, pnaCond: true, pmaText: "≥ 45 wk", pnaText: "All days", dose: 25, freq: "q 6 hr(s)" },
+        ];
+
+        let html = "";
+        rows.forEach(r => {
+            const isMatch = r.pmaCond && r.pnaCond;
+            const doseMg = bw * r.dose;
+            const activeClass = isMatch ? "bg-amber-100/90 font-bold text-amber-900 border-l-4 border-amber-600" : "";
+            
+            html += `<tr class="${activeClass}">
+                <td class="py-2 px-3">${r.pmaText}</td>
+                <td class="py-2 px-3">${r.pnaText}</td>
+                <td class="py-2 px-3 text-right">${formatNum(doseMg)}</td>
+                <td class="py-2 px-3">mg</td>
+                <td class="py-2 px-3">${r.freq}</td>
+            </tr>`;
+        });
+        container.querySelector('#sd-tbl-cloxacillin').innerHTML = html;
+    }
+
+    function renderClindamycin(pma, pna, bw) {
+        const rows = [
+            { pmaCond: pma <= 29, pnaCond: pna <= 28, pmaText: "≤ 29 wk", pnaText: "0 - 28 days", doseMin: 5, doseMax: 7, freq: "q 12 hr(s)" },
+            { pmaCond: pma <= 29, pnaCond: pna >= 29, pmaText: "≤ 29 wk", pnaText: "≥ 29 days", doseMin: 5, doseMax: 7, freq: "q 8 hr(s)" },
+            { pmaCond: pma >= 30 && pma <= 36, pnaCond: pna <= 14, pmaText: "30 - 36 wk", pnaText: "0 - 14 days", doseMin: 5, doseMax: 7, freq: "q 12 hr(s)" },
+            { pmaCond: pma >= 30 && pma <= 36, pnaCond: pna >= 15, pmaText: "30 - 36 wk", pnaText: "≥ 8 days", doseMin: 5, doseMax: 7, freq: "q 8 hr(s)" },
+            { pmaCond: pma >= 37 && pma <= 44, pnaCond: pna <= 7, pmaText: "37 - 44 wk", pnaText: "0 - 7 days", doseMin: 5, doseMax: 7, freq: "q 12 hr(s)" },
+            { pmaCond: pma >= 37 && pma <= 44, pnaCond: pna >= 8, pmaText: "37 - 44 wk", pnaText: "≥ 8 days", doseMin: 5, doseMax: 7, freq: "q 8 hr(s)" },
+            { pmaCond: pma >= 45, pnaCond: true, pmaText: "≥ 45 wk", pnaText: "All days", doseMin: 5, doseMax: 7, freq: "q 6 hr(s)" },
+        ];
+
+        let html = "";
+        rows.forEach(r => {
+            const isMatch = r.pmaCond && r.pnaCond;
+            const doseMinVal = bw * r.doseMin;
+            const doseMaxVal = bw * r.doseMax;
+            const activeClass = isMatch ? "bg-rose-100/90 font-bold text-rose-900 border-l-4 border-rose-600" : "";
+            
+            html += `<tr class="${activeClass}">
+                <td class="py-2 px-3">${r.pmaText}</td>
+                <td class="py-2 px-3">${r.pnaText}</td>
+                <td class="py-2 px-3 text-right">${formatNum(doseMinVal)}</td>
+                <td class="py-2 px-3 text-right">${formatNum(doseMaxVal)}</td>
+                <td class="py-2 px-3">mg</td>
+                <td class="py-2 px-3">${r.freq}</td>
+            </tr>`;
+        });
+        container.querySelector('#sd-tbl-clindamycin').innerHTML = html;
+    }
+
+    calculateAll();
+}
