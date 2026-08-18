@@ -1,8 +1,8 @@
 /**
  * Smalldose Calculator Module
  * Updated: Complete Vanilla JS with 4 Drug Cards (Ampicillin, Gentamicin, Cloxacillin, Clindamycin)
- * Clindamycin Card updated: Added headnote, Max Conc, Max IV rate, alternative FDA reference dosing, and dynamic PMA highlight.
- * Timestamp: 2026-08-18 15:42
+ * Clindamycin Card updated: Added interactive Order Dose/Volume calculator with Max Conc (18mg/ml) & Max IV rate (30mg/min) safety checks.
+ * Timestamp: 2026-08-18 16:15
  */
 
 export function render(container) {
@@ -504,7 +504,7 @@ export function render(container) {
                     </table>
                 </div>
 
-                <div class="bg-slate-50/80 border border-slate-200 rounded-2xl p-3 text-xs text-slate-700 space-y-2">
+                <div class="bg-slate-50/80 border border-slate-200 rounded-2xl p-3 text-xs text-slate-700 space-y-3">
                     <div class="flex flex-wrap items-baseline gap-1.5 border-b border-slate-200/80 pb-2">
                         <span class="font-bold text-slate-900 shrink-0">Compat. sol. :</span>
                         <span class="font-semibold text-slate-800">D5W, D10W, NSS</span>
@@ -516,13 +516,54 @@ export function render(container) {
                         <span class="font-semibold text-slate-800">30 mg/min</span>
                     </div>
 
+                    <!-- ส่วนคำนวณ Order และ Safety Check สำหรับ Clindamycin -->
+                    <div id="sd-clinda-calc-box" class="bg-white border border-slate-200 rounded-xl p-3 space-y-2.5">
+                        <div class="font-bold text-slate-800 flex items-center justify-between">
+                            <span>คำนวณ Order & แนะนำ IV Rate (Safety Check)</span>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-700 mb-1">Order ขนาดยา</label>
+                                <div class="relative flex items-center">
+                                    <input type="number" id="sd-clinda-order-dose" step="0.01" placeholder="0" class="w-full bg-slate-50 border border-slate-300 rounded-lg h-8 px-2 pr-8 text-right font-bold text-slate-900 text-xs focus:outline-none focus:ring-1 focus:ring-rose-500">
+                                    <span class="absolute right-2 text-[10px] text-slate-500 font-bold pointer-events-none">mg</span>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-bold text-slate-700 mb-1">ปริมาตรสารน้ำที่ใช้</label>
+                                <div class="relative flex items-center">
+                                    <input type="number" id="sd-clinda-order-vol" step="0.01" placeholder="0" class="w-full bg-slate-50 border border-slate-300 rounded-lg h-8 px-2 pr-7 text-right font-bold text-slate-900 text-xs focus:outline-none focus:ring-1 focus:ring-rose-500">
+                                    <span class="absolute right-2 text-[10px] text-slate-500 font-bold pointer-events-none">ml</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-1 space-y-1.5 border-t border-slate-100 text-xs">
+                            <div class="flex items-center justify-between flex-wrap gap-1">
+                                <span>ความเข้มข้นที่ได้ (Conc.) :</span>
+                                <span id="sd-clinda-calc-conc-display" class="font-bold text-slate-800">
+                                    <span id="sd-clinda-calc-conc">0.00</span> mg/ml 
+                                    <span class="text-[10px] font-normal text-slate-500">(Max ≤ 18 mg/ml)</span>
+                                </span>
+                            </div>
+
+                            <div class="flex items-center justify-between flex-wrap gap-1">
+                                <span>เสนอให้ IV Rate สูงสุดไม่เกิน :</span>
+                                <span id="sd-clinda-calc-rate-display" class="font-bold text-rose-700">
+                                    <span id="sd-clinda-calc-rate-min">0.00</span> ml/min 
+                                    (<span id="sd-clinda-calc-rate-hr">0.00</span> ml/hr)
+                                </span>
+                            </div>
+
+                            <div id="sd-clinda-alert-msg" class="hidden text-[11px] font-bold text-rose-600 bg-rose-50 border border-rose-200 rounded-lg p-2 mt-1">
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="space-y-1 pt-0.5">
-                        <div class="font-bold text-slate-800 flex items-center gap-1">
-                            <span>**บาง ref. อาจแนะนำขนาดยาต่างออกไป</span>
-                            <a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/050441s090lbl.pdf" target="_blank" rel="noopener noreferrer" class="text-rose-600 hover:text-rose-800 underline inline-flex items-center gap-0.5 font-semibold" title="เปิดเอกสารอ้างอิง FDA (PDF)">
-                                (แนบลิงค์ : https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/050441s090lbl.pdf)
-                                <svg class="w-3 h-3 stroke-current" fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                            </a>
+                        <div class="font-bold text-slate-800">
+                            **บาง <a href="https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/050441s090lbl.pdf" target="_blank" rel="noopener noreferrer" class="text-rose-600 hover:text-rose-800 underline inline-flex items-center gap-0.5 font-semibold" title="เปิดเอกสารอ้างอิง FDA (PDF)">ref.</a> อาจแนะนำขนาดยาต่างออกไป'
                         </div>
                         
                         <ul class="list-disc list-inside space-y-1 pl-1 text-slate-700">
@@ -581,6 +622,11 @@ function initSmalldoseEvents(container) {
     const cloxVialStrengthInput = container.querySelector('#sd-clox-vial-strength');
     const cloxSwfiVolInput = container.querySelector('#sd-clox-swfi-vol');
 
+    const clindaOrderDoseInput = container.querySelector('#sd-clinda-order-dose');
+    const clindaOrderVolInput = container.querySelector('#sd-clinda-order-vol');
+    let isUserModifiedClindaDose = false;
+    let isUserModifiedClindaVol = false;
+
     gentaInputA.addEventListener('input', () => {
         isUserModifiedA = true;
         calculateAll();
@@ -590,6 +636,15 @@ function initSmalldoseEvents(container) {
 
     cloxVialStrengthInput.addEventListener('input', calculateAll);
     cloxSwfiVolInput.addEventListener('input', calculateAll);
+
+    clindaOrderDoseInput.addEventListener('input', () => {
+        isUserModifiedClindaDose = true;
+        calculateAll();
+    });
+    clindaOrderVolInput.addEventListener('input', () => {
+        isUserModifiedClindaVol = true;
+        calculateAll();
+    });
 
     function formatNum(val, decimals = 2) {
         const num = parseFloat(val);
@@ -660,6 +715,11 @@ function initSmalldoseEvents(container) {
 
         cloxVialStrengthInput.value = "1000";
         cloxSwfiVolInput.value = "5";
+
+        isUserModifiedClindaDose = false;
+        isUserModifiedClindaVol = false;
+        clindaOrderDoseInput.value = "";
+        clindaOrderVolInput.value = "";
         
         cardAmp.classList.remove('hidden');
         cardGenta.classList.remove('hidden');
@@ -889,6 +949,63 @@ function initSmalldoseEvents(container) {
             </tr>`;
         });
         container.querySelector('#sd-tbl-clindamycin').innerHTML = html;
+
+        // คำนวณค่าเริ่มต้นอัตโนมัติจาก 5mg/kg
+        const defaultDoseMg = bw * 5;
+        const defaultMinVol = defaultDoseMg > 0 ? (defaultDoseMg / 18) : 0;
+
+        if (!isUserModifiedClindaDose) {
+            clindaOrderDoseInput.value = defaultDoseMg > 0 ? defaultDoseMg.toFixed(2) : "";
+        }
+        if (!isUserModifiedClindaVol) {
+            clindaOrderVolInput.value = defaultMinVol > 0 ? defaultMinVol.toFixed(2) : "";
+        }
+
+        const currentDose = parseFloat(clindaOrderDoseInput.value) || 0;
+        const currentVol = parseFloat(clindaOrderVolInput.value) || 0;
+
+        // คำนวณความเข้มข้น และ IV Rate
+        const currentConc = currentVol > 0 ? (currentDose / currentVol) : 0;
+        
+        // Suggest IV Rate คำนวณจาก Max IV rate = 30 mg/min
+        // Rate (ml/min) = 30 / (Dose / Vol) = (30 * Vol) / Dose
+        const rateMlMin = currentDose > 0 ? (30 * currentVol) / currentDose : 0;
+        const rateMlHr = rateMlMin * 60;
+
+        const concElem = container.querySelector('#sd-clinda-calc-conc');
+        const concDisplay = container.querySelector('#sd-clinda-calc-conc-display');
+        const rateMinElem = container.querySelector('#sd-clinda-calc-rate-min');
+        const rateHrElem = container.querySelector('#sd-clinda-calc-rate-hr');
+        const rateDisplay = container.querySelector('#sd-clinda-calc-rate-display');
+        const alertMsg = container.querySelector('#sd-clinda-alert-msg');
+        const calcBox = container.querySelector('#sd-clinda-calc-box');
+
+        concElem.innerText = formatNum(currentConc);
+        rateMinElem.innerText = formatNum(rateMlMin);
+        rateHrElem.innerText = formatNum(rateMlHr);
+
+        // ตรวจสอบ Safety Thresholds (Max Conc > 18 mg/ml)
+        let hasError = false;
+        let errorMessages = [];
+
+        if (currentConc > 18) {
+            hasError = true;
+            errorMessages.push(`• ความเข้มข้นสูงเกินเกณฑ์กำหนด (${formatNum(currentConc)} mg/ml > 18 mg/ml)`);
+        }
+
+        if (hasError) {
+            concDisplay.className = "font-bold text-rose-600 underline";
+            rateDisplay.className = "font-bold text-rose-600 underline";
+            calcBox.className = "bg-rose-50/60 border-2 border-rose-500 rounded-xl p-3 space-y-2.5 transition-colors";
+            alertMsg.innerHTML = errorMessages.join('<br>');
+            alertMsg.classList.remove('hidden');
+        } else {
+            concDisplay.className = "font-bold text-slate-800";
+            rateDisplay.className = "font-bold text-rose-700";
+            calcBox.className = "bg-white border border-slate-200 rounded-xl p-3 space-y-2.5 transition-colors";
+            alertMsg.classList.add('hidden');
+            alertMsg.innerHTML = "";
+        }
 
         // คำนวณขนาดยาของ Ref FDA ตามน้ำหนักทารก
         const refDose1 = bw * 5;
