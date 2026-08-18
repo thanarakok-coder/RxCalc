@@ -1,8 +1,9 @@
 /**
  * Smalldose Calculator Module
- * Updated: Complete Vanilla JS with 4 Drug Cards (Ampicillin, Gentamicin, Cloxacillin, Clindamycin)
- * Clindamycin Card updated: Customizable Stock Strength Box, Internal Liquid Volume Logic Correction.
- * Timestamp: 2026-08-18 19:15
+ * Complete Vanilla JS with 4 Drug Cards (Ampicillin, Gentamicin, Cloxacillin, Clindamycin)
+ * Updated: Neofax info moved to top, Clindamycin Diluent Logic adjusted to avoid exceeding Max Conc.
+ * Popover widths enlarged & z-index/positioning fixed.
+ * Timestamp: 2026-08-18 20:33
  */
 
 export function render(container) {
@@ -167,7 +168,8 @@ export function render(container) {
                 </div>
             </div>
 
-            <div id="sd-card-gentamicin" class="bg-slate-100/90 backdrop-blur-md rounded-3xl p-5 border border-slate-300 shadow-sm transition-all space-y-4 relative z-30">
+            <!-- Gentamicin Card with enlarged Popover & z-index fix -->
+            <div id="sd-card-gentamicin" class="bg-slate-100/90 backdrop-blur-md rounded-3xl p-5 border border-slate-300 shadow-sm transition-all space-y-4 relative">
                 
                 <div class="flex justify-between items-start">
                     <div class="flex items-center gap-2">
@@ -216,12 +218,13 @@ export function render(container) {
                                     <span><strong class="text-slate-900 font-bold">อย่างน้อย</strong> 30-120 นาที</span>
                                 </div>
 
+                                <!-- Popover Gentamicin: z-[9999], enlarged by 15% (max-w-md / ~440px) -->
                                 <div class="relative group cursor-pointer inline-flex items-center justify-center shrink-0">
                                     <div class="w-6 h-6 rounded-full bg-teal-600 hover:bg-teal-700 text-white flex items-center justify-center text-xs font-bold transition-all shadow hover:scale-105">
                                         ?
                                     </div>
                                     
-                                    <div class="absolute top-0 right-7 w-max max-w-sm bg-slate-900 text-slate-100 text-[11px] p-4 rounded-2xl shadow-2xl border border-slate-700 z-[9999] hidden group-hover:block transition-all space-y-3 pointer-events-auto">
+                                    <div class="absolute top-8 right-0 w-[440px] max-w-[85vw] bg-slate-900 text-slate-100 text-[11px] p-4 rounded-2xl shadow-2xl border border-slate-700 z-[9999] hidden group-hover:block transition-all space-y-3 pointer-events-auto">
                                         <div class="font-normal text-teal-300 border-b border-slate-800 pb-1.5 flex items-center gap-1.5">
                                             <svg class="w-4 h-4 stroke-teal-400" fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 2 2h10a2 2 0 0 2 2-2V7a2 2 0 0 0-2-2h-2"/><path d="M9 12h6"/><path d="M9 16h6"/></svg>
                                             <span>ขั้นตอนการเตรียมและบริหารยา (ความเข้มข้นสม่ำเสมอ)</span>
@@ -343,7 +346,8 @@ export function render(container) {
                 </div>
             </div>
 
-            <div id="sd-card-cloxacillin" class="bg-slate-100/90 backdrop-blur-md rounded-3xl p-5 border border-slate-300 shadow-sm transition-all space-y-4 relative z-30">
+            <!-- Cloxacillin Card with enlarged Popover (+10% width -> ~420px) -->
+            <div id="sd-card-cloxacillin" class="bg-slate-100/90 backdrop-blur-md rounded-3xl p-5 border border-slate-300 shadow-sm transition-all space-y-4 relative">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                     <div class="flex items-center gap-2">
                         <span class="w-3.5 h-3.5 rounded-full bg-amber-500 inline-block"></span>
@@ -416,12 +420,13 @@ export function render(container) {
                                     <h4 class="font-bold text-slate-900 text-sm">แบบ B : IV infusion</h4>
                                 </div>
 
+                                <!-- Popover Cloxacillin: width enlarged by 10% (w-[420px]) -->
                                 <div class="relative group cursor-pointer inline-flex items-center justify-center shrink-0">
                                     <div class="w-6 h-6 rounded-full bg-amber-500 hover:bg-amber-600 text-white flex items-center justify-center text-xs font-bold transition-all shadow hover:scale-105">
                                         ?
                                     </div>
                                     
-                                    <div class="absolute top-0 right-7 w-max max-w-sm bg-slate-900 text-slate-100 text-[11px] p-4 rounded-2xl shadow-2xl border border-slate-700 z-[9999] hidden group-hover:block transition-all space-y-3 pointer-events-auto">
+                                    <div class="absolute top-0 right-7 w-[420px] max-w-[85vw] bg-slate-900 text-slate-100 text-[11px] p-4 rounded-2xl shadow-2xl border border-slate-700 z-[9999] hidden group-hover:block transition-all space-y-3 pointer-events-auto">
                                         <div class="font-normal text-amber-300 border-b border-slate-800 pb-1.5 flex items-center gap-1.5">
                                             <svg class="w-4 h-4 stroke-amber-400" fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 2 2h10a2 2 0 0 2 2-2V7a2 2 0 0 0-2-2h-2"/><path d="M9 12h6"/><path d="M9 16h6"/></svg>
                                             <span>วิธีเตรียม IV infusion</span>
@@ -474,6 +479,7 @@ export function render(container) {
                 </div>
             </div>
 
+            <!-- Clindamycin Card: Neofax info moved ABOVE table -->
             <div id="sd-card-clindamycin" class="bg-slate-100/90 backdrop-blur-md rounded-3xl p-5 border border-slate-300 shadow-sm transition-all space-y-4 relative">
                 
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
@@ -482,7 +488,6 @@ export function render(container) {
                         <h3 class="text-xl font-bold text-slate-800">Clindamycin <span class="text-sm font-normal text-slate-600">(Dose: 5 - 7 mg/kg)</span></h3>
                     </div>
                     
-                    <!-- กล่องข้อมูลความแรงยา Clindamycin ที่สามารถปรับตัวเลขได้ (มุมขวา) -->
                     <div class="flex items-center gap-1 bg-white text-slate-700 text-xs px-2.5 py-1 rounded-xl border border-slate-200 shadow-sm self-start sm:self-auto shrink-0">
                         <span>จาก Clindamycin ความแรง</span>
                         <input type="number" id="sd-clinda-stock-mg" value="600" min="1" class="w-12 bg-rose-50 border border-rose-300 rounded px-1 text-center font-bold text-rose-700 focus:outline-none focus:ring-1 focus:ring-rose-500">
@@ -490,6 +495,23 @@ export function render(container) {
                         <input type="number" id="sd-clinda-stock-ml" value="4" min="0.1" step="0.1" class="w-10 bg-rose-50 border border-rose-300 rounded px-1 text-center font-bold text-rose-700 focus:outline-none focus:ring-1 focus:ring-rose-500">
                         <span>ml</span>
                     </div>
+                </div>
+
+                <!-- 1. ย้ายข้อมูลจาก Neofax มาไว้ด้านบนของตาราง -->
+                <div class="bg-slate-50/80 border border-slate-200 rounded-2xl p-3 text-xs text-slate-700 flex flex-wrap items-center justify-between gap-2">
+                    <div class="flex flex-wrap items-baseline gap-1.5">
+                        <span class="font-bold text-slate-900 shrink-0">Compat. sol. :</span>
+                        <span class="font-semibold text-slate-800">D5W, D10W, NSS</span>
+                        <span class="text-slate-300">|</span>
+                        <span class="font-bold text-slate-900">Max Conc. :</span>
+                        <span class="font-semibold text-slate-800">18 mg/ml</span>
+                        <span class="text-slate-300">|</span>
+                        <span class="font-bold text-slate-900">Max IV rate :</span>
+                        <span class="font-semibold text-slate-800">30 mg/min</span>
+                    </div>
+                    <span class="inline-block bg-slate-200/80 text-slate-700 text-[11px] px-2.5 py-0.5 rounded font-bold border border-slate-300">
+                        ข้อมูลจาก Neofax
+                    </span>
                 </div>
 
                 <div class="overflow-x-auto rounded-2xl border border-slate-200 bg-white">
@@ -509,21 +531,6 @@ export function render(container) {
                 </div>
 
                 <div class="bg-slate-50/80 border border-slate-200 rounded-2xl p-3 text-xs text-slate-700 space-y-3">
-                    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200/80 pb-2">
-                        <div class="flex flex-wrap items-baseline gap-1.5">
-                            <span class="font-bold text-slate-900 shrink-0">Compat. sol. :</span>
-                            <span class="font-semibold text-slate-800">D5W, D10W, NSS</span>
-                            <span class="text-slate-300">|</span>
-                            <span class="font-bold text-slate-900">Max Conc. :</span>
-                            <span class="font-semibold text-slate-800">18 mg/ml</span>
-                            <span class="text-slate-300">|</span>
-                            <span class="font-bold text-slate-900">Max IV rate :</span>
-                            <span class="font-semibold text-slate-800">30 mg/min</span>
-                        </div>
-                        <span class="inline-block bg-slate-200/70 text-slate-600 text-[11px] px-2 py-0.5 rounded font-medium">
-                            ข้อมูลจาก Neofax
-                        </span>
-                    </div>
 
                     <!-- ส่วนคำนวณ Order และ Safety Check สำหรับ Clindamycin -->
                     <div id="sd-clinda-calc-box" class="bg-white border border-slate-200 rounded-xl p-3 space-y-2.5">
@@ -540,7 +547,10 @@ export function render(container) {
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-[11px] font-bold text-slate-700 mb-1">ปริมาตรสารน้ำที่ใช้ผสมเติมเพิ่ม (Diluent)</label>
+                                <!-- 2. เพิ่มคำว่า "อย่างน้อย" ตัวหนา + ขีดเส้นใต้ -->
+                                <label class="block text-[11px] font-bold text-slate-700 mb-1">
+                                    ปริมาตรสารน้ำที่ใช้ผสมเติมเพิ่ม (Diluent) <strong class="underline text-slate-900">อย่างน้อย</strong>
+                                </label>
                                 <div class="relative flex items-center">
                                     <input type="number" id="sd-clinda-order-vol" step="0.01" placeholder="0" class="w-full bg-slate-50 border border-slate-300 rounded-lg h-8 px-2 pr-7 text-right font-bold text-slate-900 text-xs focus:outline-none focus:ring-1 focus:ring-rose-500">
                                     <span class="absolute right-2 text-[10px] text-slate-500 font-bold pointer-events-none">ml</span>
@@ -971,33 +981,41 @@ function initSmalldoseEvents(container) {
         });
         container.querySelector('#sd-tbl-clindamycin').innerHTML = html;
 
-        // รับค่า Stock Drug จากกล่องมุมขวา
+        // Stock Drug
         const stockMg = parseFloat(clindaStockMgInput.value) || 600;
         const stockMl = parseFloat(clindaStockMlInput.value) || 4;
         const stockConc = stockMg / stockMl; // mg/ml
 
-        // คำนวณค่าเริ่มต้นอัตโนมัติจาก 5mg/kg
+        // คำนวณ Order Dose ตั้งต้นจาก 5mg/kg
         const defaultDoseMg = bw * 5;
-        
-        // ปริมาตรรวมสารละลายที่ต้องการอย่างน้อยเพื่อให้ได้ Max Conc 18 mg/ml
+
+        // 3. ปรับ Logic คำนวณ Diluent ตั้งต้นใหม่ ให้ Conc รวม = Max Conc. 18 mg/ml
+        // V_total = Dose / 18
+        // V_drug = Dose / StockConc
+        // V_diluent = V_total - V_drug
         const defaultTotalVolNeeded = defaultDoseMg > 0 ? (defaultDoseMg / 18) : 0;
-        // ปริมาตรเนื้อยาแท้จริง
         const defaultDrugVol = stockConc > 0 ? (defaultDoseMg / stockConc) : 0;
-        // ปริมาตรสารน้ำเติมเพิ่มอย่างน้อย (Diluent) = Total Vol - Drug Vol
         const defaultDiluentVol = defaultTotalVolNeeded > defaultDrugVol ? (defaultTotalVolNeeded - defaultDrugVol) : 0;
 
         if (!isUserModifiedClindaDose) {
             clindaOrderDoseInput.value = defaultDoseMg > 0 ? defaultDoseMg.toFixed(2) : "";
         }
+        
+        // หากผู้ใช้ไม่ได้แก้ไข ให้ปรับตาม Dose ปัจจุบันด้วย Logic ความเข้มข้นไม่เกิน 18 mg/ml
+        const currentDose = parseFloat(clindaOrderDoseInput.value) || 0;
+        const curTotalVolNeeded = currentDose > 0 ? (currentDose / 18) : 0;
+        const curDrugVol = stockConc > 0 ? (currentDose / stockConc) : 0;
+        const curDiluentVolCalculated = curTotalVolNeeded > curDrugVol ? (curTotalVolNeeded - curDrugVol) : 0;
+
         if (!isUserModifiedClindaVol) {
-            clindaOrderVolInput.value = defaultDiluentVol > 0 ? defaultDiluentVol.toFixed(2) : "";
+            clindaOrderVolInput.value = curDiluentVolCalculated > 0 ? curDiluentVolCalculated.toFixed(2) : "";
         }
 
-        const currentDose = parseFloat(clindaOrderDoseInput.value) || 0;
         const currentDiluentVol = parseFloat(clindaOrderVolInput.value) || 0;
 
         // ปริมาตรเนื้อยาจาก Order จริง
         const currentDrugVol = stockConc > 0 ? (currentDose / stockConc) : 0;
+        
         // ปริมาตรรวมจริง = เนื้อยา + สารน้ำเติมผสม
         const totalVol = currentDrugVol + currentDiluentVol;
 
@@ -1024,11 +1042,11 @@ function initSmalldoseEvents(container) {
         rateMinElem.innerText = formatNum(rateMlMin);
         rateHrElem.innerText = formatNum(rateMlHr);
 
-        // Safety Check
+        // Safety Check (ปัดเศษทศนิยมก่อนเปรียบเทียบ เพื่อไม่ให้ติด alert จากเศษทศนิยมลอยตัว)
         let hasError = false;
         let errorMessages = [];
 
-        if (currentConc > 18) {
+        if (Math.round(currentConc * 100) / 100 > 18) {
             hasError = true;
             errorMessages.push(`• ความเข้มข้นรวมสูงเกินเกณฑ์กำหนด (${formatNum(currentConc)} mg/ml > 18 mg/ml)`);
         }
