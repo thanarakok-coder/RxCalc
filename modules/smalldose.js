@@ -1,6 +1,7 @@
 /**
  * Smalldose Calculator Module
  * Complete Vanilla JS with 4 Drug Cards (Ampicillin, Gentamicin, Cloxacillin, Clindamycin)
+ * & Recommended Total Fluid Intake Calculator (ESPGHAN/ESPEN/ESPR/CSPEN 2018 Guidelines)
  * Updated: Gentamicin Ampule strength fully editable at top-right & dynamic conc. calculation
  * Timestamp: 2026-08-19
  */
@@ -84,6 +85,28 @@ export function render(container) {
                                 <svg class="w-3.5 h-3.5 stroke-current" fill="none" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
                             </button>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Fluid Intake Box -->
+                <div class="bg-slate-800/80 border border-slate-700 rounded-2xl p-3 space-y-2">
+                    <div class="flex items-center justify-between">
+                        <a href="https://www.clinicalnutritionjournal.com/article/S0261-5614(18)31167-1/fulltext" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-teal-300 hover:text-teal-200 underline inline-flex items-center gap-1">
+                            <span>Recommended</span>
+                            <svg class="w-3 h-3 stroke-current" fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                        </a>
+                    </div>
+                    <div class="text-xs font-semibold text-slate-200">Total Fluid intake</div>
+                    <div class="bg-slate-900/90 border border-slate-700/80 rounded-xl p-2.5 space-y-1">
+                        <div id="sd-fluid-range-display" class="text-sm font-bold text-teal-300">
+                            0.00 - 0.00 ml/<strong class="font-bold">Day</strong>
+                        </div>
+                        <div id="sd-fluid-upto-display" class="text-xs font-semibold text-amber-300">
+                            up to 0.00 ml/<strong class="font-bold">Day</strong>
+                        </div>
+                    </div>
+                    <div id="sd-fluid-summary-display" class="text-[11px] text-slate-300 pt-1 border-t border-slate-700/60 leading-relaxed">
+                        -
                     </div>
                 </div>
 
@@ -798,10 +821,83 @@ function initSmalldoseEvents(container) {
             <div>→ สรุป PMA = ${pma} สัปดาห์</div>
         `;
 
+        renderFluidIntake(gaWk, pnaDay, bw);
         renderAmpicillin(pma, pnaDay, bw);
         renderGentamicin(pma, pnaDay, bw);
         renderCloxacillin(pma, pnaDay, bw);
         renderClindamycin(pma, pnaDay, bw);
+    }
+
+    function renderFluidIntake(gaWk, pnaDay, bw) {
+        const rangeDisplay = container.querySelector('#sd-fluid-range-display');
+        const uptoDisplay = container.querySelector('#sd-fluid-upto-display');
+        const summaryDisplay = container.querySelector('#sd-fluid-summary-display');
+
+        if (!gaWk || !pnaDay || !bw) {
+            rangeDisplay.innerHTML = `0.00 - 0.00 ml/<strong class="font-bold">Day</strong>`;
+            uptoDisplay.innerHTML = `up to 0.00 ml/<strong class="font-bold">Day</strong>`;
+            summaryDisplay.innerText = `-`;
+            return;
+        }
+
+        const isTerm = gaWk >= 38;
+        const bwGrams = bw * 1000;
+        let minMlKg = 0;
+        let maxMlKg = 0;
+        let uptoMlKg = 0;
+
+        if (isTerm) {
+            if (pnaDay === 1) { minMlKg = 40; maxMlKg = 60; uptoMlKg = 0; }
+            else if (pnaDay === 2) { minMlKg = 50; maxMlKg = 70; uptoMlKg = 0; }
+            else if (pnaDay === 3) { minMlKg = 60; maxMlKg = 80; uptoMlKg = 0; }
+            else if (pnaDay === 4) { minMlKg = 70; maxMlKg = 100; uptoMlKg = 0; }
+            else if (pnaDay === 5) { minMlKg = 80; maxMlKg = 120; uptoMlKg = 0; }
+            else if (pnaDay >= 6 && pnaDay <= 10) { minMlKg = 100; maxMlKg = 130; uptoMlKg = 180; }
+            else { minMlKg = 120; maxMlKg = 150; uptoMlKg = 180; }
+        } else {
+            if (bwGrams < 1000) {
+                if (pnaDay === 1) { minMlKg = 80; maxMlKg = 100; uptoMlKg = 0; }
+                else if (pnaDay === 2) { minMlKg = 100; maxMlKg = 120; uptoMlKg = 0; }
+                else if (pnaDay === 3) { minMlKg = 120; maxMlKg = 140; uptoMlKg = 0; }
+                else if (pnaDay === 4) { minMlKg = 140; maxMlKg = 160; uptoMlKg = 0; }
+                else if (pnaDay === 5) { minMlKg = 140; maxMlKg = 160; uptoMlKg = 0; }
+                else if (pnaDay >= 6 && pnaDay <= 10) { minMlKg = 140; maxMlKg = 160; uptoMlKg = 180; }
+                else { minMlKg = 140; maxMlKg = 160; uptoMlKg = 180; }
+            } else if (bwGrams <= 1500) {
+                if (pnaDay === 1) { minMlKg = 60; maxMlKg = 80; uptoMlKg = 0; }
+                else if (pnaDay === 2) { minMlKg = 80; maxMlKg = 100; uptoMlKg = 0; }
+                else if (pnaDay === 3) { minMlKg = 100; maxMlKg = 120; uptoMlKg = 0; }
+                else if (pnaDay === 4) { minMlKg = 120; maxMlKg = 140; uptoMlKg = 0; }
+                else if (pnaDay === 5) { minMlKg = 120; maxMlKg = 140; uptoMlKg = 0; }
+                else if (pnaDay >= 6 && pnaDay <= 10) { minMlKg = 140; maxMlKg = 160; uptoMlKg = 180; }
+                else { minMlKg = 140; maxMlKg = 160; uptoMlKg = 180; }
+            } else {
+                if (pnaDay === 1) { minMlKg = 40; maxMlKg = 60; uptoMlKg = 0; }
+                else if (pnaDay === 2) { minMlKg = 60; maxMlKg = 80; uptoMlKg = 0; }
+                else if (pnaDay === 3) { minMlKg = 80; maxMlKg = 100; uptoMlKg = 0; }
+                else if (pnaDay === 4) { minMlKg = 100; maxMlKg = 120; uptoMlKg = 0; }
+                else if (pnaDay === 5) { minMlKg = 120; maxMlKg = 140; uptoMlKg = 0; }
+                else if (pnaDay >= 6 && pnaDay <= 10) { minMlKg = 140; maxMlKg = 160; uptoMlKg = 180; }
+                else { minMlKg = 140; maxMlKg = 160; uptoMlKg = 180; }
+            }
+        }
+
+        const minMl = minMlKg * bw;
+        const maxMl = maxMlKg * bw;
+        const uptoMl = uptoMlKg * bw;
+
+        rangeDisplay.innerHTML = `${formatNum(minMl)} - ${formatNum(maxMl)} ml/<strong class="font-bold">Day</strong>`;
+        
+        if (uptoMl > 0) {
+            uptoDisplay.innerHTML = `up to ${formatNum(uptoMl)} ml/<strong class="font-bold">Day</strong>`;
+            uptoDisplay.classList.remove('hidden');
+        } else {
+            uptoDisplay.innerHTML = ``;
+            uptoDisplay.classList.add('hidden');
+        }
+
+        const typeStr = isTerm ? 'Term neonate' : `Preterm neonate (${bwGrams < 1000 ? '<1000g' : bwGrams <= 1500 ? '1000-1500g' : '>1500g'})`;
+        summaryDisplay.innerText = `• ${typeStr}, Day ${pnaDay}`;
     }
 
     function renderAmpicillin(pma, pna, bw) {
