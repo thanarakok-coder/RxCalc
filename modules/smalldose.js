@@ -1,7 +1,7 @@
 /**
  * Smalldose Calculator Module
  * Complete Vanilla JS with 4 Drug Cards (Ampicillin, Gentamicin, Cloxacillin, Clindamycin)
- * Updated: Cloxacillin Popover direction changed to Top-Left (bottom-full right-0 mb-2)
+ * Updated: Gentamicin Ampule strength fully editable at top-right & dynamic conc. calculation
  * Timestamp: 2026-08-19
  */
 
@@ -167,18 +167,21 @@ export function render(container) {
                 </div>
             </div>
 
-            <!-- Gentamicin Card with Top-Right Popover -->
+            <!-- Gentamicin Card -->
             <div id="sd-card-gentamicin" class="bg-slate-100/90 backdrop-blur-md rounded-3xl p-5 border border-slate-300 shadow-sm transition-all space-y-4 relative">
                 
-                <div class="flex justify-between items-start">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                     <div class="flex items-center gap-2">
                         <span class="w-3.5 h-3.5 rounded-full bg-teal-600 inline-block"></span>
                         <h3 class="text-xl font-bold text-slate-800">Gentamicin</h3>
                     </div>
-                    <div class="text-right">
-                        <span class="inline-block bg-white text-slate-600 text-xs px-2.5 py-1 rounded-lg font-medium border border-slate-200 shadow-sm">
-                            คำนวนจากรูปแบบ Ampule 80mg/2ml
-                        </span>
+                    <!-- มุมขวาบน: ปรับเปิดช่องให้แก้ไขความแรง Ampule ได้ -->
+                    <div class="flex items-center gap-1 bg-white text-slate-700 text-xs px-2.5 py-1 rounded-xl border border-slate-200 shadow-sm self-start sm:self-auto shrink-0">
+                        <span>คำนวนจากรูปแบบ Ampule</span>
+                        <input type="number" id="sd-genta-stock-mg" value="80" min="1" class="w-12 bg-teal-50 border border-teal-300 rounded px-1 text-center font-bold text-teal-700 focus:outline-none focus:ring-1 focus:ring-teal-500">
+                        <span>mg /</span>
+                        <input type="number" id="sd-genta-stock-ml" value="2" min="0.1" step="0.1" class="w-10 bg-teal-50 border border-teal-300 rounded px-1 text-center font-bold text-teal-700 focus:outline-none focus:ring-1 focus:ring-teal-500">
+                        <span>ml</span>
                     </div>
                 </div>
 
@@ -217,7 +220,6 @@ export function render(container) {
                                     <span><strong class="text-slate-900 font-bold">อย่างน้อย</strong> 30-120 นาที</span>
                                 </div>
 
-                                <!-- Popover Gentamicin: แสดงผลไปทางมุมบนขวา (bottom-full left-0 mb-2) -->
                                 <div class="relative group cursor-pointer inline-flex items-center justify-center shrink-0">
                                     <div class="w-6 h-6 rounded-full bg-teal-600 hover:bg-teal-700 text-white flex items-center justify-center text-xs font-bold transition-all shadow hover:scale-105">
                                         ?
@@ -331,7 +333,7 @@ export function render(container) {
                                     <span class="font-bold"><span id="sd-genta-calc-total-vol">0.00</span> ml (มียารวม <span id="sd-genta-calc-total-mg">0.00</span> mg)</span>
                                 </div>
                                 <div class="flex items-center justify-between flex-wrap gap-1">
-                                    <span>ใช้ยา Gentamicin (40mg/ml):</span>
+                                    <span>ใช้ยา Gentamicin (<span id="sd-genta-stock-conc-label">40</span>mg/ml):</span>
                                     <span class="font-bold text-teal-700"><span id="sd-genta-calc-drug-vol">0.00</span> ml</span>
                                 </div>
                                 <div class="flex items-center justify-between flex-wrap gap-1">
@@ -345,7 +347,7 @@ export function render(container) {
                 </div>
             </div>
 
-            <!-- Cloxacillin Card with Top-Left Popover -->
+            <!-- Cloxacillin Card -->
             <div id="sd-card-cloxacillin" class="bg-slate-100/90 backdrop-blur-md rounded-3xl p-5 border border-slate-300 shadow-sm transition-all space-y-4 relative">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                     <div class="flex items-center gap-2">
@@ -419,7 +421,6 @@ export function render(container) {
                                     <h4 class="font-bold text-slate-900 text-sm">แบบ B : IV infusion</h4>
                                 </div>
 
-                                <!-- Popover Cloxacillin: เปลี่ยนการแสดงผลไปทางมุมบนซ้าย (bottom-full right-0 mb-2) -->
                                 <div class="relative group cursor-pointer inline-flex items-center justify-center shrink-0">
                                     <div class="w-6 h-6 rounded-full bg-amber-500 hover:bg-amber-600 text-white flex items-center justify-center text-xs font-bold transition-all shadow hover:scale-105">
                                         ?
@@ -634,6 +635,8 @@ function initSmalldoseEvents(container) {
     const cardClox = container.querySelector('#sd-card-cloxacillin');
     const cardClinda = container.querySelector('#sd-card-clindamycin');
 
+    const gentaStockMgInput = container.querySelector('#sd-genta-stock-mg');
+    const gentaStockMlInput = container.querySelector('#sd-genta-stock-ml');
     const gentaInputA = container.querySelector('#sd-genta-input-a');
     const gentaInputB = container.querySelector('#sd-genta-input-b');
     const gentaInputC = container.querySelector('#sd-genta-input-c');
@@ -648,6 +651,9 @@ function initSmalldoseEvents(container) {
     const clindaOrderVolInput = container.querySelector('#sd-clinda-order-vol');
     let isUserModifiedClindaDose = false;
     let isUserModifiedClindaVol = false;
+
+    gentaStockMgInput.addEventListener('input', calculateAll);
+    gentaStockMlInput.addEventListener('input', calculateAll);
 
     gentaInputA.addEventListener('input', () => {
         isUserModifiedA = true;
@@ -734,6 +740,8 @@ function initSmalldoseEvents(container) {
         chkClox.checked = true;
         chkClinda.checked = true;
 
+        gentaStockMgInput.value = "80";
+        gentaStockMlInput.value = "2";
         gentaInputB.value = "2";
         gentaInputC.value = "5";
         isUserModifiedA = false;
@@ -861,6 +869,14 @@ function initSmalldoseEvents(container) {
         });
         container.querySelector('#sd-tbl-gentamicin').innerHTML = html;
 
+        // คำนวณความเข้มข้น Gentamicin จาก Input Ampule มุมขวาบน
+        const stockMg = parseFloat(gentaStockMgInput.value) || 80;
+        const stockMl = parseFloat(gentaStockMlInput.value) || 2;
+        const stockConc = stockMl > 0 ? (stockMg / stockMl) : 0;
+
+        // แสดง Label ความเข้มข้นปัจจุบัน
+        container.querySelector('#sd-genta-stock-conc-label').innerText = formatNum(stockConc, 0);
+
         const minSolVol = calculatedDoseMg / 10;
         container.querySelector('#sd-genta-min-sol').innerText = formatNum(minSolVol);
 
@@ -875,7 +891,9 @@ function initSmalldoseEvents(container) {
         const patientInfuseVol = inputB > 0 ? (inputA / inputB) : 0;
         const totalPrepVol = patientInfuseVol + inputC;
         const totalMgInSyringe = totalPrepVol * inputB;
-        const drugVol = totalMgInSyringe / 40;
+        
+        // ใช้ stockConc คำนวณปริมาตรเนื้อยาที่ต้องดูด
+        const drugVol = stockConc > 0 ? (totalMgInSyringe / stockConc) : 0;
         const diluentVol = totalPrepVol - drugVol;
 
         container.querySelector('#sd-genta-calc-total-vol').innerText = formatNum(totalPrepVol);
