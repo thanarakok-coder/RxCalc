@@ -1,8 +1,8 @@
 /**
  * Smalldose Calculator Module
  * Complete Vanilla JS with 4 Drug Cards (Ampicillin, Gentamicin, Cloxacillin, Clindamycin)
- * Updated: Gentamicin & Cloxacillin Popover directions changed to Top-Right (bottom-full left-0 mb-2)
- * Timestamp: 2026-08-19 (Adjusted Popover Positioning)
+ * Updated: Cloxacillin Popover direction changed to Top-Left (bottom-full right-0 mb-2)
+ * Timestamp: 2026-08-19
  */
 
 export function render(container) {
@@ -345,7 +345,7 @@ export function render(container) {
                 </div>
             </div>
 
-            <!-- Cloxacillin Card with Top-Right Popover -->
+            <!-- Cloxacillin Card with Top-Left Popover -->
             <div id="sd-card-cloxacillin" class="bg-slate-100/90 backdrop-blur-md rounded-3xl p-5 border border-slate-300 shadow-sm transition-all space-y-4 relative">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                     <div class="flex items-center gap-2">
@@ -419,13 +419,13 @@ export function render(container) {
                                     <h4 class="font-bold text-slate-900 text-sm">แบบ B : IV infusion</h4>
                                 </div>
 
-                                <!-- Popover Cloxacillin: แสดงผลไปทางมุมบนขวา (bottom-full left-0 mb-2) -->
+                                <!-- Popover Cloxacillin: เปลี่ยนการแสดงผลไปทางมุมบนซ้าย (bottom-full right-0 mb-2) -->
                                 <div class="relative group cursor-pointer inline-flex items-center justify-center shrink-0">
                                     <div class="w-6 h-6 rounded-full bg-amber-500 hover:bg-amber-600 text-white flex items-center justify-center text-xs font-bold transition-all shadow hover:scale-105">
                                         ?
                                     </div>
                                     
-                                    <div class="absolute bottom-full left-0 mb-2 w-[420px] max-w-[85vw] bg-slate-900 text-slate-100 text-[11px] p-4 rounded-2xl shadow-2xl border border-slate-700 z-[9999] hidden group-hover:block transition-all space-y-3 pointer-events-auto">
+                                    <div class="absolute bottom-full right-0 mb-2 w-[420px] max-w-[85vw] bg-slate-900 text-slate-100 text-[11px] p-4 rounded-2xl shadow-2xl border border-slate-700 z-[9999] hidden group-hover:block transition-all space-y-3 pointer-events-auto">
                                         <div class="font-normal text-amber-300 border-b border-slate-800 pb-1.5 flex items-center gap-1.5">
                                             <svg class="w-4 h-4 stroke-amber-400" fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 2 2h10a2 2 0 0 2 2-2V7a2 2 0 0 0-2-2h-2"/><path d="M9 12h6"/><path d="M9 16h6"/></svg>
                                             <span>วิธีเตรียม IV infusion</span>
