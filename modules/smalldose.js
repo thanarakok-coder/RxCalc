@@ -1,7 +1,7 @@
 /**
  * Smalldose Calculator Module
  * Complete Vanilla JS with 4 Drug Cards (Ampicillin, Gentamicin, Cloxacillin, Clindamycin)
- * & Recommended Total Fluid Intake Calculator (ESPGHAN/ESPEN/ESPR/CSPEN 2018 Guidelines)
+ * & Recommended Total Fluid Intake Calculator (ESPGHAN/ESPEN/ESPR/CSPEN Guidelines)
  * Updated: Gentamicin Ampule strength fully editable at top-right & dynamic conc. calculation
  * Timestamp: 2026-08-19
  */
@@ -10,6 +10,7 @@ export function render(container) {
     container.innerHTML = `
     <div class="flex flex-col lg:flex-row gap-5 items-start w-full">
         
+        <!-- Sidebar -->
         <aside class="w-full lg:w-[22%] bg-slate-900 text-slate-100 p-4 rounded-3xl shadow-xl flex flex-col gap-4 shrink-0">
             
             <div class="flex items-center justify-between pb-2 border-b border-slate-800">
@@ -88,28 +89,6 @@ export function render(container) {
                     </div>
                 </div>
 
-                <!-- Fluid Intake Box -->
-                <div class="bg-slate-800/80 border border-slate-700 rounded-2xl p-3 space-y-2">
-                    <div class="flex items-center justify-between">
-                        <a href="https://www.clinicalnutritionjournal.com/article/S0261-5614(18)31167-1/fulltext" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-teal-300 hover:text-teal-200 underline inline-flex items-center gap-1">
-                            <span>Recommended</span>
-                            <svg class="w-3 h-3 stroke-current" fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                        </a>
-                    </div>
-                    <div class="text-xs font-semibold text-slate-200">Total Fluid intake</div>
-                    <div class="bg-slate-900/90 border border-slate-700/80 rounded-xl p-2.5 space-y-1">
-                        <div id="sd-fluid-range-display" class="text-sm font-bold text-teal-300">
-                            0.00 - 0.00 ml/<strong class="font-bold">Day</strong>
-                        </div>
-                        <div id="sd-fluid-upto-display" class="text-xs font-semibold text-amber-300">
-                            up to 0.00 ml/<strong class="font-bold">Day</strong>
-                        </div>
-                    </div>
-                    <div id="sd-fluid-summary-display" class="text-[11px] text-slate-300 pt-1 border-t border-slate-700/60 leading-relaxed">
-                        -
-                    </div>
-                </div>
-
                 <div class="bg-slate-950/90 border border-slate-800 rounded-2xl p-3 text-center space-y-1.5">
                     <span class="text-[11px] uppercase tracking-wider text-teal-400 font-bold block">CALCULATED PMA</span>
                     <div id="sd-pma-display" class="text-2xl font-black text-teal-300 tracking-tight">0 wk</div>
@@ -145,8 +124,10 @@ export function render(container) {
             </div>
         </aside>
 
+        <!-- Main Section -->
         <main class="w-full lg:w-[78%] flex flex-col gap-5">
             
+            <!-- Ampicillin Card -->
             <div id="sd-card-ampicillin" class="bg-slate-100/90 backdrop-blur-md rounded-3xl p-5 border border-slate-300 shadow-sm transition-all space-y-4">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                     <div class="flex items-center gap-2">
@@ -198,7 +179,6 @@ export function render(container) {
                         <span class="w-3.5 h-3.5 rounded-full bg-teal-600 inline-block"></span>
                         <h3 class="text-xl font-bold text-slate-800">Gentamicin</h3>
                     </div>
-                    <!-- มุมขวาบน: ปรับเปิดช่องให้แก้ไขความแรง Ampule ได้ -->
                     <div class="flex items-center gap-1 bg-white text-slate-700 text-xs px-2.5 py-1 rounded-xl border border-slate-200 shadow-sm self-start sm:self-auto shrink-0">
                         <span>คำนวนจากรูปแบบ Ampule</span>
                         <input type="number" id="sd-genta-stock-mg" value="80" min="1" class="w-12 bg-teal-50 border border-teal-300 rounded px-1 text-center font-bold text-teal-700 focus:outline-none focus:ring-1 focus:ring-teal-500">
@@ -627,6 +607,39 @@ export function render(container) {
 
             </div>
 
+            <!-- Fluid Intake Card (ย้ายมาไว้ข้างล่างสุด แยกกรอบชัดเจน) -->
+            <div id="sd-card-fluid" class="bg-slate-100/90 backdrop-blur-md rounded-3xl p-5 border border-slate-300 shadow-sm transition-all space-y-4">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-slate-200 pb-3">
+                    <div class="flex items-center gap-2">
+                        <span class="w-3.5 h-3.5 rounded-full bg-cyan-600 inline-block"></span>
+                        <h3 class="text-xl font-bold text-slate-800">Fluid Intake (ปริมาณสารน้ำที่แนะนำ)</h3>
+                    </div>
+                    <a href="https://www.clinicalnutritionjournal.com/article/S0261-5614(18)31167-1/fulltext" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-cyan-700 hover:text-cyan-900 underline inline-flex items-center gap-1">
+                        <span>ESPGHAN/ESPEN/ESPR/CSPEN Guidelines</span>
+                        <svg class="w-3 h-3 stroke-current" fill="none" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-2 flex flex-col justify-center shadow-sm">
+                        <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Recommended Fluid intake</div>
+                        <div id="sd-fluid-range-display" class="text-2xl font-extrabold text-cyan-700">
+                            0.00 - 0.00 ml/<span class="text-base font-bold text-slate-600">Day</span>
+                        </div>
+                        <div id="sd-fluid-mlkg-display" class="text-xs font-semibold text-slate-600">
+                            (0 - 0 ml/kg/day)
+                        </div>
+                    </div>
+
+                    <div class="bg-white border border-slate-200 rounded-2xl p-4 flex flex-col justify-center space-y-1.5 shadow-sm">
+                        <div class="text-xs font-bold text-slate-700 uppercase tracking-wider">รายละเอียดเกณฑ์การคำนวณ</div>
+                        <div id="sd-fluid-summary-display" class="text-xs text-slate-800 font-medium leading-relaxed">
+                            -
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </main>
     </div>
     `;
@@ -828,76 +841,72 @@ function initSmalldoseEvents(container) {
         renderClindamycin(pma, pnaDay, bw);
     }
 
+    /**
+     * Fix Logic สารน้ำตามตารางที่แนบมา
+     */
     function renderFluidIntake(gaWk, pnaDay, bw) {
         const rangeDisplay = container.querySelector('#sd-fluid-range-display');
-        const uptoDisplay = container.querySelector('#sd-fluid-upto-display');
+        const mlkgDisplay = container.querySelector('#sd-fluid-mlkg-display');
         const summaryDisplay = container.querySelector('#sd-fluid-summary-display');
 
         if (!gaWk || !pnaDay || !bw) {
-            rangeDisplay.innerHTML = `0.00 - 0.00 ml/<strong class="font-bold">Day</strong>`;
-            uptoDisplay.innerHTML = `up to 0.00 ml/<strong class="font-bold">Day</strong>`;
+            rangeDisplay.innerHTML = `0.00 - 0.00 ml/<span class="text-base font-bold text-slate-600">Day</span>`;
+            mlkgDisplay.innerText = `(0 - 0 ml/kg/day)`;
             summaryDisplay.innerText = `-`;
             return;
         }
 
-        const isTerm = gaWk >= 38;
+        const isTerm = gaWk >= 37; // Term neonate: GA >= 37 wk
         const bwGrams = bw * 1000;
         let minMlKg = 0;
         let maxMlKg = 0;
-        let uptoMlKg = 0;
+        let categoryText = "";
 
         if (isTerm) {
-            if (pnaDay === 1) { minMlKg = 40; maxMlKg = 60; uptoMlKg = 0; }
-            else if (pnaDay === 2) { minMlKg = 50; maxMlKg = 70; uptoMlKg = 0; }
-            else if (pnaDay === 3) { minMlKg = 60; maxMlKg = 80; uptoMlKg = 0; }
-            else if (pnaDay === 4) { minMlKg = 70; maxMlKg = 100; uptoMlKg = 0; }
-            else if (pnaDay === 5) { minMlKg = 80; maxMlKg = 120; uptoMlKg = 0; }
-            else if (pnaDay >= 6 && pnaDay <= 10) { minMlKg = 100; maxMlKg = 130; uptoMlKg = 180; }
-            else { minMlKg = 120; maxMlKg = 150; uptoMlKg = 180; }
+            categoryText = "Term neonate";
+            if (pnaDay === 1) { minMlKg = 40; maxMlKg = 60; }
+            else if (pnaDay === 2) { minMlKg = 50; maxMlKg = 70; }
+            else if (pnaDay === 3) { minMlKg = 60; maxMlKg = 80; }
+            else if (pnaDay === 4) { minMlKg = 60; maxMlKg = 100; }
+            else if (pnaDay === 5) { minMlKg = 100; maxMlKg = 140; }
+            else if (pnaDay >= 6 && pnaDay <= 10) { minMlKg = 140; maxMlKg = 170; }
+            else { minMlKg = 140; maxMlKg = 160; } // Day 11+
         } else {
-            if (bwGrams < 1000) {
-                if (pnaDay === 1) { minMlKg = 80; maxMlKg = 100; uptoMlKg = 0; }
-                else if (pnaDay === 2) { minMlKg = 100; maxMlKg = 120; uptoMlKg = 0; }
-                else if (pnaDay === 3) { minMlKg = 120; maxMlKg = 140; uptoMlKg = 0; }
-                else if (pnaDay === 4) { minMlKg = 140; maxMlKg = 160; uptoMlKg = 0; }
-                else if (pnaDay === 5) { minMlKg = 140; maxMlKg = 160; uptoMlKg = 0; }
-                else if (pnaDay >= 6 && pnaDay <= 10) { minMlKg = 140; maxMlKg = 160; uptoMlKg = 180; }
-                else { minMlKg = 140; maxMlKg = 160; uptoMlKg = 180; }
-            } else if (bwGrams <= 1500) {
-                if (pnaDay === 1) { minMlKg = 60; maxMlKg = 80; uptoMlKg = 0; }
-                else if (pnaDay === 2) { minMlKg = 80; maxMlKg = 100; uptoMlKg = 0; }
-                else if (pnaDay === 3) { minMlKg = 100; maxMlKg = 120; uptoMlKg = 0; }
-                else if (pnaDay === 4) { minMlKg = 120; maxMlKg = 140; uptoMlKg = 0; }
-                else if (pnaDay === 5) { minMlKg = 120; maxMlKg = 140; uptoMlKg = 0; }
-                else if (pnaDay >= 6 && pnaDay <= 10) { minMlKg = 140; maxMlKg = 160; uptoMlKg = 180; }
-                else { minMlKg = 140; maxMlKg = 160; uptoMlKg = 180; }
+            // Preterm neonates ตามเกณฑ์ BW
+            if (bwGrams > 1500) {
+                categoryText = "Preterm neonate > 1500 g";
+                if (pnaDay === 1) { minMlKg = 60; maxMlKg = 80; }
+                else if (pnaDay === 2) { minMlKg = 80; maxMlKg = 100; }
+                else if (pnaDay === 3) { minMlKg = 100; maxMlKg = 120; }
+                else if (pnaDay === 4) { minMlKg = 120; maxMlKg = 140; }
+                else if (pnaDay === 5) { minMlKg = 140; maxMlKg = 160; }
+                else { minMlKg = 140; maxMlKg = 160; } // Day 6+
+            } else if (bwGrams >= 1000 && bwGrams <= 1500) {
+                categoryText = "Preterm neonate 1000 - 1500 g";
+                if (pnaDay === 1) { minMlKg = 70; maxMlKg = 90; }
+                else if (pnaDay === 2) { minMlKg = 90; maxMlKg = 110; }
+                else if (pnaDay === 3) { minMlKg = 110; maxMlKg = 130; }
+                else if (pnaDay === 4) { minMlKg = 130; maxMlKg = 150; }
+                else if (pnaDay === 5) { minMlKg = 160; maxMlKg = 180; }
+                else { minMlKg = 140; maxMlKg = 160; } // Day 6+
             } else {
-                if (pnaDay === 1) { minMlKg = 40; maxMlKg = 60; uptoMlKg = 0; }
-                else if (pnaDay === 2) { minMlKg = 60; maxMlKg = 80; uptoMlKg = 0; }
-                else if (pnaDay === 3) { minMlKg = 80; maxMlKg = 100; uptoMlKg = 0; }
-                else if (pnaDay === 4) { minMlKg = 100; maxMlKg = 120; uptoMlKg = 0; }
-                else if (pnaDay === 5) { minMlKg = 120; maxMlKg = 140; uptoMlKg = 0; }
-                else if (pnaDay >= 6 && pnaDay <= 10) { minMlKg = 140; maxMlKg = 160; uptoMlKg = 180; }
-                else { minMlKg = 140; maxMlKg = 160; uptoMlKg = 180; }
+                // bwGrams < 1000
+                categoryText = "Preterm neonate < 1000 g";
+                if (pnaDay === 1) { minMlKg = 80; maxMlKg = 100; }
+                else if (pnaDay === 2) { minMlKg = 100; maxMlKg = 120; }
+                else if (pnaDay === 3) { minMlKg = 120; maxMlKg = 140; }
+                else if (pnaDay === 4) { minMlKg = 140; maxMlKg = 160; }
+                else if (pnaDay === 5) { minMlKg = 160; maxMlKg = 180; }
+                else { minMlKg = 140; maxMlKg = 160; } // Day 6+
             }
         }
 
         const minMl = minMlKg * bw;
         const maxMl = maxMlKg * bw;
-        const uptoMl = uptoMlKg * bw;
 
-        rangeDisplay.innerHTML = `${formatNum(minMl)} - ${formatNum(maxMl)} ml/<strong class="font-bold">Day</strong>`;
-        
-        if (uptoMl > 0) {
-            uptoDisplay.innerHTML = `up to ${formatNum(uptoMl)} ml/<strong class="font-bold">Day</strong>`;
-            uptoDisplay.classList.remove('hidden');
-        } else {
-            uptoDisplay.innerHTML = ``;
-            uptoDisplay.classList.add('hidden');
-        }
-
-        const typeStr = isTerm ? 'Term neonate' : `Preterm neonate (${bwGrams < 1000 ? '<1000g' : bwGrams <= 1500 ? '1000-1500g' : '>1500g'})`;
-        summaryDisplay.innerText = `• ${typeStr}, Day ${pnaDay}`;
+        rangeDisplay.innerHTML = `${formatNum(minMl)} - ${formatNum(maxMl)} ml/<span class="text-base font-bold text-slate-600">Day</span>`;
+        mlkgDisplay.innerText = `(${minMlKg} - ${maxMlKg} ml/kg/day)`;
+        summaryDisplay.innerText = `• กลุ่มทารก: ${categoryText} | PNA Day ${pnaDay} | BW: ${formatNum(bw, 3)} kg`;
     }
 
     function renderAmpicillin(pma, pna, bw) {
@@ -965,12 +974,10 @@ function initSmalldoseEvents(container) {
         });
         container.querySelector('#sd-tbl-gentamicin').innerHTML = html;
 
-        // คำนวณความเข้มข้น Gentamicin จาก Input Ampule มุมขวาบน
         const stockMg = parseFloat(gentaStockMgInput.value) || 80;
         const stockMl = parseFloat(gentaStockMlInput.value) || 2;
         const stockConc = stockMl > 0 ? (stockMg / stockMl) : 0;
 
-        // แสดง Label ความเข้มข้นปัจจุบัน
         container.querySelector('#sd-genta-stock-conc-label').innerText = formatNum(stockConc, 0);
 
         const minSolVol = calculatedDoseMg / 10;
@@ -988,7 +995,6 @@ function initSmalldoseEvents(container) {
         const totalPrepVol = patientInfuseVol + inputC;
         const totalMgInSyringe = totalPrepVol * inputB;
         
-        // ใช้ stockConc คำนวณปริมาตรเนื้อยาที่ต้องดูด
         const drugVol = stockConc > 0 ? (totalMgInSyringe / stockConc) : 0;
         const diluentVol = totalPrepVol - drugVol;
 
@@ -1070,7 +1076,7 @@ function initSmalldoseEvents(container) {
             { pmaCond: pma >= 30 && pma <= 36, pnaCond: pna >= 15, pmaText: "30 - 36 wk", pnaText: "≥ 8 days", doseMin: 5, doseMax: 7, freq: "q 8 hr(s)" },
             { pmaCond: pma >= 37 && pma <= 44, pnaCond: pna <= 7, pmaText: "37 - 44 wk", pnaText: "0 - 7 days", doseMin: 5, doseMax: 7, freq: "q 12 hr(s)" },
             { pmaCond: pma >= 37 && pma <= 44, pnaCond: pna >= 8, pmaText: "37 - 44 wk", pnaText: "≥ 8 days", doseMin: 5, doseMax: 7, freq: "q 8 hr(s)" },
-            { pmaCond: pma >= 45, pnaCond: true, pmaText: "≥ 45 wk", pnaText: "All days", doseMin: 5, doseMax: 7, freq: "q 6 hr(s)" },
+            { pmaCond: pma >= 45, pnaCond: true, pmaText: "≥ 45 wk", pnaText: "All days", div: 4, freq: "q 6 hr(s)" },
         ];
 
         let html = "";
