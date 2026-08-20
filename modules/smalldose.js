@@ -772,10 +772,10 @@ function initSmalldoseEvents(container) {
 
     resetBtn.addEventListener('click', () => {
         inputs.forEach(input => input.value = "");
-        chkAmp.checked = true;
-        chkGenta.checked = true;
-        chkClox.checked = true;
-        chkClinda.checked = true;
+        chkAmp.checked = false;
+        chkGenta.checked = false;
+        chkClox.checked = false;
+        chkClinda.checked = false;
 
         gentaStockMgInput.value = "80";
         gentaStockMlInput.value = "2";
@@ -793,10 +793,10 @@ function initSmalldoseEvents(container) {
         clindaOrderDoseInput.value = "";
         clindaOrderVolInput.value = "";
         
-        cardAmp.classList.remove('hidden');
-        cardGenta.classList.remove('hidden');
-        cardClox.classList.remove('hidden');
-        cardClinda.classList.remove('hidden');
+        cardAmp.classList.add('hidden');
+        cardGenta.classList.add('hidden');
+        cardClox.classList.add('hidden');
+        cardClinda.classList.add('hidden');
 
         calculateAll();
     });
