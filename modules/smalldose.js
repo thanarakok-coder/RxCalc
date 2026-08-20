@@ -619,20 +619,22 @@ export function render(container) {
                     </a>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-2 flex flex-col justify-center shadow-sm">
-                        <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Recommended Fluid intake</div>
-                        <div id="sd-fluid-range-display" class="text-2xl font-extrabold text-cyan-700">
-                            0.00 - 0.00 ml/<span class="text-base font-bold text-slate-600">Day</span>
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+                    <!-- ฝั่งซ้าย: ปริมาณสารน้ำทดแทน (แคบลงเป็น 5 คอลัมน์) -->
+                    <div class="md:col-span-5 bg-white border border-slate-200 rounded-2xl p-4 space-y-2 flex flex-col justify-center shadow-sm">
+                        <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Total Recommended Fluid intake</div>
+                        <div id="sd-fluid-range-display" class="text-2xl sm:text-3xl font-black text-cyan-700 tracking-tight">
+                            0.00 - 0.00 ml/<span class="text-sm font-bold text-slate-600">Day</span>
                         </div>
                         <div id="sd-fluid-mlkg-display" class="text-xs font-semibold text-slate-600">
                             (0 - 0 ml/kg/day)
                         </div>
                     </div>
 
-                    <div class="bg-white border border-slate-200 rounded-2xl p-4 flex flex-col justify-center space-y-1.5 shadow-sm">
+                    <!-- ฝั่งขวา: คำอธิบาย (กว้างขึ้นเป็น 7 คอลัมน์) -->
+                    <div class="md:col-span-7 bg-white border border-slate-200 rounded-2xl p-4 flex flex-col justify-center space-y-2 shadow-sm">
                         <div class="text-xs font-bold text-slate-700 uppercase tracking-wider">รายละเอียดเกณฑ์การคำนวณ</div>
-                        <div id="sd-fluid-summary-display" class="text-xs text-slate-800 font-medium leading-relaxed">
+                        <div id="sd-fluid-summary-display" class="text-sm text-slate-800 font-semibold space-y-1">
                             -
                         </div>
                     </div>
@@ -854,7 +856,7 @@ function initSmalldoseEvents(container) {
         const summaryDisplay = container.querySelector('#sd-fluid-summary-display');
 
         if (!gaWk || !pnaDay || !bw) {
-            rangeDisplay.innerHTML = `0.00 - 0.00 ml/<span class="text-base font-bold text-slate-600">Day</span>`;
+            rangeDisplay.innerHTML = `0.00 - 0.00 ml/<span class="text-sm font-bold text-slate-600">Day</span>`;
             mlkgDisplay.innerText = `(0 - 0 ml/kg/day)`;
             summaryDisplay.innerText = `-`;
             return;
@@ -917,9 +919,15 @@ function initSmalldoseEvents(container) {
         const minMl = minMlKg * bw;
         const maxMl = maxMlKg * bw;
 
-        rangeDisplay.innerHTML = `${formatNum(minMl)} - ${formatNum(maxMl)} ml/<span class="text-base font-bold text-slate-600">Day</span>`;
+        rangeDisplay.innerHTML = `${formatNum(minMl)} - ${formatNum(maxMl)} ml/<span class="text-sm font-bold text-slate-600">Day</span>`;
         mlkgDisplay.innerText = `(${minMlKg} - ${maxMlKg} ml/kg/day)`;
-        summaryDisplay.innerText = `• กลุ่มทารก: ${categoryText} | PNA Day ${pnaDay} | BW: ${formatNum(bw, 3)} kg`;
+        
+        // แยกบรรทัด 1 หัวข้อ 1 บรรทัด + ระบุ Term neonate นับที่ GA >= 38 wk
+        summaryDisplay.innerHTML = `
+            <div>• กลุ่มทารก: ${categoryText} <span class="text-xs font-normal text-slate-500">(Term neonate นับที่ GA ≥ 38 wk)</span></div>
+            <div>• PNA Day ${pnaDay}</div>
+            <div>• BW: ${formatNum(bw, 3)} kg</div>
+        `;
     }
 
     function renderAmpicillin(pma, pna, bw) {
