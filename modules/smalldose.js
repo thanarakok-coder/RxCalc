@@ -2,8 +2,7 @@
  * Smalldose Calculator Module
  * Complete Vanilla JS with 4 Drug Cards (Ampicillin, Gentamicin, Cloxacillin, Clindamycin)
  * & Recommended Total Fluid Intake Calculator (ESPGHAN/ESPEN/ESPR/CSPEN Guidelines)
- * Updated: Gentamicin Ampule strength fully editable at top-right & dynamic conc. calculation
- * Timestamp: 2026-08-19
+ * Timestamp: 2026-08-20
  */
 
 export function render(container) {
@@ -607,7 +606,7 @@ export function render(container) {
 
             </div>
 
-            <!-- Fluid Intake Card (ย้ายมาไว้ข้างล่างสุด แยกกรอบชัดเจน) -->
+            <!-- Fluid Intake Card -->
             <div id="sd-card-fluid" class="bg-slate-100/90 backdrop-blur-md rounded-3xl p-5 border border-slate-300 shadow-sm transition-all space-y-4">
                 <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-slate-200 pb-3">
                     <div class="flex items-center gap-2">
@@ -842,7 +841,12 @@ function initSmalldoseEvents(container) {
     }
 
     /**
-     * Fix Logic สารน้ำตามตารางที่แนบมา
+     * Fix Logic สารน้ำตามตารางใหม่
+     * - Term neonate: GA >= 38 wk
+     * - ตั้งแต่ PNA Day 6 ขึ้นไป แบ่งเป็น 3 กลุ่ม:
+     *   1) Term neonate
+     *   2) Preterm neonate > 1500 g
+     *   3) Preterm neonate < 1500 g
      */
     function renderFluidIntake(gaWk, pnaDay, bw) {
         const rangeDisplay = container.querySelector('#sd-fluid-range-display');
@@ -856,7 +860,7 @@ function initSmalldoseEvents(container) {
             return;
         }
 
-        const isTerm = gaWk >= 37; // Term neonate: GA >= 37 wk
+        const isTerm = gaWk >= 38; // Declare: Term neonate นับที่ GA >= 38 wk
         const bwGrams = bw * 1000;
         let minMlKg = 0;
         let maxMlKg = 0;
@@ -872,32 +876,41 @@ function initSmalldoseEvents(container) {
             else if (pnaDay >= 6 && pnaDay <= 10) { minMlKg = 140; maxMlKg = 170; }
             else { minMlKg = 140; maxMlKg = 160; } // Day 11+
         } else {
-            // Preterm neonates ตามเกณฑ์ BW
-            if (bwGrams > 1500) {
-                categoryText = "Preterm neonate > 1500 g";
-                if (pnaDay === 1) { minMlKg = 60; maxMlKg = 80; }
-                else if (pnaDay === 2) { minMlKg = 80; maxMlKg = 100; }
-                else if (pnaDay === 3) { minMlKg = 100; maxMlKg = 120; }
-                else if (pnaDay === 4) { minMlKg = 120; maxMlKg = 140; }
-                else if (pnaDay === 5) { minMlKg = 140; maxMlKg = 160; }
-                else { minMlKg = 140; maxMlKg = 160; } // Day 6+
-            } else if (bwGrams >= 1000 && bwGrams <= 1500) {
-                categoryText = "Preterm neonate 1000 - 1500 g";
-                if (pnaDay === 1) { minMlKg = 70; maxMlKg = 90; }
-                else if (pnaDay === 2) { minMlKg = 90; maxMlKg = 110; }
-                else if (pnaDay === 3) { minMlKg = 110; maxMlKg = 130; }
-                else if (pnaDay === 4) { minMlKg = 130; maxMlKg = 150; }
-                else if (pnaDay === 5) { minMlKg = 160; maxMlKg = 180; }
-                else { minMlKg = 140; maxMlKg = 160; } // Day 6+
+            // Preterm neonate
+            if (pnaDay >= 6) {
+                // ตั้งแต่อายุทารกวันที่ 6 ขึ้นไป แบ่ง 2 กลุ่มย่อยสำหรับ Preterm
+                if (bwGrams > 1500) {
+                    categoryText = "Preterm neonate > 1500 g";
+                    minMlKg = 140; maxMlKg = 160;
+                } else {
+                    categoryText = "Preterm neonate < 1500 g";
+                    minMlKg = 140; maxMlKg = 160;
+                }
             } else {
-                // bwGrams < 1000
-                categoryText = "Preterm neonate < 1000 g";
-                if (pnaDay === 1) { minMlKg = 80; maxMlKg = 100; }
-                else if (pnaDay === 2) { minMlKg = 100; maxMlKg = 120; }
-                else if (pnaDay === 3) { minMlKg = 120; maxMlKg = 140; }
-                else if (pnaDay === 4) { minMlKg = 140; maxMlKg = 160; }
-                else if (pnaDay === 5) { minMlKg = 160; maxMlKg = 180; }
-                else { minMlKg = 140; maxMlKg = 160; } // Day 6+
+                // PNA Day 1 - 5 แบ่งตามช่วงน้ำหนักตัวเดิม
+                if (bwGrams > 1500) {
+                    categoryText = "Preterm neonate > 1500 g";
+                    if (pnaDay === 1) { minMlKg = 60; maxMlKg = 80; }
+                    else if (pnaDay === 2) { minMlKg = 80; maxMlKg = 100; }
+                    else if (pnaDay === 3) { minMlKg = 100; maxMlKg = 120; }
+                    else if (pnaDay === 4) { minMlKg = 120; maxMlKg = 140; }
+                    else if (pnaDay === 5) { minMlKg = 140; maxMlKg = 160; }
+                } else if (bwGrams >= 1000 && bwGrams <= 1500) {
+                    categoryText = "Preterm neonate 1000 - 1500 g";
+                    if (pnaDay === 1) { minMlKg = 70; maxMlKg = 90; }
+                    else if (pnaDay === 2) { minMlKg = 90; maxMlKg = 110; }
+                    else if (pnaDay === 3) { minMlKg = 110; maxMlKg = 130; }
+                    else if (pnaDay === 4) { minMlKg = 130; maxMlKg = 150; }
+                    else if (pnaDay === 5) { minMlKg = 160; maxMlKg = 180; }
+                } else {
+                    // bwGrams < 1000 g
+                    categoryText = "Preterm neonate < 1000 g";
+                    if (pnaDay === 1) { minMlKg = 80; maxMlKg = 100; }
+                    else if (pnaDay === 2) { minMlKg = 100; maxMlKg = 120; }
+                    else if (pnaDay === 3) { minMlKg = 120; maxMlKg = 140; }
+                    else if (pnaDay === 4) { minMlKg = 140; maxMlKg = 160; }
+                    else if (pnaDay === 5) { minMlKg = 160; maxMlKg = 180; }
+                }
             }
         }
 
@@ -1075,7 +1088,7 @@ function initSmalldoseEvents(container) {
             { pmaCond: pma >= 30 && pma <= 36, pnaCond: pna <= 14, pmaText: "30 - 36 wk", pnaText: "0 - 14 days", doseMin: 5, doseMax: 7, freq: "q 12 hr(s)" },
             { pmaCond: pma >= 30 && pma <= 36, pnaCond: pna >= 15, pmaText: "30 - 36 wk", pnaText: "≥ 8 days", doseMin: 5, doseMax: 7, freq: "q 8 hr(s)" },
             { pmaCond: pma >= 37 && pma <= 44, pnaCond: pna <= 7, pmaText: "37 - 44 wk", pnaText: "0 - 7 days", doseMin: 5, doseMax: 7, freq: "q 12 hr(s)" },
-            { pmaCond: pma >= 37 && pma <= 44, pnaCond: pna >= 8, pmaText: "37 - 44 wk", pnaText: "≥ 8 days", doseMin: 5, doseMax: 7, freq: "q 8 hr(s)" },
+            { pmaCond: pma >= 37 && pma <= 44, pnaCond: pna >= 8, pmaText: "37 - 44 wk", pnaText: "≥ 8 days", div: 3, freq: "q 8 hr(s)" },
             { pmaCond: pma >= 45, pnaCond: true, pmaText: "≥ 45 wk", pnaText: "All days", div: 4, freq: "q 6 hr(s)" },
         ];
 
