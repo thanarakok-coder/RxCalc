@@ -17,12 +17,16 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
-        * {
-            font-family: 'Sarabun', -apple-system, sans-serif !important;
-        }
+        /* กำหนด font-family ไว้ที่ body เพื่อให้สืบทอดไปยัง element ลูก โดยไม่ไปทำลาย font ของ Font Awesome */
         body {
+            font-family: 'Sarabun', -apple-system, sans-serif;
             background-color: #E1DCC9;
             color: #1e293b;
+        }
+
+        /* ข้อยกเว้น: บังคับคืนค่า Font Family ให้ Class ของ Font Awesome โดยเฉพาะ */
+        .fa, .fas, .far, .fal, .fad, .fab, .fa-solid, .fa-regular, .fa-brands {
+            font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands" !important;
         }
     </style>
 </head>
