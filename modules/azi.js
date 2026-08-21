@@ -12,29 +12,29 @@ export function render(container) {
                     <p class="text-base sm:text-lg text-slate-600 font-semibold mt-1">คำนวณขนาดยาและจำนวนขวดสำหรับการรักษาในเด็ก</p>
                 </div>
 
-                <!-- Drug Specification Inputs (ปรับลดขนาดลง 15% และจัดบรรทัดไม่ให้ล้น) -->
+                <!-- Drug Specification Inputs -->
                 <div class="bg-slate-100 border border-slate-300 rounded-2xl p-2.5 flex items-center gap-1.5 text-xs sm:text-sm font-bold text-slate-700 self-start lg:self-auto shadow-sm flex-wrap">
                     <span class="text-slate-500 whitespace-nowrap">ความแรง:</span>
                     <input type="number" id="azi-strength-mg" placeholder="200" value="200" class="w-14 bg-white border border-slate-300 rounded-lg px-1.5 py-0.5 text-center text-slate-900 font-extrabold focus:outline-none focus:border-teal-500 text-sm">
                     <span>mg /</span>
                     <input type="number" id="azi-strength-ml" placeholder="5" value="5" class="w-12 bg-white border border-slate-300 rounded-lg px-1.5 py-0.5 text-center text-slate-900 font-extrabold focus:outline-none focus:border-teal-500 text-sm">
-                    <span>ml</span>
+                    <span>mL</span>
                     <span class="text-slate-300 mx-0.5">|</span>
                     <span class="text-slate-500 whitespace-nowrap">ขวดละ:</span>
                     <input type="number" id="azi-total-vol" placeholder="15" value="15" class="w-12 bg-white border border-slate-300 rounded-lg px-1.5 py-0.5 text-center text-slate-900 font-extrabold focus:outline-none focus:border-teal-500 text-sm">
-                    <span>ml</span>
+                    <span>mL</span>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 
-                <!-- Left Column: Inputs (ปรับธีม Dark โทนสลัวสไตล์ DAPT และลดความกว้างลงเหลือ 4/12) -->
+                <!-- Left Column: Inputs -->
                 <div class="lg:col-span-4 bg-slate-900 text-white rounded-3xl p-5 space-y-5 shadow-inner">
                     <div class="flex items-center justify-between border-b border-slate-800 pb-3">
                         <span class="text-lg font-extrabold text-teal-400 flex items-center gap-2">
                             <i class="fa-solid fa-pen-to-square"></i> กรอกข้อมูล
                         </span>
-                        <button id="btn-reset-azi" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1 rounded-lg transition-all flex items-center gap-1">
+                        <button id="btn-reset-azi" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1 rounded-lg transition-all flex items-center gap-1 cursor-pointer">
                             <i class="fa-solid fa-rotate-left"></i> รีเซ็ต
                         </button>
                     </div>
@@ -45,7 +45,7 @@ export function render(container) {
                             <i class="fa-solid fa-weight-scale text-teal-400 mr-1.5"></i>น้ำหนักตัวผู้ป่วยเด็ก (BW)
                         </label>
                         <div class="flex items-center justify-between bg-slate-800/80 border border-slate-700 rounded-2xl p-2.5">
-                            <button id="btn-weight-minus" class="w-10 h-10 bg-slate-700 hover:bg-slate-600 text-white rounded-xl flex items-center justify-center font-bold active:scale-95 transition-all text-base">
+                            <button id="btn-weight-minus" class="w-10 h-10 bg-slate-700 hover:bg-slate-600 text-white rounded-xl flex items-center justify-center font-bold active:scale-95 transition-all text-base cursor-pointer">
                                 <i class="fa-solid fa-minus"></i>
                             </button>
                             
@@ -54,7 +54,7 @@ export function render(container) {
                                 <span class="text-base font-bold text-slate-400">kg</span>
                             </div>
 
-                            <button id="btn-weight-plus" class="w-10 h-10 bg-slate-700 hover:bg-slate-600 text-white rounded-xl flex items-center justify-center font-bold active:scale-95 transition-all text-base">
+                            <button id="btn-weight-plus" class="w-10 h-10 bg-slate-700 hover:bg-slate-600 text-white rounded-xl flex items-center justify-center font-bold active:scale-95 transition-all text-base cursor-pointer">
                                 <i class="fa-solid fa-plus"></i>
                             </button>
                         </div>
@@ -64,41 +64,41 @@ export function render(container) {
                     <div class="space-y-3 pt-2">
                         <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">ระยะเวลาการรักษา (จำนวนวัน)</h3>
                         
-                        <!-- Phase 1 Days (ขยายช่อง Input ให้ใหญ่เกือบเท่าช่องน้ำหนัก) -->
+                        <!-- Phase 1 Days -->
                         <div class="bg-slate-800/50 p-3 rounded-2xl border border-slate-700/80 space-y-2">
                             <div>
                                 <div class="text-sm font-extrabold text-teal-300">ช่วงที่ 1 (10 mg/kg)</div>
                                 <div class="text-xs text-slate-400">Day 1 Loading dose</div>
                             </div>
                             <div class="flex items-center justify-between bg-slate-900 border border-slate-700 rounded-xl p-2">
-                                <button id="btn-p1-minus" class="w-9 h-9 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg flex items-center justify-center font-bold active:scale-95 transition-all text-sm">
+                                <button id="btn-p1-minus" class="w-9 h-9 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg flex items-center justify-center font-bold active:scale-95 transition-all text-sm cursor-pointer">
                                     <i class="fa-solid fa-minus"></i>
                                 </button>
                                 <div class="flex items-baseline gap-1">
                                     <input type="number" id="input-phase1-days" placeholder="1" value="1" min="0" class="w-16 text-center bg-transparent font-black text-amber-400 text-2xl focus:outline-none">
                                     <span class="text-sm font-bold text-slate-400">วัน</span>
                                 </div>
-                                <button id="btn-p1-plus" class="w-9 h-9 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg flex items-center justify-center font-bold active:scale-95 transition-all text-sm">
+                                <button id="btn-p1-plus" class="w-9 h-9 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg flex items-center justify-center font-bold active:scale-95 transition-all text-sm cursor-pointer">
                                     <i class="fa-solid fa-plus"></i>
                                 </button>
                             </div>
                         </div>
 
-                        <!-- Phase 2 Days (ขยายช่อง Input ให้ใหญ่เกือบเท่าช่องน้ำหนัก) -->
+                        <!-- Phase 2 Days -->
                         <div class="bg-slate-800/50 p-3 rounded-2xl border border-slate-700/80 space-y-2">
                             <div>
                                 <div class="text-sm font-extrabold text-teal-300">ช่วงที่ 2 (5 mg/kg)</div>
                                 <div class="text-xs text-slate-400">Maintenance dose</div>
                             </div>
                             <div class="flex items-center justify-between bg-slate-900 border border-slate-700 rounded-xl p-2">
-                                <button id="btn-p2-minus" class="w-9 h-9 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg flex items-center justify-center font-bold active:scale-95 transition-all text-sm">
+                                <button id="btn-p2-minus" class="w-9 h-9 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg flex items-center justify-center font-bold active:scale-95 transition-all text-sm cursor-pointer">
                                     <i class="fa-solid fa-minus"></i>
                                 </button>
                                 <div class="flex items-baseline gap-1">
                                     <input type="number" id="input-phase2-days" placeholder="4" value="4" min="0" class="w-16 text-center bg-transparent font-black text-amber-400 text-2xl focus:outline-none">
                                     <span class="text-sm font-bold text-slate-400">วัน</span>
                                 </div>
-                                <button id="btn-p2-plus" class="w-9 h-9 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg flex items-center justify-center font-bold active:scale-95 transition-all text-sm">
+                                <button id="btn-p2-plus" class="w-9 h-9 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg flex items-center justify-center font-bold active:scale-95 transition-all text-sm cursor-pointer">
                                     <i class="fa-solid fa-plus"></i>
                                 </button>
                             </div>
@@ -107,17 +107,16 @@ export function render(container) {
 
                 </div>
 
-                <!-- Right Column: Results (ขยายพื้นที่เป็น 8/12) -->
+                <!-- Right Column: Results -->
                 <div class="lg:col-span-8 bg-teal-50/70 border border-teal-200 rounded-3xl p-6 sm:p-8 flex flex-col justify-between space-y-6">
                     
                     <div class="space-y-5">
-                        <!-- หัวข้อลดขนาดลง 25-30% -->
                         <h3 class="text-lg sm:text-xl font-extrabold text-teal-950 border-b border-teal-200 pb-3 flex items-center gap-2">
                             <i class="fa-solid fa-square-poll-vertical text-teal-600"></i>
                             สรุปผลการคำนวณขนาดยา
                         </h3>
 
-                        <!-- Phase 1 Result (สลับตำแหน่งเน้น ปริมาณ/วัน ไว้ฝั่งขวา + ย้าย (xx mg/วัน) ไว้ใต้ชื่อช่วง) -->
+                        <!-- Phase 1 Result -->
                         <div class="bg-white rounded-2xl p-5 border border-teal-100 shadow-sm space-y-1">
                             <div class="flex justify-between items-start">
                                 <div>
@@ -133,7 +132,7 @@ export function render(container) {
                             </div>
                         </div>
 
-                        <!-- Phase 2 Result (สลับตำแหน่งเน้น ปริมาณ/วัน ไว้ฝั่งขวา + ย้าย (xx mg/วัน) ไว้ใต้ชื่อช่วง) -->
+                        <!-- Phase 2 Result -->
                         <div class="bg-white rounded-2xl p-5 border border-teal-100 shadow-sm space-y-1">
                             <div class="flex justify-between items-start">
                                 <div>
@@ -150,29 +149,29 @@ export function render(container) {
                         </div>
                     </div>
 
-                    <!-- สรุปผลลัพธ์ จัดให้อยู่บรรทัดเดียวกัน ซ้าย: ปริมาณรวม, ขวา: จำนวนขวด (ลบรูปขวดออกแล้ว) -->
+                    <!-- สรุปผลลัพธ์ ปรับขยายขนาดตัวเลขใหญ่ขึ้น 200-300% -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
                         <!-- ปริมาณยารวม -->
-                        <div class="bg-teal-100/60 rounded-2xl p-4 border border-teal-200 flex flex-col justify-between">
+                        <div class="bg-teal-100/60 rounded-2xl p-5 border border-teal-200 flex flex-col justify-between min-h-[140px]">
                             <div>
-                                <div class="text-base font-extrabold text-teal-950">ปริมาณยารวม</div>
-                                <div class="text-xs text-teal-800 font-medium">ทั้งคอร์สการรักษา</div>
+                                <div class="text-lg font-extrabold text-teal-950">ปริมาณยารวม</div>
+                                <div class="text-xs text-teal-800 font-semibold">ทั้งคอร์สการรักษา</div>
                             </div>
                             <div class="text-right pt-2">
-                                <span id="res-total-ml" class="text-3xl sm:text-4xl font-black text-teal-950">0.00</span>
-                                <span class="text-xl font-bold text-teal-900 ml-1">mL</span>
+                                <span id="res-total-ml" class="text-5xl sm:text-6xl font-black text-teal-950 tracking-tight">0.00</span>
+                                <span class="text-2xl font-bold text-teal-900 ml-1">mL</span>
                             </div>
                         </div>
 
-                        <!-- จำนวนยาที่ต้องใช้ (แก้คำและเอาไอคอนขวดออกแล้ว) -->
-                        <div class="bg-white rounded-2xl p-4 border border-teal-200 shadow-sm flex flex-col justify-between">
+                        <!-- จำนวนยาที่ต้องใช้ -->
+                        <div class="bg-white rounded-2xl p-5 border border-teal-200 shadow-sm flex flex-col justify-between min-h-[140px]">
                             <div>
-                                <div class="text-base font-extrabold text-slate-800">จำนวนยา</div>
-                                <div class="text-xs text-slate-500 font-medium">ที่ต้องใช้</div>
+                                <div class="text-lg font-extrabold text-slate-800">จำนวนยา</div>
+                                <div class="text-xs text-slate-500 font-semibold">ที่ต้องใช้</div>
                             </div>
                             <div class="text-right pt-2">
-                                <span id="res-total-bottles" class="text-3xl sm:text-4xl font-black text-teal-600">0</span>
-                                <span class="text-xl font-extrabold text-slate-800 ml-1">ขวด</span>
+                                <span id="res-total-bottles" class="text-5xl sm:text-6xl font-black text-teal-600 tracking-tight">0</span>
+                                <span class="text-2xl font-extrabold text-slate-800 ml-1">ขวด</span>
                             </div>
                             <p class="text-[11px] text-slate-400 font-normal text-right mt-1">* ปัดเศษขึ้นเป็นจำนวนขวดเต็มเสมอ</p>
                         </div>
@@ -298,7 +297,7 @@ export function render(container) {
         calculate();
     });
 
-    // Phase 2 Days +/- Events
+    // Phase 2 Days +/- Events (แก้ไขบั๊กปุ่มบวก)
     p2Minus.addEventListener('click', () => {
         let val = parseFloat(p2DaysInput.value) || 0;
         if (val > 0) {
@@ -308,7 +307,7 @@ export function render(container) {
     });
     p2Plus.addEventListener('click', () => {
         let val = parseFloat(p2DaysInput.value) || 0;
-        p2Plus.value = val + 1;
+        p2DaysInput.value = val + 1; // แก้ไขให้ปรับค่าใส่ p2DaysInput
         calculate();
     });
 
