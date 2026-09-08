@@ -7,6 +7,14 @@ export function render(container) {
     container.innerHTML = `
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 text-slate-800">
             
+            <!-- Header ใหญ่ด้านบนสุด -->
+            <div class="lg:col-span-12">
+                <h1 class="text-xl font-black text-slate-800 tracking-tight flex items-center gap-2">
+                    <i class="fa-solid fa-pills text-teal-600"></i>
+                    Autumnaki's Warfarin Calc
+                </h1>
+            </div>
+
             <!-- ฝั่งซ้าย: Input & Decision Table (40% -> lg:col-span-5) -->
             <div class="lg:col-span-5 space-y-5">
                 
@@ -22,26 +30,29 @@ export function render(container) {
                         </button>
                     </div>
 
-                    <!-- Dose เดิม (ปรับปรุง Layout บีบ Input + ปุ่ม +/- สี่เหลี่ยมจัตุรัส 1:1) -->
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">1. Dose Warfarin เดิม (mg/wk)</label>
-                        <div class="flex items-center justify-center gap-2 max-w-xs mx-auto">
-                            <button id="wf-dose1-dec" class="h-12 aspect-square bg-slate-100 hover:bg-slate-200 border border-slate-300 rounded-xl font-bold text-slate-700 flex items-center justify-center transition-all cursor-pointer text-lg shrink-0">-</button>
-                            <input type="number" id="wf-dose-old" step="0.1" placeholder="0" class="w-32 bg-white border border-slate-300 rounded-xl px-2 h-12 text-center font-extrabold text-slate-800 text-2xl focus:outline-none focus:border-teal-500">
-                            <button id="wf-dose1-inc" class="h-12 aspect-square bg-slate-100 hover:bg-slate-200 border border-slate-300 rounded-xl font-bold text-slate-700 flex items-center justify-center transition-all cursor-pointer text-lg shrink-0">+</button>
+                    <!-- Layout ปรับใหม่: วาง Dose เดิม และ INR วันนี้ ไว้ข้างกัน (Grid 2 คอลัมน์) -->
+                    <div class="grid grid-cols-2 gap-4 items-start">
+                        <!-- 1. Dose Warfarin เดิม -->
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">1. Dose Warfarin เดิม (mg/wk)</label>
+                            <div class="flex items-center justify-center gap-1.5">
+                                <button id="wf-dose1-dec" class="h-11 aspect-square bg-slate-100 hover:bg-slate-200 border border-slate-300 rounded-xl font-bold text-slate-700 flex items-center justify-center transition-all cursor-pointer text-base shrink-0">-</button>
+                                <input type="number" id="wf-dose-old" step="0.1" placeholder="0" class="w-full min-w-0 bg-white border border-slate-300 rounded-xl px-1 h-11 text-center font-extrabold text-slate-800 text-xl focus:outline-none focus:border-teal-500">
+                                <button id="wf-dose1-inc" class="h-11 aspect-square bg-slate-100 hover:bg-slate-200 border border-slate-300 rounded-xl font-bold text-slate-700 flex items-center justify-center transition-all cursor-pointer text-base shrink-0">+</button>
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- INR วันนี้ (ปรับปรุง Layout บีบ Input แคบลง) -->
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 mb-1">2. INR วันนี้</label>
-                        <div class="max-w-xs mx-auto">
-                            <input type="number" id="wf-inr-today" step="0.01" placeholder="0" class="w-full bg-white border border-slate-300 rounded-xl px-3 h-12 text-center font-extrabold text-slate-800 text-2xl focus:outline-none focus:border-teal-500">
+                        <!-- 2. INR วันนี้ -->
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">2. INR วันนี้</label>
+                            <div class="w-full">
+                                <input type="number" id="wf-inr-today" step="0.01" placeholder="0" class="w-full bg-white border border-slate-300 rounded-xl px-2 h-11 text-center font-extrabold text-slate-800 text-xl focus:outline-none focus:border-teal-500">
+                            </div>
                         </div>
                     </div>
 
                     <!-- Checkbox Target -->
-                    <div class="pt-1 flex items-center justify-center gap-2">
+                    <div class="pt-1 flex items-center justify-start gap-2">
                         <input type="checkbox" id="wf-target-high" class="w-4 h-4 text-teal-600 rounded border-slate-300 focus:ring-teal-500 cursor-pointer">
                         <label for="wf-target-high" class="text-xs font-bold text-slate-700 cursor-pointer select-none">
                             Target INR 2.5 – 3.5 (Mechanical Heart Valve)
@@ -77,7 +88,7 @@ export function render(container) {
                     </p>
                 </div>
 
-                <!-- กล่อง Input 2 (ปรับปรุง Layout บีบ Input + ปุ่ม +/- สี่เหลี่ยมจัตุรัส 1:1) -->
+                <!-- กล่อง Input 2 -->
                 <div class="bg-white/90 backdrop-blur-sm border border-slate-300 rounded-3xl p-5 shadow-sm space-y-4">
                     <div class="flex items-center justify-between border-b border-slate-200 pb-3">
                         <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
@@ -168,7 +179,7 @@ export function render(container) {
     const cbHas5 = container.querySelector('#wf-has-5');
     const schedulesContainer = container.querySelector('#wf-schedules-container');
 
-    // Key Rules Config (แก้ไข Boundary เงื่อนไขไม่ให้ซ้ำซ้อน: INR 3.0 ติดเฉพาะช่วง 2.0-3.0 และ INR 3.5 ติดเฉพาะช่วง 2.5-3.5)
+    // Key Rules Config
     const RULES_NORMAL = [
         { minINR: 0, maxINR: 1.5, isStrictMax: false, inrLabel: '< 1.5', sug: 'Increase 10-20%', lowMult: 1.1, highMult: 1.2, pctLow: 10, pctHigh: 20 },
         { minINR: 1.5, maxINR: 2.0, isStrictMax: false, inrLabel: '1.5 - < 2.0', sug: 'Increase 5-10%', lowMult: 1.05, highMult: 1.1, pctLow: 5, pctHigh: 10 },
@@ -212,7 +223,6 @@ export function render(container) {
                 } else if (rule.minINR === 0) {
                     if (inrToday < rule.maxINR) isMatched = true;
                 } else if (rule.isStrictMinExcluding) {
-                    // สำหรับช่วง > 3.0 หรือ > 3.5 ค่าต้องมากกว่า minINR เท่านั้น (ไม่รวมเท่ากับ)
                     if (inrToday > rule.minINR && inrToday < rule.maxINR) isMatched = true;
                 } else {
                     if (rule.isStrictMax) {
@@ -325,7 +335,7 @@ export function render(container) {
         generateSchedulePatterns(doseNew);
     }
 
-    // 3. Tablet Render Helper (ปรับปรุงขอบโปร่งใส border-transparent / stroke-transparent ตามโจทย์ข้อ 4)
+    // 3. Tablet Render Helper
     function renderTabletUI(mg) {
         if (mg === 0) return `<span class="text-slate-300 font-bold">-</span>`;
         
@@ -371,7 +381,7 @@ export function render(container) {
         `;
     }
 
-    // 7. Smart Suggestion Optimization (รวมยาลดจำนวนเม็ด)
+    // 7. Smart Suggestion Optimization
     function optimizeDailyItems(items, has5mg) {
         if (!has5mg) return items;
 
@@ -564,7 +574,7 @@ export function render(container) {
         `).join('');
     }
 
-    // Event Listeners & Step Logic
+    // Event Listeners & Step Logic (คงฟังก์ชั่น กด Enter เปลี่ยนช่องเหมือนเดิม)
     doseOldInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
