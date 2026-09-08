@@ -105,11 +105,11 @@ export function render(container) {
                     <!-- เตือนเมื่อขนาดยาไม่ตรงตาม Suggestion -->
                     <div id="wf-warning-alert" class="hidden bg-rose-50 border border-rose-300 text-rose-700 p-2.5 rounded-xl text-xs font-semibold flex items-center gap-2 animate-bounce">
                         <i class="fa-solid fa-triangle-exclamation text-rose-600 text-sm"></i>
-                        <span>กรุณาตรวจสอบและยืนยันขนาดยาที่สั่งใช้อีกครั้ง</span>
+                        <span>กรุณาตรวจสอบและยืนยันขนาดยาที่สั่งใชีกครั้ง</span>
                     </div>
                 </div>
 
-                <!-- กล่อง External Links (ข้อ 1: เอา Endo-Pharma ขึ้นลำดับที่ 2) -->
+                <!-- กล่อง External Links -->
                 <div class="bg-white/90 backdrop-blur-sm border border-slate-300 rounded-3xl p-5 shadow-sm space-y-3">
                     <div class="border-b border-slate-200 pb-2">
                         <h3 class="text-xs font-bold text-slate-700 flex items-center gap-2 uppercase tracking-wider">
@@ -170,7 +170,7 @@ export function render(container) {
                             ทางเลือกรูปแบบการรับประทานยาประจำสัปดาห์
                         </h3>
                         
-                        <!-- Checkbox เลือกเม็ดยาที่มี (ข้อ 2: ตัดคำว่า (สีXX) ออก) -->
+                        <!-- Checkbox เลือกเม็ดยาที่มี -->
                         <div class="flex flex-wrap items-center gap-3 pt-1">
                             <span class="text-xs font-semibold text-slate-600">ขนาดยาที่มีใช้:</span>
                             
@@ -191,14 +191,14 @@ export function render(container) {
                         </div>
                     </div>
 
-                    <!-- แสดงผลตารางแนะนำรูปแบบการกินยา (ข้อ 2: ตัดข้อความอธิบายในกรอบออก) -->
+                    <!-- แสดงผลตารางแนะนำรูปแบบการกินยา -->
                     <div id="wf-schedules-container" class="space-y-4">
                         <div class="text-center py-6 text-slate-400 text-xs font-medium bg-slate-50/50 rounded-2xl border border-dashed border-slate-200">
                         </div>
                     </div>
                 </div>
 
-                <!-- การ์ด 2: Dose Recheck Card (ข้อ 3) -->
+                <!-- การ์ด 2: Dose Recheck Card (ปรับแก้ให้คอลัมน์ตารางเท่ากัน + กล่องขวามือยืดหยุ่นลดขนาดได้) -->
                 <div class="bg-white/90 backdrop-blur-sm border border-slate-300 rounded-3xl p-5 shadow-sm space-y-4">
                     <div class="flex items-center justify-between border-b border-slate-200 pb-3">
                         <div>
@@ -214,54 +214,54 @@ export function render(container) {
                     </div>
 
                     <div class="overflow-x-auto">
-                        <div class="flex items-stretch gap-3 min-w-[500px]">
-                            <!-- ตารางคลิกเลือกยารายวัน -->
-                            <table class="flex-1 text-center text-xs border-collapse border border-slate-800">
+                        <div class="flex items-stretch gap-2 sm:gap-3 min-w-[460px]">
+                            <!-- ตารางคลิกเลือกยารายวัน (ใช้ table-fixed และแบ่งสัดส่วนคอลัมน์วันเท่าๆ กัน) -->
+                            <table class="flex-1 text-center text-xs border-collapse border border-slate-800 table-fixed w-full">
                                 <thead>
                                     <tr class="bg-slate-100 text-slate-800 font-bold border-b border-slate-800">
-                                        <th class="py-1.5 px-2 border-r border-slate-800 w-14"></th>
-                                        <th class="py-1.5 border-r border-slate-800">จ</th>
-                                        <th class="py-1.5 border-r border-slate-800">อ</th>
-                                        <th class="py-1.5 border-r border-slate-800">พ</th>
-                                        <th class="py-1.5 border-r border-slate-800">พฤ</th>
-                                        <th class="py-1.5 border-r border-slate-800">ศ</th>
-                                        <th class="py-1.5 border-r border-slate-800">ส</th>
-                                        <th class="py-1.5 border-r border-slate-800">อา</th>
-                                        <th class="py-1.5 px-2 bg-slate-200">รวม</th>
+                                        <th class="py-1.5 border-r border-slate-800 w-12 shrink-0"></th>
+                                        <th class="py-1.5 border-r border-slate-800 w-1/9">จ</th>
+                                        <th class="py-1.5 border-r border-slate-800 w-1/9">อ</th>
+                                        <th class="py-1.5 border-r border-slate-800 w-1/9">พ</th>
+                                        <th class="py-1.5 border-r border-slate-800 w-1/9">พฤ</th>
+                                        <th class="py-1.5 border-r border-slate-800 w-1/9">ศ</th>
+                                        <th class="py-1.5 border-r border-slate-800 w-1/9">ส</th>
+                                        <th class="py-1.5 border-r border-slate-800 w-1/9">อา</th>
+                                        <th class="py-1.5 bg-slate-200 w-1/9">รวม</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <!-- Row W2 -->
                                     <tr id="wf-recheck-row-2" class="bg-amber-100/60 border-b border-slate-800">
-                                        <td class="py-2 px-2 font-black border-r border-slate-800 text-amber-900 bg-amber-200/50">W2</td>
-                                        ${[0,1,2,3,4,5,6].map(d => `<td data-strength="2" data-day="${d}" class="wf-recheck-cell border-r border-slate-800 h-11 cursor-pointer select-none hover:bg-amber-200/80 transition-all"></td>`).join('')}
-                                        <td id="wf-recheck-sum-2" class="py-2 px-2 font-bold border-slate-800 text-amber-900 bg-amber-200/40">0</td>
+                                        <td class="py-2 px-1 font-black border-r border-slate-800 text-amber-900 bg-amber-200/50">W2</td>
+                                        ${[0,1,2,3,4,5,6].map(d => `<td data-strength="2" data-day="${d}" class="wf-recheck-cell border-r border-slate-800 h-11 cursor-pointer select-none hover:bg-amber-200/80 transition-all text-center"></td>`).join('')}
+                                        <td id="wf-recheck-sum-2" class="py-2 px-1 font-bold border-slate-800 text-amber-900 bg-amber-200/40 text-center">0</td>
                                     </tr>
                                     <!-- Row W3 -->
                                     <tr id="wf-recheck-row-3" class="bg-sky-100/60 border-b border-slate-800">
-                                        <td class="py-2 px-2 font-black border-r border-slate-800 text-sky-900 bg-sky-200/50">W3</td>
-                                        ${[0,1,2,3,4,5,6].map(d => `<td data-strength="3" data-day="${d}" class="wf-recheck-cell border-r border-slate-800 h-11 cursor-pointer select-none hover:bg-sky-200/80 transition-all"></td>`).join('')}
-                                        <td id="wf-recheck-sum-3" class="py-2 px-2 font-bold border-slate-800 text-sky-900 bg-sky-200/40">0</td>
+                                        <td class="py-2 px-1 font-black border-r border-slate-800 text-sky-900 bg-sky-200/50">W3</td>
+                                        ${[0,1,2,3,4,5,6].map(d => `<td data-strength="3" data-day="${d}" class="wf-recheck-cell border-r border-slate-800 h-11 cursor-pointer select-none hover:bg-sky-200/80 transition-all text-center"></td>`).join('')}
+                                        <td id="wf-recheck-sum-3" class="py-2 px-1 font-bold border-slate-800 text-sky-900 bg-sky-200/40 text-center">0</td>
                                     </tr>
                                     <!-- Row W5 -->
                                     <tr id="wf-recheck-row-5" class="bg-pink-100/60 border-b border-slate-800">
-                                        <td class="py-2 px-2 font-black border-r border-slate-800 text-pink-900 bg-pink-200/50">W5</td>
-                                        ${[0,1,2,3,4,5,6].map(d => `<td data-strength="5" data-day="${d}" class="wf-recheck-cell border-r border-slate-800 h-11 cursor-pointer select-none hover:bg-pink-200/80 transition-all"></td>`).join('')}
-                                        <td id="wf-recheck-sum-5" class="py-2 px-2 font-bold border-slate-800 text-pink-900 bg-pink-200/40">0</td>
+                                        <td class="py-2 px-1 font-black border-r border-slate-800 text-pink-900 bg-pink-200/50">W5</td>
+                                        ${[0,1,2,3,4,5,6].map(d => `<td data-strength="5" data-day="${d}" class="wf-recheck-cell border-r border-slate-800 h-11 cursor-pointer select-none hover:bg-pink-200/80 transition-all text-center"></td>`).join('')}
+                                        <td id="wf-recheck-sum-5" class="py-2 px-1 font-bold border-slate-800 text-pink-900 bg-pink-200/40 text-center">0</td>
                                     </tr>
                                 </tbody>
                             </table>
 
-                            <!-- กล่องสรุปรวมขนาดยาประจำสัปดาห์ใหญ่ -->
-                            <div class="w-36 bg-purple-200/80 border border-slate-800 rounded-lg p-2 flex flex-col items-center justify-center text-center shrink-0">
-                                <span class="text-xs font-bold text-slate-800 mb-1">รวม (mg/wk)</span>
-                                <span id="wf-recheck-total-mg" class="text-4xl font-black text-slate-900">0</span>
+                            <!-- กล่องสรุปรวมขนาดยาประจำสัปดาห์ใหญ่ (ยืดหยุ่นยอมลดขนาดเมื่อพื้นที่ไม่พอ) -->
+                            <div class="w-28 sm:w-36 min-w-[90px] bg-purple-200/80 border border-slate-800 rounded-lg p-2 flex flex-col items-center justify-center text-center shrink">
+                                <span class="text-[11px] sm:text-xs font-bold text-slate-800 mb-1 leading-tight">รวม (mg/wk)</span>
+                                <span id="wf-recheck-total-mg" class="text-2xl sm:text-4xl font-black text-slate-900 break-all">0</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- การ์ด 3: คำแนะนำกรณี New Case (ข้อ 4) -->
+                <!-- การ์ด 3: คำแนะนำกรณี New Case -->
                 <div class="bg-white/90 backdrop-blur-sm border border-slate-300 rounded-3xl p-5 shadow-sm space-y-3">
                     <div class="border-b border-slate-200 pb-2">
                         <h3 class="text-sm font-bold text-teal-800 flex items-center gap-2 uppercase tracking-wide">
@@ -712,7 +712,7 @@ export function render(container) {
         `).join('');
     }
 
-    // 5. Dose Recheck Logic (ข้อ 3)
+    // 5. Dose Recheck Logic
     function updateDoseRecheckUI() {
         const row2 = container.querySelector('#wf-recheck-row-2');
         const row3 = container.querySelector('#wf-recheck-row-3');
