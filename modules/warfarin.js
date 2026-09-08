@@ -82,8 +82,8 @@ export function render(container) {
                         </table>
                     </div>
 
-                    <!-- Note ใต้ตาราง -->
-                    <p class="text-[10px] text-slate-500 leading-relaxed bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+                    <!-- Note ใต้ตาราง (ปรับขนาดตัวหนังสือเพิ่มขึ้น 15%: text-[10px] -> text-[11.5px]) -->
+                    <p class="text-[11.5px] text-slate-500 leading-relaxed bg-slate-50 p-2.5 rounded-xl border border-slate-200">
                         <strong class="text-rose-600">Note:</strong> case VHD, Metallic valve ไม่แนะนำ/หลีกเลี่ยงการให้ Vit. K กรณี INR prolong หรือ Minor bleeding เสี่ยง Thrombotic แนะนำ Hold ยาแล้ว F/U อย่างเดียว กรณี INR labile มาก ๆ ให้ Refer กลับสงขลา
                     </p>
                 </div>
@@ -179,14 +179,14 @@ export function render(container) {
     const cbHas5 = container.querySelector('#wf-has-5');
     const schedulesContainer = container.querySelector('#wf-schedules-container');
 
-    // Key Rules Config
+    // Key Rules Config (แก้คำขึ้นบรรทัดใหม่ และป้องกัน no bleeding แยกบรรทัด)
     const RULES_NORMAL = [
         { minINR: 0, maxINR: 1.5, isStrictMax: false, inrLabel: '< 1.5', sug: 'Increase 10-20%', lowMult: 1.1, highMult: 1.2, pctLow: 10, pctHigh: 20 },
         { minINR: 1.5, maxINR: 2.0, isStrictMax: false, inrLabel: '1.5 - < 2.0', sug: 'Increase 5-10%', lowMult: 1.05, highMult: 1.1, pctLow: 5, pctHigh: 10 },
         { minINR: 2.0, maxINR: 3.0, isStrictMax: true, inrLabel: '2.0 - 3.0', sug: 'Continue same dose', lowMult: 1.0, highMult: 1.0, pctLow: 0, pctHigh: 0 },
         { minINR: 3.0, maxINR: 4.0, isStrictMax: false, isStrictMinExcluding: true, inrLabel: '> 3.0 - < 4.0', sug: 'Decrease 5-10%', lowMult: 0.9, highMult: 0.95, pctLow: -10, pctHigh: -5 },
-        { minINR: 4.0, maxINR: 5.0, isStrictMax: false, inrLabel: '4.0 - < 5.0', sug: 'Hold for 1 day then decrease 10% to..', lowMult: 0.9, highMult: 0.9, pctLow: -10, pctHigh: -10 },
-        { minINR: 5.0, maxINR: 99, isStrictMax: true, inrLabel: '5.0 - 8.9+ no bleeding', sug: 'Omit 1-2 doses, Vit K1 1 mg PO then dec 10-20% to..', lowMult: 0.8, highMult: 0.9, pctLow: -20, pctHigh: -10 }
+        { minINR: 4.0, maxINR: 5.0, isStrictMax: false, inrLabel: '4.0 - < 5.0', sug: 'Hold for 1 day<br>then decrease 10% to..', lowMult: 0.9, highMult: 0.9, pctLow: -10, pctHigh: -10 },
+        { minINR: 5.0, maxINR: 99, isStrictMax: true, inrLabel: '5.0 - 8.9+<br>no&nbsp;bleeding', sug: 'Omit 1-2 doses, Vit K1 1 mg PO<br>then dec 10-20% to..', lowMult: 0.8, highMult: 0.9, pctLow: -20, pctHigh: -10 }
     ];
 
     const RULES_HIGH = [
@@ -194,8 +194,8 @@ export function render(container) {
         { minINR: 2.0, maxINR: 2.5, isStrictMax: false, inrLabel: '2.0 - < 2.5', sug: 'Increase 5-10%', lowMult: 1.05, highMult: 1.1, pctLow: 5, pctHigh: 10 },
         { minINR: 2.5, maxINR: 3.5, isStrictMax: true, inrLabel: '2.5 - 3.5', sug: 'Continue same dose', lowMult: 1.0, highMult: 1.0, pctLow: 0, pctHigh: 0 },
         { minINR: 3.5, maxINR: 4.0, isStrictMax: false, isStrictMinExcluding: true, inrLabel: '> 3.5 - < 4.0', sug: 'Decrease 5-10%', lowMult: 0.9, highMult: 0.95, pctLow: -10, pctHigh: -5 },
-        { minINR: 4.0, maxINR: 4.5, isStrictMax: false, inrLabel: '4.0 - < 4.5', sug: 'Hold for 1 day then decrease 10% to..', lowMult: 0.9, highMult: 0.9, pctLow: -10, pctHigh: -10 },
-        { minINR: 4.5, maxINR: 99, isStrictMax: true, inrLabel: '>= 4.5', sug: 'Omit 1-2 doses, Vit K1 1 mg PO then dec 10-20% to..', lowMult: 0.8, highMult: 0.9, pctLow: -20, pctHigh: -10 }
+        { minINR: 4.0, maxINR: 4.5, isStrictMax: false, inrLabel: '4.0 - < 4.5', sug: 'Hold for 1 day<br>then decrease 10% to..', lowMult: 0.9, highMult: 0.9, pctLow: -10, pctHigh: -10 },
+        { minINR: 4.5, maxINR: 99, isStrictMax: true, inrLabel: '>= 4.5', sug: 'Omit 1-2 doses, Vit K1 1 mg PO<br>then dec 10-20% to..', lowMult: 0.8, highMult: 0.9, pctLow: -20, pctHigh: -10 }
     ];
 
     // Helper Functions
@@ -574,7 +574,7 @@ export function render(container) {
         `).join('');
     }
 
-    // Event Listeners & Step Logic (คงฟังก์ชั่น กด Enter เปลี่ยนช่องเหมือนเดิม)
+    // Event Listeners & Step Logic
     doseOldInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
