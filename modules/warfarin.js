@@ -6,31 +6,23 @@
 export function render(container) {
     container.innerHTML = `
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 text-slate-800">
-            
-            <!-- Header ใหญ่ด้านบนสุด -->
-            <div class="lg:col-span-12">
-                <h1 class="text-xl font-black text-slate-800 tracking-tight flex items-center gap-2">
-                    <i class="fa-solid fa-pills text-teal-600"></i>
-                    Autumnaki's Warfarin Calc
-                </h1>
-            </div>
 
-            <!-- ฝั่งซ้าย: Input & Decision Table (40% -> lg:col-span-5) -->
+            <!-- ฝั่งซ้าย: Input, Decision Table & External Links (40% -> lg:col-span-5) -->
             <div class="lg:col-span-5 space-y-5">
                 
-                <!-- กล่อง Input 1 -->
+                <!-- กล่อง Input 1 (ย้ายชื่อ Autumnaki's Warfarin Calc มาไว้ที่หัวการ์ดนี้) -->
                 <div class="bg-white/90 backdrop-blur-sm border border-slate-300 rounded-3xl p-5 shadow-sm space-y-4">
                     <div class="flex items-center justify-between border-b border-slate-200 pb-3">
                         <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
-                            <i class="fa-solid fa-calculator text-teal-600"></i>
-                            ประเมินการปรับขนาดยา
+                            <i class="fa-solid fa-pills text-teal-600"></i>
+                            Autumnaki's Warfarin Calc
                         </h3>
                         <button id="wf-btn-reset-1" class="text-xs text-purple-600 hover:text-purple-800 bg-purple-50 hover:bg-purple-100 px-2.5 py-1 rounded-lg border border-purple-200 font-semibold flex items-center gap-1 cursor-pointer transition-all">
                             <i class="fa-solid fa-rotate-left"></i> Reset
                         </button>
                     </div>
 
-                    <!-- Layout ปรับใหม่: วาง Dose เดิม และ INR วันนี้ ไว้ข้างกัน (Grid 2 คอลัมน์) -->
+                    <!-- Layout: วาง Dose เดิม และ INR วันนี้ ไว้ข้างกัน (Grid 2 คอลัมน์) -->
                     <div class="grid grid-cols-2 gap-4 items-start">
                         <!-- 1. Dose Warfarin เดิม -->
                         <div>
@@ -82,7 +74,7 @@ export function render(container) {
                         </table>
                     </div>
 
-                    <!-- Note ใต้ตาราง (ปรับขนาดตัวหนังสือเพิ่มขึ้น 15%: text-[10px] -> text-[11.5px]) -->
+                    <!-- Note ใต้ตาราง -->
                     <p class="text-[11.5px] text-slate-500 leading-relaxed bg-slate-50 p-2.5 rounded-xl border border-slate-200">
                         <strong class="text-rose-600">Note:</strong> case VHD, Metallic valve ไม่แนะนำ/หลีกเลี่ยงการให้ Vit. K กรณี INR prolong หรือ Minor bleeding เสี่ยง Thrombotic แนะนำ Hold ยาแล้ว F/U อย่างเดียว กรณี INR labile มาก ๆ ให้ Refer กลับสงขลา
                     </p>
@@ -115,6 +107,54 @@ export function render(container) {
                         <i class="fa-solid fa-triangle-exclamation text-rose-600 text-sm"></i>
                         <span>กรุณาตรวจสอบและยืนยันขนาดยาที่สั่งใช้อีกครั้ง</span>
                     </div>
+                </div>
+
+                <!-- กล่อง External Links (ต่อจากการ์ด Input 2) -->
+                <div class="bg-white/90 backdrop-blur-sm border border-slate-300 rounded-3xl p-5 shadow-sm space-y-3">
+                    <div class="border-b border-slate-200 pb-2">
+                        <h3 class="text-xs font-bold text-slate-700 flex items-center gap-2 uppercase tracking-wider">
+                            <i class="fa-solid fa-arrow-up-right-from-square text-teal-600"></i>
+                            External Links
+                        </h3>
+                    </div>
+                    <ul class="space-y-2 text-xs font-semibold">
+                        <li>
+                            <a href="http://www.thaiacc.org/warfarin/" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-teal-50 hover:text-teal-700 border border-slate-200 hover:border-teal-300 transition-all group">
+                                <span class="flex items-center gap-2">
+                                    <i class="fa-regular fa-compass text-slate-400 group-hover:text-teal-600"></i>
+                                    Warfarin Registry Network (WaRN)
+                                </span>
+                                <i class="fa-solid fa-chevron-right text-[10px] text-slate-300 group-hover:text-teal-500"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://warfcal.vercel.app/" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-teal-50 hover:text-teal-700 border border-slate-200 hover:border-teal-300 transition-all group">
+                                <span class="flex items-center gap-2">
+                                    <i class="fa-solid fa-calculator text-slate-400 group-hover:text-teal-600"></i>
+                                    KMP Warfcal
+                                </span>
+                                <i class="fa-solid fa-chevron-right text-[10px] text-slate-300 group-hover:text-teal-500"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://tr.gusarea.com/warfarin" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-teal-50 hover:text-teal-700 border border-slate-200 hover:border-teal-300 transition-all group">
+                                <span class="flex items-center gap-2">
+                                    <i class="fa-solid fa-prescription-bottle-medical text-slate-400 group-hover:text-teal-600"></i>
+                                    Gusarea Warfarin dosing
+                                </span>
+                                <i class="fa-solid fa-chevron-right text-[10px] text-slate-300 group-hover:text-teal-500"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://pharmatoolsthailand.github.io/WarfarinDoseCalculator/Index.html" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-teal-50 hover:text-teal-700 border border-slate-200 hover:border-teal-300 transition-all group">
+                                <span class="flex items-center gap-2">
+                                    <i class="fa-solid fa-user-doctor text-slate-400 group-hover:text-teal-600"></i>
+                                    Endo-Pharma <span class="text-[10px] text-slate-400 font-normal group-hover:text-teal-600">(by เภสัชกรเอ็นดู)</span>
+                                </span>
+                                <i class="fa-solid fa-chevron-right text-[10px] text-slate-300 group-hover:text-teal-500"></i>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
 
             </div>
@@ -179,7 +219,7 @@ export function render(container) {
     const cbHas5 = container.querySelector('#wf-has-5');
     const schedulesContainer = container.querySelector('#wf-schedules-container');
 
-    // Key Rules Config (แก้คำขึ้นบรรทัดใหม่ และป้องกัน no bleeding แยกบรรทัด)
+    // Key Rules Config
     const RULES_NORMAL = [
         { minINR: 0, maxINR: 1.5, isStrictMax: false, inrLabel: '< 1.5', sug: 'Increase 10-20%', lowMult: 1.1, highMult: 1.2, pctLow: 10, pctHigh: 20 },
         { minINR: 1.5, maxINR: 2.0, isStrictMax: false, inrLabel: '1.5 - < 2.0', sug: 'Increase 5-10%', lowMult: 1.05, highMult: 1.1, pctLow: 5, pctHigh: 10 },
@@ -381,7 +421,7 @@ export function render(container) {
         `;
     }
 
-    // 7. Smart Suggestion Optimization
+    // Smart Suggestion Optimization
     function optimizeDailyItems(items, has5mg) {
         if (!has5mg) return items;
 
