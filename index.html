@@ -139,6 +139,21 @@
                     </div>
                 </div>
 
+                <!-- Card 6: Warfarin Calculator -->
+                <div id="card-warfarin" class="bg-white/80 backdrop-blur-sm border border-slate-300 rounded-3xl p-6 hover:border-teal-500 hover:shadow-lg transition-all cursor-pointer group flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 bg-teal-600 text-white rounded-2xl flex items-center justify-center mb-4 group-hover:scale-105 transition-transform text-xl">
+                            <i class="fa-solid fa-pills"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">Warfarin Calc</h3>
+                        <p class="text-xs text-slate-600 font-normal leading-relaxed mb-6">คำนวณขนาดยาวาร์ฟารินประจำสัปดาห์ และประเมินการปรับขนาดยาตามระดับ INR</p>
+                    </div>
+                    <div class="text-teal-700 text-xs font-semibold flex items-center gap-2 group-hover:translate-x-1 transition-transform">
+                        <span>เปิดใช้งานเครื่องมือ</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -148,6 +163,7 @@
         <div id="container-dapt" class="hidden"></div>
         <div id="container-smalldose" class="hidden"></div>
         <div id="container-azi" class="hidden"></div>
+        <div id="container-warfarin" class="hidden"></div>
 
     </main>
 
@@ -166,24 +182,27 @@
         const containerDapt = document.getElementById('container-dapt');
         const containerSmalldose = document.getElementById('container-smalldose');
         const containerAzi = document.getElementById('container-azi');
+        const containerWarfarin = document.getElementById('container-warfarin');
         
         const cardInsulin = document.getElementById('card-insulin');
         const cardTb = document.getElementById('card-tb');
         const cardDapt = document.getElementById('card-dapt');
         const cardSmalldose = document.getElementById('card-smalldose');
         const cardAzi = document.getElementById('card-azi');
+        const cardWarfarin = document.getElementById('card-warfarin');
 
         const btnHome = document.getElementById('nav-home-btn');
         const navLogo = document.getElementById('nav-logo');
 
         async function initModules() {
             try {
-                const [mInsulin, mTb, mDapt, mSmalldose, mAzi] = await Promise.all([
+                const [mInsulin, mTb, mDapt, mSmalldose, mAzi, mWarfarin] = await Promise.all([
                     import('./modules/insulin-calc.js').catch(e => console.error(e)),
                     import('./modules/tb-calc.js').catch(e => console.error(e)),
                     import('./modules/dapt.js').catch(e => console.error(e)),
                     import('./modules/smalldose.js').catch(e => console.error(e)),
-                    import('./modules/azi.js').catch(e => console.error(e))
+                    import('./modules/azi.js').catch(e => console.error(e)),
+                    import('./modules/warfarin.js').catch(e => console.error(e))
                 ]);
 
                 if (mInsulin) (mInsulin.render || mInsulin.default)(containerInsulin);
@@ -191,6 +210,7 @@
                 if (mDapt) (mDapt.render || mDapt.default)(containerDapt);
                 if (mSmalldose) (mSmalldose.render || mSmalldose.default)(containerSmalldose);
                 if (mAzi) (mAzi.render || mAzi.default)(containerAzi);
+                if (mWarfarin) (mWarfarin.render || mWarfarin.default)(containerWarfarin);
             } catch (err) {
                 console.error("Preload error:", err);
             }
@@ -205,6 +225,7 @@
             containerDapt.classList.add('hidden');
             containerSmalldose.classList.add('hidden');
             containerAzi.classList.add('hidden');
+            containerWarfarin.classList.add('hidden');
         }
 
         function goHome() {
@@ -218,6 +239,7 @@
         cardDapt.addEventListener('click', () => { hideAll(); containerDapt.classList.remove('hidden'); window.scrollTo({ top: 0, behavior: 'smooth' }); });
         cardSmalldose.addEventListener('click', () => { hideAll(); containerSmalldose.classList.remove('hidden'); window.scrollTo({ top: 0, behavior: 'smooth' }); });
         cardAzi.addEventListener('click', () => { hideAll(); containerAzi.classList.remove('hidden'); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+        cardWarfarin.addEventListener('click', () => { hideAll(); containerWarfarin.classList.remove('hidden'); window.scrollTo({ top: 0, behavior: 'smooth' }); });
 
         btnHome.addEventListener('click', goHome);
         navLogo.addEventListener('click', goHome);
